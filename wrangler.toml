@@ -2,7 +2,7 @@ name = "jitsuflow-worker"
 main = "src/index.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
-# account_id = "your-account-id" # Set via CLOUDFLARE_ACCOUNT_ID env var
+account_id = "46bf2542468db352a9741f14b84d2744"
 
 [vars]
 ENVIRONMENT = "development"
