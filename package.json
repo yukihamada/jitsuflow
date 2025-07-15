@@ -12,7 +12,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:server": "wrangler dev --port 8787",
-    "test:api": "node test/api_test.js",
+    "test:api": "vitest run tests/api.test.js",
     "test:api:comprehensive": "node test/comprehensive_api_test.js",
     "test:api:practical": "node test/api_endpoint_test.js",
     "test:security": "node test/security_test.js",
