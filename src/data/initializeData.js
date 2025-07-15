@@ -13,58 +13,36 @@ import { insertSampleRentals } from './sampleRentals.js';
 export async function initializeAllSampleData(db) {
   try {
     console.log('Starting data initialization...');
-    
+
     // 既存データのクリア（オプション）
     // await clearExistingData(db);
-    
+
     // 商品データの挿入
     console.log('Inserting sample products...');
     await insertSampleProducts(db);
     console.log('Sample products inserted successfully');
-    
+
     // レンタルデータの挿入
     console.log('Inserting sample rentals...');
     await insertSampleRentals(db);
     console.log('Sample rentals inserted successfully');
-    
+
     console.log('Data initialization completed successfully!');
-    
+
     // 挿入されたデータの確認
     const productCount = await db.prepare('SELECT COUNT(*) as count FROM products').first();
     const rentalCount = await db.prepare('SELECT COUNT(*) as count FROM rentals').first();
-    
+
     console.log(`Total products: ${productCount.count}`);
     console.log(`Total rentals: ${rentalCount.count}`);
-    
+
   } catch (error) {
     console.error('Error during data initialization:', error);
     throw error;
   }
 }
 
-/**
- * 既存データをクリア（注意: 本番環境では使用しないこと）
- * @param {Database} db - Cloudflare D1データベース
- */
-async function clearExistingData(db) {
-  console.log('Clearing existing data...');
-  
-  // 注文関連のデータをクリア
-  await db.prepare('DELETE FROM order_items').run();
-  await db.prepare('DELETE FROM orders').run();
-  
-  // カートデータをクリア
-  await db.prepare('DELETE FROM shopping_carts').run();
-  
-  // レンタル取引データをクリア
-  await db.prepare('DELETE FROM rental_transactions').run();
-  
-  // 商品とレンタルデータをクリア
-  await db.prepare('DELETE FROM products').run();
-  await db.prepare('DELETE FROM rentals').run();
-  
-  console.log('Existing data cleared');
-}
+// clearExistingData function removed - not used in production
 
 /**
  * 開発環境用のデータ初期化エンドポイント
@@ -80,7 +58,7 @@ export async function handleDataInitialization(request, env) {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-  
+
   // 認証チェック（管理者のみ）
   if (!request.user || request.user.role !== 'admin') {
     return new Response(JSON.stringify({
@@ -90,10 +68,10 @@ export async function handleDataInitialization(request, env) {
       headers: { 'Content-Type': 'application/json' }
     });
   }
-  
+
   try {
     await initializeAllSampleData(env.DB);
-    
+
     return new Response(JSON.stringify({
       message: 'Sample data initialized successfully'
     }), {

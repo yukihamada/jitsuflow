@@ -21,7 +21,7 @@ router.post('/api/users/register', async (request) => {
   try {
     const body = await request.json();
     const { email, password, name, phone } = body;
-    
+
     // Validate
     if (!email || !password || !name) {
       return new Response(JSON.stringify({
@@ -31,12 +31,12 @@ router.post('/api/users/register', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Check if user exists
     const existing = await request.env.DB.prepare(
       'SELECT id FROM users WHERE email = ?'
     ).bind(email).first();
-    
+
     if (existing) {
       return new Response(JSON.stringify({
         error: 'User already exists'
@@ -45,7 +45,7 @@ router.post('/api/users/register', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Create user with simple password storage (NOT for production!)
     const result = await request.env.DB.prepare(
       'INSERT INTO users (email, password_hash, name, phone, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
@@ -58,10 +58,10 @@ router.post('/api/users/register', async (request) => {
       new Date().toISOString(),
       new Date().toISOString()
     ).run();
-    
+
     const userId = result.meta.last_row_id;
     const token = createSimpleToken({ userId, email });
-    
+
     return new Response(JSON.stringify({
       message: 'Registration successful',
       user: {
@@ -75,7 +75,7 @@ router.post('/api/users/register', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Registration error:', error);
     return new Response(JSON.stringify({
@@ -93,7 +93,7 @@ router.post('/api/users/register', async (request) => {
 router.post('/api/users/login', async (request) => {
   try {
     const { email, password } = await request.json();
-    
+
     if (!email || !password) {
       return new Response(JSON.stringify({
         error: 'Missing credentials'
@@ -102,11 +102,11 @@ router.post('/api/users/login', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     const user = await request.env.DB.prepare(
       'SELECT * FROM users WHERE email = ?'
     ).bind(email).first();
-    
+
     if (!user || user.password_hash !== password) {
       return new Response(JSON.stringify({
         error: 'Invalid credentials'
@@ -115,9 +115,9 @@ router.post('/api/users/login', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     const token = createSimpleToken({ userId: user.id, email: user.email });
-    
+
     return new Response(JSON.stringify({
       message: 'Login successful',
       user: {
@@ -129,7 +129,7 @@ router.post('/api/users/login', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Login error:', error);
     return new Response(JSON.stringify({

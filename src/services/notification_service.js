@@ -342,7 +342,7 @@ export const slackTemplates = {
             type: 'button',
             text: { type: 'plain_text', text: '在庫を補充' },
             style: 'primary',
-            url: `https://admin.jitsuflow.app/inventory`
+            url: 'https://admin.jitsuflow.app/inventory'
           }
         ]
       }

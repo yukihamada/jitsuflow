@@ -15,35 +15,35 @@ router.get('/api/products', async (request) => {
     const category = url.searchParams.get('category');
     const limit = parseInt(url.searchParams.get('limit')) || 20;
     const offset = parseInt(url.searchParams.get('offset')) || 0;
-    
+
     let query = 'SELECT * FROM products WHERE is_active = 1';
     const params = [];
-    
+
     if (category) {
       query += ' AND category = ?';
       params.push(category);
     }
-    
+
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
     params.push(limit, offset);
-    
+
     const result = await request.env.DB.prepare(query).bind(...params).all();
-    
+
     // Parse JSON attributes for each product
     const products = result.results.map(product => ({
       ...product,
       attributes: product.attributes ? JSON.parse(product.attributes) : null
     }));
-    
+
     return new Response(JSON.stringify({
       products: products
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get products error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get products',
       message: error.message
@@ -58,7 +58,7 @@ router.get('/api/products', async (request) => {
 router.get('/api/cart', async (request) => {
   try {
     const userId = request.user.userId;
-    
+
     const result = await request.env.DB.prepare(`
       SELECT 
         sc.*,
@@ -76,7 +76,7 @@ router.get('/api/cart', async (request) => {
       WHERE sc.user_id = ?
       ORDER BY sc.created_at DESC
     `).bind(userId).all();
-    
+
     const items = result.results.map(item => ({
       product: {
         id: item.product_id,
@@ -94,16 +94,16 @@ router.get('/api/cart', async (request) => {
       },
       quantity: item.quantity
     }));
-    
+
     return new Response(JSON.stringify({
       items: items
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get cart error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get cart',
       message: error.message
@@ -119,12 +119,12 @@ router.post('/api/cart/add', async (request) => {
   try {
     const { product_id, quantity } = await request.json();
     const userId = request.user.userId;
-    
+
     // 在庫確認
     const product = await request.env.DB.prepare(
       'SELECT stock_quantity FROM products WHERE id = ?'
     ).bind(product_id).first();
-    
+
     if (!product || product.stock_quantity < quantity) {
       return new Response(JSON.stringify({
         error: 'Insufficient stock'
@@ -133,7 +133,7 @@ router.post('/api/cart/add', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // カートに追加または更新
     await request.env.DB.prepare(`
       INSERT INTO shopping_carts (user_id, product_id, quantity)
@@ -142,16 +142,16 @@ router.post('/api/cart/add', async (request) => {
         quantity = quantity + excluded.quantity,
         updated_at = CURRENT_TIMESTAMP
     `).bind(userId, product_id, quantity).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Added to cart'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Add to cart error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to add to cart',
       message: error.message
@@ -167,7 +167,7 @@ router.post('/api/cart/update', async (request) => {
   try {
     const { product_id, quantity } = await request.json();
     const userId = request.user.userId;
-    
+
     if (quantity <= 0) {
       // 数量が0以下の場合は削除
       await request.env.DB.prepare(
@@ -178,7 +178,7 @@ router.post('/api/cart/update', async (request) => {
       const product = await request.env.DB.prepare(
         'SELECT stock_quantity FROM products WHERE id = ?'
       ).bind(product_id).first();
-      
+
       if (!product || product.stock_quantity < quantity) {
         return new Response(JSON.stringify({
           error: 'Insufficient stock'
@@ -187,7 +187,7 @@ router.post('/api/cart/update', async (request) => {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });
       }
-      
+
       // カート更新
       await request.env.DB.prepare(`
         UPDATE shopping_carts 
@@ -195,16 +195,16 @@ router.post('/api/cart/update', async (request) => {
         WHERE user_id = ? AND product_id = ?
       `).bind(quantity, userId, product_id).run();
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Cart updated'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Update cart error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to update cart',
       message: error.message
@@ -220,20 +220,20 @@ router.delete('/api/cart/remove/:productId', async (request) => {
   try {
     const { productId } = request.params;
     const userId = request.user.userId;
-    
+
     await request.env.DB.prepare(
       'DELETE FROM shopping_carts WHERE user_id = ? AND product_id = ?'
     ).bind(userId, productId).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Removed from cart'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Remove from cart error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to remove from cart',
       message: error.message
@@ -247,12 +247,12 @@ router.delete('/api/cart/remove/:productId', async (request) => {
 // 注文作成
 router.post('/api/orders/create', async (request) => {
   try {
-    const { items, shipping_address, payment_method, subtotal, tax, total } = await request.json();
+    const { items, shipping_address, subtotal, tax, total } = await request.json();
     const userId = request.user.userId;
-    
+
     // トランザクション開始
     const db = request.env.DB;
-    
+
     // 注文作成
     const orderResult = await db.prepare(`
       INSERT INTO orders (
@@ -268,15 +268,15 @@ router.post('/api/orders/create', async (request) => {
       JSON.stringify(shipping_address),
       new Date().toISOString()
     ).run();
-    
+
     const orderId = orderResult.meta.last_row_id;
-    
+
     // 注文アイテム作成
     for (const item of items) {
       const product = await db.prepare(
         'SELECT name, price FROM products WHERE id = ?'
       ).bind(item.product_id).first();
-      
+
       await db.prepare(`
         INSERT INTO order_items (
           order_id, product_id, product_name,
@@ -290,7 +290,7 @@ router.post('/api/orders/create', async (request) => {
         item.quantity,
         product.price * item.quantity
       ).run();
-      
+
       // 在庫更新
       await db.prepare(`
         UPDATE products 
@@ -298,12 +298,12 @@ router.post('/api/orders/create', async (request) => {
         WHERE id = ?
       `).bind(item.quantity, item.product_id).run();
     }
-    
+
     // カートクリア
     await db.prepare(
       'DELETE FROM shopping_carts WHERE user_id = ?'
     ).bind(userId).run();
-    
+
     return new Response(JSON.stringify({
       order_id: orderId,
       message: 'Order created successfully'
@@ -311,10 +311,10 @@ router.post('/api/orders/create', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Create order error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to create order',
       message: error.message
@@ -329,7 +329,7 @@ router.post('/api/orders/create', async (request) => {
 router.get('/api/orders/user/:userId', async (request) => {
   try {
     const { userId } = request.params;
-    
+
     // 権限確認
     if (request.user.userId !== parseInt(userId) && request.user.role !== 'admin') {
       return new Response(JSON.stringify({
@@ -339,7 +339,7 @@ router.get('/api/orders/user/:userId', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     const orders = await request.env.DB.prepare(`
       SELECT o.*, COUNT(oi.id) as item_count
       FROM orders o
@@ -348,16 +348,16 @@ router.get('/api/orders/user/:userId', async (request) => {
       GROUP BY o.id
       ORDER BY o.created_at DESC
     `).bind(userId).all();
-    
+
     return new Response(JSON.stringify({
       orders: orders.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get user orders error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get orders',
       message: error.message

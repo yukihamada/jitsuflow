@@ -10,7 +10,7 @@
  */
 async function stripeRequest(endpoint, method = 'POST', data = {}, stripeSecretKey) {
   const url = `https://api.stripe.com/v1/${endpoint}`;
-  
+
   const formData = new URLSearchParams();
   Object.keys(data).forEach(key => {
     if (typeof data[key] === 'object') {
@@ -67,13 +67,13 @@ export async function createPOSPaymentIntent(stripeSecretKey, {
     }
 
     const paymentIntent = await stripeRequest('payment_intents', 'POST', paymentIntentParams, stripeSecretKey);
-    
+
     return {
       success: true,
       paymentIntent,
       clientSecret: paymentIntent.client_secret
     };
-    
+
   } catch (error) {
     console.error('Create payment intent error:', error);
     return {
@@ -98,16 +98,16 @@ export async function confirmPOSPayment(stripe, paymentIntentId, db, {
   try {
     // Payment Intent確認
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    
+
     if (paymentIntent.status !== 'succeeded') {
       throw new Error('Payment not completed');
     }
 
     // トランザクションID生成
     const transactionId = `txn_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // 売上記録作成
-    const salesResult = await db.prepare(`
+    await db.prepare(`
       INSERT INTO sales_transactions (
         transaction_type, dojo_id, user_id, staff_id, subtotal, 
         tax_amount, discount_amount, total_amount, payment_method, 
@@ -172,7 +172,7 @@ export async function confirmPOSPayment(stripe, paymentIntentId, db, {
         timestamp: new Date().toISOString()
       }
     };
-    
+
   } catch (error) {
     console.error('Confirm POS payment error:', error);
     return {
@@ -211,7 +211,7 @@ export async function createRefund(stripe, paymentIntentId, amount, reason, db) 
       refund,
       refundId: refund.id
     };
-    
+
   } catch (error) {
     console.error('Create refund error:', error);
     return {
@@ -227,13 +227,13 @@ export async function createRefund(stripe, paymentIntentId, amount, reason, db) 
 export async function getOrCreateCustomer(stripe, customerData, db) {
   try {
     const { email, name, phone, userId } = customerData;
-    
+
     // 既存の顧客確認
     if (userId) {
       const user = await db.prepare(
         'SELECT stripe_customer_id FROM users WHERE id = ?'
       ).bind(userId).first();
-      
+
       if (user && user.stripe_customer_id) {
         const customer = await stripe.customers.retrieve(user.stripe_customer_id);
         return {
@@ -266,7 +266,7 @@ export async function getOrCreateCustomer(stripe, customerData, db) {
       customer,
       isNew: true
     };
-    
+
   } catch (error) {
     console.error('Get or create customer error:', error);
     return {
@@ -295,7 +295,7 @@ export async function createOrUpdateSubscription(stripe, {
         }],
         proration_behavior: prorationBehavior
       });
-      
+
       return {
         success: true,
         subscription,
@@ -318,7 +318,7 @@ export async function createOrUpdateSubscription(stripe, {
       subscription,
       isNew: true
     };
-    
+
   } catch (error) {
     console.error('Create or update subscription error:', error);
     return {

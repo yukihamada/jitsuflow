@@ -12,7 +12,7 @@ const router = Router();
 router.get('/api/students/:studentId/instructors', async (request) => {
   try {
     const { studentId } = request.params;
-    
+
     // アクセス権限チェック（本人または管理者のみ）
     if (request.user.userId !== parseInt(studentId) && request.user.role !== 'admin') {
       return new Response(JSON.stringify({
@@ -22,7 +22,7 @@ router.get('/api/students/:studentId/instructors', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 担当インストラクター一覧取得
     const assignments = await request.env.DB.prepare(`
       SELECT 
@@ -43,7 +43,7 @@ router.get('/api/students/:studentId/instructors', async (request) => {
       GROUP BY sia.id
       ORDER BY sia.assignment_type, sia.created_at DESC
     `).bind(studentId).all();
-    
+
     // お気に入りインストラクター取得
     const favorites = await request.env.DB.prepare(`
       SELECT 
@@ -56,17 +56,17 @@ router.get('/api/students/:studentId/instructors', async (request) => {
       WHERE fi.student_id = ?
       ORDER BY fi.created_at DESC
     `).bind(studentId).all();
-    
+
     return new Response(JSON.stringify({
       assignments: assignments.results,
       favorites: favorites.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get student instructors error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructors',
       message: error.message
@@ -81,13 +81,13 @@ router.get('/api/students/:studentId/instructors', async (request) => {
 router.post('/api/students/:studentId/instructors', async (request) => {
   try {
     const { studentId } = request.params;
-    const { 
-      instructor_id, 
-      dojo_id, 
+    const {
+      instructor_id,
+      dojo_id,
       assignment_type = 'primary',
-      notes 
+      notes
     } = await request.json();
-    
+
     // アクセス権限チェック
     if (request.user.userId !== parseInt(studentId) && request.user.role !== 'admin') {
       return new Response(JSON.stringify({
@@ -97,7 +97,7 @@ router.post('/api/students/:studentId/instructors', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // インストラクターの存在確認
     const instructor = await request.env.DB.prepare(`
       SELECT u.*, ida.dojo_id 
@@ -106,7 +106,7 @@ router.post('/api/students/:studentId/instructors', async (request) => {
       WHERE u.id = ? AND u.role = 'instructor' 
         AND ida.dojo_id = ? AND ida.status = 'active'
     `).bind(instructor_id, dojo_id).first();
-    
+
     if (!instructor) {
       return new Response(JSON.stringify({
         error: 'Invalid instructor',
@@ -116,7 +116,7 @@ router.post('/api/students/:studentId/instructors', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 既存の同タイプ担当を無効化
     if (assignment_type === 'primary') {
       await request.env.DB.prepare(`
@@ -131,7 +131,7 @@ router.post('/api/students/:studentId/instructors', async (request) => {
         dojo_id
       ).run();
     }
-    
+
     // 新しい担当設定を作成
     const result = await request.env.DB.prepare(`
       INSERT INTO student_instructor_assignments (
@@ -149,7 +149,7 @@ router.post('/api/students/:studentId/instructors', async (request) => {
       new Date().toISOString(),
       new Date().toISOString()
     ).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor assigned successfully',
       assignment_id: result.meta.last_row_id
@@ -157,10 +157,10 @@ router.post('/api/students/:studentId/instructors', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Assign instructor error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to assign instructor',
       message: error.message
@@ -175,7 +175,7 @@ router.post('/api/students/:studentId/instructors', async (request) => {
 router.delete('/api/students/:studentId/instructors/:assignmentId', async (request) => {
   try {
     const { studentId, assignmentId } = request.params;
-    
+
     // アクセス権限チェック
     if (request.user.userId !== parseInt(studentId) && request.user.role !== 'admin') {
       return new Response(JSON.stringify({
@@ -185,7 +185,7 @@ router.delete('/api/students/:studentId/instructors/:assignmentId', async (reque
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     const result = await request.env.DB.prepare(`
       UPDATE student_instructor_assignments 
       SET status = 'inactive', end_date = ?, updated_at = ?
@@ -196,7 +196,7 @@ router.delete('/api/students/:studentId/instructors/:assignmentId', async (reque
       assignmentId,
       studentId
     ).run();
-    
+
     if (result.changes === 0) {
       return new Response(JSON.stringify({
         error: 'Assignment not found'
@@ -205,16 +205,16 @@ router.delete('/api/students/:studentId/instructors/:assignmentId', async (reque
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor unassigned successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Unassign instructor error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to unassign instructor',
       message: error.message
@@ -230,7 +230,7 @@ router.post('/api/students/:studentId/favorite-instructors', async (request) => 
   try {
     const { studentId } = request.params;
     const { instructor_id, action } = await request.json();
-    
+
     // アクセス権限チェック
     if (request.user.userId !== parseInt(studentId)) {
       return new Response(JSON.stringify({
@@ -240,7 +240,7 @@ router.post('/api/students/:studentId/favorite-instructors', async (request) => 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     if (action === 'add') {
       // お気に入り追加
       await request.env.DB.prepare(`
@@ -248,38 +248,38 @@ router.post('/api/students/:studentId/favorite-instructors', async (request) => 
           student_id, instructor_id, created_at
         ) VALUES (?, ?, ?)
       `).bind(studentId, instructor_id, new Date().toISOString()).run();
-      
+
       return new Response(JSON.stringify({
         message: 'Instructor added to favorites'
       }), {
         status: 201,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
-      
+
     } else if (action === 'remove') {
       // お気に入り削除
       await request.env.DB.prepare(`
         DELETE FROM favorite_instructors 
         WHERE student_id = ? AND instructor_id = ?
       `).bind(studentId, instructor_id).run();
-      
+
       return new Response(JSON.stringify({
         message: 'Instructor removed from favorites'
       }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     return new Response(JSON.stringify({
       error: 'Invalid action'
     }), {
       status: 400,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Manage favorite instructor error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to manage favorite instructor',
       message: error.message
@@ -296,13 +296,13 @@ router.get('/api/students/:studentId/progress', async (request) => {
     const { studentId } = request.params;
     const url = new URL(request.url);
     const instructorId = url.searchParams.get('instructor_id');
-    
+
     // アクセス権限チェック
     const isStudent = request.user.userId === parseInt(studentId);
-    const isInstructor = request.user.role === 'instructor' && 
+    const isInstructor = request.user.role === 'instructor' &&
                         (!instructorId || request.user.userId === parseInt(instructorId));
     const isAdmin = request.user.role === 'admin';
-    
+
     if (!isStudent && !isInstructor && !isAdmin) {
       return new Response(JSON.stringify({
         error: 'Unauthorized'
@@ -311,7 +311,7 @@ router.get('/api/students/:studentId/progress', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     let query = `
       SELECT 
         spr.*,
@@ -320,18 +320,18 @@ router.get('/api/students/:studentId/progress', async (request) => {
       JOIN users u ON spr.instructor_id = u.id
       WHERE spr.student_id = ?
     `;
-    
+
     const params = [studentId];
-    
+
     if (instructorId) {
       query += ' AND spr.instructor_id = ?';
       params.push(instructorId);
     }
-    
+
     query += ' ORDER BY spr.recorded_date DESC, spr.created_at DESC';
-    
+
     const progress = await request.env.DB.prepare(query).bind(...params).all();
-    
+
     // カテゴリー別集計
     const summary = {};
     progress.results.forEach(record => {
@@ -342,27 +342,27 @@ router.get('/api/students/:studentId/progress', async (request) => {
           count: 0
         };
       }
-      
+
       summary[record.technique_category].techniques[record.technique_name] = record.proficiency_level;
       summary[record.technique_category].count++;
     });
-    
+
     // 平均値計算
     Object.keys(summary).forEach(category => {
       const levels = Object.values(summary[category].techniques);
       summary[category].avg_proficiency = levels.reduce((a, b) => a + b, 0) / levels.length;
     });
-    
+
     return new Response(JSON.stringify({
       progress: progress.results,
       summary
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get student progress error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get progress',
       message: error.message
@@ -377,7 +377,7 @@ router.get('/api/students/:studentId/progress', async (request) => {
 router.get('/api/dojos/:dojoId/available-instructors', async (request) => {
   try {
     const { dojoId } = request.params;
-    
+
     const instructors = await request.env.DB.prepare(`
       SELECT 
         u.id,
@@ -401,20 +401,20 @@ router.get('/api/dojos/:dojoId/available-instructors', async (request) => {
       GROUP BY u.id
       ORDER BY avg_rating DESC, u.name
     `).bind(dojoId).all();
-    
+
     return new Response(JSON.stringify({
       instructors: instructors.results.map(instructor => ({
         ...instructor,
-        specialties: instructor.instructor_specialties ? 
+        specialties: instructor.instructor_specialties ?
           JSON.parse(instructor.instructor_specialties) : []
       }))
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get available instructors error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get available instructors',
       message: error.message

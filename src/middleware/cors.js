@@ -9,9 +9,9 @@ export const corsHeaders = {
   'Access-Control-Max-Age': '86400'
 };
 
-export function corsMiddleware(request, response) {
+export function corsMiddleware(request, _response) {
   const origin = request.headers.get('Origin');
-  
+
   // Allow specific origins in production
   const allowedOrigins = [
     'https://jitsuflow.app',
@@ -23,13 +23,13 @@ export function corsMiddleware(request, response) {
     'http://localhost:5001',
     'http://localhost:5002'
   ];
-  
+
   if (origin && allowedOrigins.includes(origin)) {
     return {
       ...corsHeaders,
       'Access-Control-Allow-Origin': origin
     };
   }
-  
+
   return corsHeaders;
 }

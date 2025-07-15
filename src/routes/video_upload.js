@@ -11,9 +11,9 @@ const router = Router();
 // 動画アップロード用の署名付きURL生成
 router.post('/api/videos/upload-url', async (request) => {
   try {
-    const { 
-      title, 
-      description, 
+    const {
+      title,
+      description,
       category,
       difficulty_level,
       access_type = 'members_only',
@@ -21,7 +21,7 @@ router.post('/api/videos/upload-url', async (request) => {
       file_size,
       mime_type
     } = await request.json();
-    
+
     // バリデーション
     if (!title || !file_name || !file_size || !mime_type) {
       return new Response(JSON.stringify({
@@ -32,7 +32,7 @@ router.post('/api/videos/upload-url', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // MIMEタイプチェック（動画のみ許可）
     const allowedMimeTypes = ['video/mp4', 'video/webm', 'video/quicktime', 'video/x-msvideo'];
     if (!allowedMimeTypes.includes(mime_type)) {
@@ -44,7 +44,7 @@ router.post('/api/videos/upload-url', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // ファイルサイズ制限（1GB）
     const maxSize = 1024 * 1024 * 1024; // 1GB
     if (file_size > maxSize) {
@@ -56,13 +56,13 @@ router.post('/api/videos/upload-url', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // ユニークなファイル名生成
     const timestamp = Date.now();
     const randomId = Math.random().toString(36).substring(2, 15);
     const fileExtension = file_name.split('.').pop();
     const cloudflareKey = `videos/${timestamp}-${randomId}.${fileExtension}`;
-    
+
     // データベースに動画レコード作成
     const videoResult = await request.env.DB.prepare(`
       INSERT INTO videos (
@@ -92,9 +92,9 @@ router.post('/api/videos/upload-url', async (request) => {
       'uploading',
       request.user.userId
     ).run();
-    
+
     const videoId = videoResult.meta.last_row_id;
-    
+
     // アクセス権限設定
     await request.env.DB.prepare(`
       INSERT INTO video_access_permissions (
@@ -106,7 +106,7 @@ router.post('/api/videos/upload-url', async (request) => {
       access_type === 'specific_students' ? '[]' : null,
       new Date().toISOString()
     ).run();
-    
+
     // R2署名付きURLを生成
     const r2 = request.env.R2_BUCKET;
     const uploadUrl = await r2.createMultipartUpload(cloudflareKey, {
@@ -119,7 +119,7 @@ router.post('/api/videos/upload-url', async (request) => {
         title: title
       }
     });
-    
+
     return new Response(JSON.stringify({
       video_id: videoId,
       upload_url: uploadUrl.uploadId,
@@ -129,10 +129,10 @@ router.post('/api/videos/upload-url', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Create upload URL error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to create upload URL',
       message: error.message
@@ -148,12 +148,12 @@ router.post('/api/videos/:videoId/complete-upload', async (request) => {
   try {
     const { videoId } = request.params;
     const { cloudflare_key } = await request.json();
-    
+
     // 動画レコード取得
     const video = await request.env.DB.prepare(
       'SELECT * FROM videos WHERE id = ? AND uploaded_by = ?'
     ).bind(videoId, request.user.userId).first();
-    
+
     if (!video) {
       return new Response(JSON.stringify({
         error: 'Video not found'
@@ -162,11 +162,11 @@ router.post('/api/videos/:videoId/complete-upload', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // R2からファイル情報取得
     const r2 = request.env.R2_BUCKET;
     const object = await r2.head(cloudflare_key);
-    
+
     if (!object) {
       return new Response(JSON.stringify({
         error: 'Upload failed',
@@ -176,10 +176,10 @@ router.post('/api/videos/:videoId/complete-upload', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 公開URLを生成
     const publicUrl = `https://videos.jitsuflow.com/${cloudflare_key}`;
-    
+
     // データベース更新
     await request.env.DB.prepare(`
       UPDATE videos 
@@ -196,7 +196,7 @@ router.post('/api/videos/:videoId/complete-upload', async (request) => {
       new Date().toISOString(),
       videoId
     ).run();
-    
+
     // サムネイル生成をキューに追加（Workers Queue使用）
     if (request.env.VIDEO_PROCESSING_QUEUE) {
       await request.env.VIDEO_PROCESSING_QUEUE.send({
@@ -205,7 +205,7 @@ router.post('/api/videos/:videoId/complete-upload', async (request) => {
         cloudflareKey: cloudflare_key
       });
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Upload completed successfully',
       video_id: videoId,
@@ -213,10 +213,10 @@ router.post('/api/videos/:videoId/complete-upload', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Complete upload error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to complete upload',
       message: error.message
@@ -235,7 +235,7 @@ router.get('/api/videos', async (request) => {
     const instructor_id = url.searchParams.get('instructor_id');
     const limit = parseInt(url.searchParams.get('limit')) || 20;
     const offset = parseInt(url.searchParams.get('offset')) || 0;
-    
+
     let query = `
       SELECT 
         v.*,
@@ -249,21 +249,21 @@ router.get('/api/videos', async (request) => {
       LEFT JOIN video_views vv ON v.id = vv.video_id
       WHERE v.processing_status = 'completed'
     `;
-    
+
     const params = [];
-    
+
     // カテゴリーフィルター
     if (category) {
       query += ' AND v.category = ?';
       params.push(category);
     }
-    
+
     // インストラクターフィルター
     if (instructor_id) {
       query += ' AND v.instructor_id = ?';
       params.push(instructor_id);
     }
-    
+
     // アクセス権限フィルター
     if (request.user.role !== 'admin') {
       query += ` AND (
@@ -274,12 +274,12 @@ router.get('/api/videos', async (request) => {
       )`;
       params.push(request.user.userId, request.user.userId);
     }
-    
+
     query += ' GROUP BY v.id ORDER BY v.created_at DESC LIMIT ? OFFSET ?';
     params.push(limit, offset);
-    
+
     const videos = await request.env.DB.prepare(query).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       videos: videos.results,
       pagination: {
@@ -290,10 +290,10 @@ router.get('/api/videos', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get videos error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get videos',
       message: error.message
@@ -308,13 +308,13 @@ router.get('/api/videos', async (request) => {
 router.delete('/api/videos/:videoId', async (request) => {
   try {
     const { videoId } = request.params;
-    
+
     // 動画情報取得
     const video = await request.env.DB.prepare(`
       SELECT * FROM videos 
       WHERE id = ? AND (uploaded_by = ? OR ? = 'admin')
     `).bind(videoId, request.user.userId, request.user.role).first();
-    
+
     if (!video) {
       return new Response(JSON.stringify({
         error: 'Video not found or unauthorized'
@@ -323,27 +323,27 @@ router.delete('/api/videos/:videoId', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // R2からファイル削除
     if (video.cloudflare_id) {
       const r2 = request.env.R2_BUCKET;
       await r2.delete(video.cloudflare_id);
     }
-    
+
     // データベースから削除（関連データも自動削除）
     await request.env.DB.prepare(
       'DELETE FROM videos WHERE id = ?'
     ).bind(videoId).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Video deleted successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Delete video error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to delete video',
       message: error.message
@@ -359,7 +359,7 @@ router.post('/api/videos/:videoId/view', async (request) => {
   try {
     const { videoId } = request.params;
     const { watch_duration } = await request.json();
-    
+
     // 視聴記録作成または更新
     await request.env.DB.prepare(`
       INSERT INTO video_views (
@@ -374,21 +374,21 @@ router.post('/api/videos/:videoId/view', async (request) => {
       watch_duration || 0,
       new Date().toISOString()
     ).run();
-    
+
     // 視聴回数更新
     await request.env.DB.prepare(
       'UPDATE videos SET view_count = view_count + 1 WHERE id = ?'
     ).bind(videoId).run();
-    
+
     return new Response(JSON.stringify({
       message: 'View recorded'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Record view error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to record view',
       message: error.message
@@ -404,13 +404,13 @@ router.put('/api/videos/:videoId/permissions', async (request) => {
   try {
     const { videoId } = request.params;
     const { permission_type, permission_value } = await request.json();
-    
+
     // 権限チェック（アップロード者または管理者のみ）
     const video = await request.env.DB.prepare(`
       SELECT * FROM videos 
       WHERE id = ? AND (uploaded_by = ? OR ? = 'admin')
     `).bind(videoId, request.user.userId, request.user.role).first();
-    
+
     if (!video) {
       return new Response(JSON.stringify({
         error: 'Video not found or unauthorized'
@@ -419,23 +419,23 @@ router.put('/api/videos/:videoId/permissions', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // アクセス権限更新
     await request.env.DB.prepare(`
       UPDATE video_access_permissions 
       SET permission_type = ?, permission_value = ?
       WHERE video_id = ?
     `).bind(permission_type, permission_value, videoId).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Permissions updated successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Update permissions error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to update permissions',
       message: error.message

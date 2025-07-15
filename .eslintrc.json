@@ -4,6 +4,9 @@
     "node": true,
     "worker": true
   },
+  "globals": {
+    "Stripe": "readonly"
+  },
   "extends": ["eslint:recommended"],
   "parserOptions": {
     "ecmaVersion": 2022,

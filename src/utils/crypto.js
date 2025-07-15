@@ -23,19 +23,19 @@ export async function generateJWT(payload, secret = 'your-secret-key') {
     alg: 'HS256',
     typ: 'JWT'
   };
-  
+
   const now = Math.floor(Date.now() / 1000);
   const fullPayload = {
     ...payload,
     iat: now,
     exp: now + (24 * 60 * 60) // 24 hours
   };
-  
+
   const encodedHeader = base64UrlEncode(JSON.stringify(header));
   const encodedPayload = base64UrlEncode(JSON.stringify(fullPayload));
-  
+
   const message = `${encodedHeader}.${encodedPayload}`;
-  
+
   // Create HMAC signature
   const encoder = new TextEncoder();
   const key = await crypto.subtle.importKey(
@@ -45,26 +45,26 @@ export async function generateJWT(payload, secret = 'your-secret-key') {
     false,
     ['sign']
   );
-  
+
   const signature = await crypto.subtle.sign(
     'HMAC',
     key,
     encoder.encode(message)
   );
-  
+
   const encodedSignature = base64UrlEncode(String.fromCharCode(...new Uint8Array(signature)));
-  
+
   return `${message}.${encodedSignature}`;
 }
 
 export async function verifyJWT(token, secret = 'your-secret-key') {
   try {
     const [header, payload, signature] = token.split('.');
-    
+
     if (!header || !payload || !signature) {
       throw new Error('Invalid token format');
     }
-    
+
     // Verify signature
     const message = `${header}.${payload}`;
     const encoder = new TextEncoder();
@@ -75,30 +75,30 @@ export async function verifyJWT(token, secret = 'your-secret-key') {
       false,
       ['verify']
     );
-    
+
     const signatureBuffer = new Uint8Array(
       base64UrlDecode(signature).split('').map(c => c.charCodeAt(0))
     );
-    
+
     const isValid = await crypto.subtle.verify(
       'HMAC',
       key,
       signatureBuffer,
       encoder.encode(message)
     );
-    
+
     if (!isValid) {
       throw new Error('Invalid signature');
     }
-    
+
     // Decode payload
     const decodedPayload = JSON.parse(base64UrlDecode(payload));
-    
+
     // Check expiration
     if (decodedPayload.exp && decodedPayload.exp < Math.floor(Date.now() / 1000)) {
       throw new Error('Token expired');
     }
-    
+
     return decodedPayload;
   } catch (error) {
     throw new Error('Invalid token: ' + error.message);

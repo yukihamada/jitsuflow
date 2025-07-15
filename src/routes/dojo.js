@@ -13,16 +13,16 @@ router.get('/api/dojo/bookings', async (request) => {
     const bookings = await request.env.DB.prepare(
       'SELECT * FROM bookings WHERE user_id = ? ORDER BY booking_date DESC'
     ).bind(request.user.userId).all();
-    
+
     return new Response(JSON.stringify({
       bookings: bookings.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get bookings error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get bookings',
       message: error.message
@@ -37,7 +37,7 @@ router.get('/api/dojo/bookings', async (request) => {
 router.post('/api/dojo/bookings', async (request) => {
   try {
     const { dojo_id, class_type, booking_date, booking_time } = await request.json();
-    
+
     // Validate input
     if (!dojo_id || !class_type || !booking_date || !booking_time) {
       return new Response(JSON.stringify({
@@ -48,12 +48,12 @@ router.post('/api/dojo/bookings', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Check for conflicts
     const existingBooking = await request.env.DB.prepare(
       'SELECT id FROM bookings WHERE dojo_id = ? AND booking_date = ? AND booking_time = ?'
     ).bind(dojo_id, booking_date, booking_time).first();
-    
+
     if (existingBooking) {
       return new Response(JSON.stringify({
         error: 'Time slot unavailable',
@@ -63,7 +63,7 @@ router.post('/api/dojo/bookings', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Create booking
     const result = await request.env.DB.prepare(
       'INSERT INTO bookings (user_id, dojo_id, class_type, booking_date, booking_time, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
@@ -76,7 +76,7 @@ router.post('/api/dojo/bookings', async (request) => {
       'confirmed',
       new Date().toISOString()
     ).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Booking created successfully',
       booking: {
@@ -91,10 +91,10 @@ router.post('/api/dojo/bookings', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Create booking error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to create booking',
       message: error.message
@@ -111,7 +111,7 @@ router.get('/api/dojo/availability', async (request) => {
     const url = new URL(request.url);
     const dojoId = url.searchParams.get('dojo_id');
     const date = url.searchParams.get('date');
-    
+
     if (!dojoId || !date) {
       return new Response(JSON.stringify({
         error: 'Missing parameters',
@@ -121,22 +121,22 @@ router.get('/api/dojo/availability', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Get booked time slots
     const bookedSlots = await request.env.DB.prepare(
       'SELECT booking_time FROM bookings WHERE dojo_id = ? AND booking_date = ?'
     ).bind(dojoId, date).all();
-    
+
     // Generate available time slots (example: 6 AM to 10 PM)
     const allSlots = [];
     for (let hour = 6; hour < 22; hour++) {
       allSlots.push(`${hour.toString().padStart(2, '0')}:00`);
       allSlots.push(`${hour.toString().padStart(2, '0')}:30`);
     }
-    
+
     const bookedTimes = bookedSlots.results.map(slot => slot.booking_time);
     const availableSlots = allSlots.filter(slot => !bookedTimes.includes(slot));
-    
+
     return new Response(JSON.stringify({
       date,
       dojo_id: dojoId,
@@ -144,10 +144,10 @@ router.get('/api/dojo/availability', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get availability error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get availability',
       message: error.message

@@ -15,17 +15,17 @@ router.get('/api/analytics/revenue', async (request) => {
     // 管理者権限チェック
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const url = new URL(request.url);
     const period = url.searchParams.get('period') || 'month';
     const dojoId = url.searchParams.get('dojo_id');
     const startDate = url.searchParams.get('start_date');
     const endDate = url.searchParams.get('end_date');
-    
+
     // 期間設定
     let dateFilter = '';
     let dateParams = [];
-    
+
     if (startDate && endDate) {
       dateFilter = 'AND DATE(st.created_at) BETWEEN ? AND ?';
       dateParams = [startDate, endDate];
@@ -38,7 +38,7 @@ router.get('/api/analytics/revenue', async (request) => {
     } else if (period === 'year') {
       dateFilter = 'AND DATE(st.created_at) >= DATE("now", "start of year")';
     }
-    
+
     // 道場フィルター
     let dojoFilter = '';
     let dojoParams = [];
@@ -46,7 +46,7 @@ router.get('/api/analytics/revenue', async (request) => {
       dojoFilter = 'AND d.id = ?';
       dojoParams = [dojoId];
     }
-    
+
     // 売上データ取得
     const revenueData = await request.env.DB.prepare(`
       SELECT 
@@ -67,7 +67,7 @@ router.get('/api/analytics/revenue', async (request) => {
       GROUP BY d.id, DATE(st.created_at, 'start of month')
       ORDER BY d.id, period DESC
     `).bind(...dateParams, ...dojoParams).all();
-    
+
     // コストデータ取得
     const costData = await request.env.DB.prepare(`
       SELECT 
@@ -84,17 +84,17 @@ router.get('/api/analytics/revenue', async (request) => {
       GROUP BY d.id, DATE(p.payment_date, 'start of month')
       ORDER BY d.id, period DESC
     `).bind(...dateParams, ...dojoParams).all();
-    
+
     // データマージと利益計算
     const combinedData = [];
     const revenueMap = new Map();
-    
+
     // 売上データをマップに格納
     revenueData.results.forEach(revenue => {
       const key = `${revenue.dojo_id}-${revenue.period}`;
       revenueMap.set(key, revenue);
     });
-    
+
     // コストデータと結合
     costData.results.forEach(cost => {
       const key = `${cost.dojo_id}-${cost.period}`;
@@ -109,20 +109,20 @@ router.get('/api/analytics/revenue', async (request) => {
         transaction_count: 0,
         avg_transaction_amount: 0
       };
-      
+
       combinedData.push({
         ...revenue,
         instructor_costs: cost.instructor_costs || 0,
         facility_costs: cost.facility_costs || 0,
         total_costs: cost.total_costs || 0,
         gross_profit: (revenue.total_revenue || 0) - (cost.total_costs || 0),
-        profit_margin: revenue.total_revenue > 0 ? 
+        profit_margin: revenue.total_revenue > 0 ?
           ((revenue.total_revenue - cost.total_costs) / revenue.total_revenue * 100) : 0
       });
-      
+
       revenueMap.delete(key);
     });
-    
+
     // 売上のみ（コストなし）のデータを追加
     revenueMap.forEach(revenue => {
       combinedData.push({
@@ -134,18 +134,18 @@ router.get('/api/analytics/revenue', async (request) => {
         profit_margin: 100
       });
     });
-    
+
     return new Response(JSON.stringify({
-      revenue: combinedData.sort((a, b) => 
+      revenue: combinedData.sort((a, b) =>
         new Date(b.period) - new Date(a.period) || a.dojo_id - b.dojo_id
       )
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get revenue analytics error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get revenue analytics',
       message: error.message
@@ -161,11 +161,11 @@ router.get('/api/analytics/kpi', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const url = new URL(request.url);
     const dojoId = url.searchParams.get('dojo_id');
     const period = url.searchParams.get('period') || 'month';
-    
+
     let dateFilter = '';
     if (period === 'week') {
       dateFilter = 'AND DATE(created_at) >= DATE("now", "-7 days")';
@@ -174,10 +174,10 @@ router.get('/api/analytics/kpi', async (request) => {
     } else if (period === 'quarter') {
       dateFilter = 'AND DATE(created_at) >= DATE("now", "-3 months")';
     }
-    
+
     const dojoFilter = dojoId ? 'AND dojo_id = ?' : '';
     const params = dojoId ? [dojoId] : [];
-    
+
     // 会員関連KPI
     const membershipKPI = await request.env.DB.prepare(`
       SELECT 
@@ -196,7 +196,7 @@ router.get('/api/analytics/kpi', async (request) => {
       LEFT JOIN subscriptions s ON u.id = s.user_id AND s.status = 'active'
       WHERE u.role = 'user'
     `).bind(...params).first();
-    
+
     // 予約・出席関連KPI
     const bookingKPI = await request.env.DB.prepare(`
       SELECT 
@@ -208,7 +208,7 @@ router.get('/api/analytics/kpi', async (request) => {
       LEFT JOIN class_capacity cc ON b.schedule_id = cc.schedule_id
       WHERE 1=1 ${dateFilter.replace('created_at', 'b.created_at')} ${dojoFilter.replace('dojo_id', 'b.dojo_id')}
     `).bind(...params).first();
-    
+
     // 売上関連KPI
     const revenueKPI = await request.env.DB.prepare(`
       SELECT 
@@ -219,7 +219,7 @@ router.get('/api/analytics/kpi', async (request) => {
       FROM sales_transactions 
       WHERE status = 'completed' ${dateFilter} ${dojoFilter}
     `).bind(...params).first();
-    
+
     // インストラクター関連KPI
     const instructorKPI = await request.env.DB.prepare(`
       SELECT 
@@ -235,17 +235,17 @@ router.get('/api/analytics/kpi', async (request) => {
       LEFT JOIN instructor_reports ir ON u.id = ir.instructor_id ${dateFilter.replace('created_at', 'ir.report_date')}
       WHERE u.role = 'instructor'
     `).bind(...params).first();
-    
+
     // 計算されたKPI
-    const attendanceRate = bookingKPI.total_bookings > 0 ? 
+    const attendanceRate = bookingKPI.total_bookings > 0 ?
       (bookingKPI.attended_bookings / bookingKPI.total_bookings * 100) : 0;
-    
+
     const retentionRate = membershipKPI.total_active_members > 0 && membershipKPI.churned_members_this_month >= 0 ?
       ((membershipKPI.total_active_members - membershipKPI.churned_members_this_month) / membershipKPI.total_active_members * 100) : 0;
-    
+
     const avgRevenuePerMember = membershipKPI.total_active_members > 0 ?
       (revenueKPI.total_revenue / membershipKPI.total_active_members) : 0;
-    
+
     return new Response(JSON.stringify({
       kpi: {
         // 会員指標
@@ -254,34 +254,34 @@ router.get('/api/analytics/kpi', async (request) => {
         new_members_this_month: membershipKPI.new_members_this_month || 0,
         premium_members: membershipKPI.premium_members || 0,
         retention_rate: Math.round(retentionRate * 10) / 10,
-        
+
         // 予約・出席指標
         total_bookings: bookingKPI.total_bookings || 0,
         attendance_rate: Math.round(attendanceRate * 10) / 10,
-        cancellation_rate: bookingKPI.total_bookings > 0 ? 
+        cancellation_rate: bookingKPI.total_bookings > 0 ?
           Math.round(bookingKPI.cancelled_bookings / bookingKPI.total_bookings * 1000) / 10 : 0,
         capacity_utilization: Math.round((bookingKPI.avg_capacity_utilization || 0) * 10) / 10,
-        
+
         // 売上指標
         total_revenue: revenueKPI.total_revenue || 0,
         paying_customers: revenueKPI.paying_customers || 0,
         avg_transaction_value: Math.round((revenueKPI.avg_transaction_value || 0)),
         average_revenue_per_member: Math.round(avgRevenuePerMember),
-        
+
         // インストラクター指標
         total_instructors: instructorKPI.total_instructors || 0,
         avg_instructor_rating: Math.round((instructorKPI.avg_instructor_rating || 0) * 10) / 10,
         total_classes: instructorKPI.total_classes || 0,
-        instructor_utilization: instructorKPI.total_instructors > 0 ? 
+        instructor_utilization: instructorKPI.total_instructors > 0 ?
           Math.round((instructorKPI.total_classes / instructorKPI.total_instructors) * 10) / 10 : 0
       }
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get KPI analytics error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get KPI analytics',
       message: error.message
@@ -297,14 +297,14 @@ router.get('/api/analytics/trends', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const url = new URL(request.url);
     const dojoId = url.searchParams.get('dojo_id');
     const months = parseInt(url.searchParams.get('months')) || 12;
-    
+
     const dojoFilter = dojoId ? 'AND st.dojo_id = ?' : '';
     const params = dojoId ? [dojoId] : [];
-    
+
     // 月次売上トレンド
     const monthlyTrends = await request.env.DB.prepare(`
       SELECT 
@@ -320,7 +320,7 @@ router.get('/api/analytics/trends', async (request) => {
       GROUP BY strftime('%Y-%m', st.created_at)
       ORDER BY month
     `).bind(...params).all();
-    
+
     // 会員数トレンド
     const membershipTrends = await request.env.DB.prepare(`
       WITH monthly_members AS (
@@ -353,7 +353,7 @@ router.get('/api/analytics/trends', async (request) => {
       )
       SELECT * FROM monthly_members ORDER BY month
     `).bind(...params).all();
-    
+
     // 予約トレンド
     const bookingTrends = await request.env.DB.prepare(`
       SELECT 
@@ -366,7 +366,7 @@ router.get('/api/analytics/trends', async (request) => {
       GROUP BY strftime('%Y-%m', b.created_at)
       ORDER BY month
     `).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       trends: {
         revenue: monthlyTrends.results,
@@ -376,10 +376,10 @@ router.get('/api/analytics/trends', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get trends analytics error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get trends analytics',
       message: error.message
@@ -395,11 +395,11 @@ router.get('/api/analytics/instructor-performance', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const url = new URL(request.url);
     const dojoId = url.searchParams.get('dojo_id');
     const period = url.searchParams.get('period') || 'month';
-    
+
     let dateFilter = 'AND ir.report_date >= DATE("now", "start of month")';
     if (period === 'week') {
       dateFilter = 'AND ir.report_date >= DATE("now", "-7 days")';
@@ -408,10 +408,10 @@ router.get('/api/analytics/instructor-performance', async (request) => {
     } else if (period === 'year') {
       dateFilter = 'AND ir.report_date >= DATE("now", "start of year")';
     }
-    
+
     const dojoFilter = dojoId ? 'AND ida.dojo_id = ?' : '';
     const params = dojoId ? [dojoId] : [];
-    
+
     const instructorPerformance = await request.env.DB.prepare(`
       SELECT 
         u.id,
@@ -443,16 +443,16 @@ router.get('/api/analytics/instructor-performance', async (request) => {
       GROUP BY u.id, u.name, u.belt_rank
       ORDER BY total_earnings DESC, avg_student_rating DESC
     `).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       instructor_performance: instructorPerformance.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor performance error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructor performance',
       message: error.message
@@ -468,13 +468,13 @@ router.get('/api/analytics/inventory', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const url = new URL(request.url);
     const dojoId = url.searchParams.get('dojo_id');
-    
+
     const dojoFilter = dojoId ? 'WHERE dojo_id = ?' : '';
     const params = dojoId ? [dojoId] : [];
-    
+
     // 商品在庫分析
     const productInventory = await request.env.DB.prepare(`
       SELECT 
@@ -496,7 +496,7 @@ router.get('/api/analytics/inventory', async (request) => {
       GROUP BY p.id
       ORDER BY revenue_generated DESC
     `).bind(...params).all();
-    
+
     // レンタル在庫分析
     const rentalInventory = await request.env.DB.prepare(`
       SELECT 
@@ -517,7 +517,7 @@ router.get('/api/analytics/inventory', async (request) => {
       GROUP BY r.id
       ORDER BY rental_revenue DESC
     `).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       inventory: {
         products: productInventory.results,
@@ -526,10 +526,10 @@ router.get('/api/analytics/inventory', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get inventory analytics error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get inventory analytics',
       message: error.message

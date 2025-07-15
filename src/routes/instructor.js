@@ -14,7 +14,7 @@ router.get('/api/instructors', async (request) => {
   try {
     const url = new URL(request.url);
     const dojoId = url.searchParams.get('dojo_id');
-    
+
     let query = `
       SELECT 
         u.id,
@@ -35,27 +35,27 @@ router.get('/api/instructors', async (request) => {
       LEFT JOIN instructor_schedules is2 ON u.id = is2.instructor_id AND is2.confirmed = 1
       WHERE u.role = 'instructor'
     `;
-    
+
     const params = [];
-    
+
     if (dojoId) {
       query += ' AND ida.dojo_id = ?';
       params.push(dojoId);
     }
-    
+
     query += ' GROUP BY u.id ORDER BY u.name';
-    
+
     const instructors = await request.env.DB.prepare(query).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       instructors: instructors.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructors error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructors',
       message: error.message
@@ -70,7 +70,7 @@ router.get('/api/instructors', async (request) => {
 router.get('/api/instructors/:instructorId', async (request) => {
   try {
     const { instructorId } = request.params;
-    
+
     // 基本情報
     const instructor = await request.env.DB.prepare(`
       SELECT 
@@ -84,7 +84,7 @@ router.get('/api/instructors/:instructorId', async (request) => {
       WHERE u.id = ? AND u.role = 'instructor'
       GROUP BY u.id
     `).bind(instructorId).first();
-    
+
     if (!instructor) {
       return new Response(JSON.stringify({
         error: 'Instructor not found'
@@ -93,7 +93,7 @@ router.get('/api/instructors/:instructorId', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 道場割当情報
     const assignments = await request.env.DB.prepare(`
       SELECT 
@@ -103,7 +103,7 @@ router.get('/api/instructors/:instructorId', async (request) => {
       JOIN dojos d ON ida.dojo_id = d.id
       WHERE ida.instructor_id = ? AND ida.status = 'active'
     `).bind(instructorId).all();
-    
+
     // 今月の実績
     const thisMonthStats = await request.env.DB.prepare(`
       SELECT 
@@ -115,18 +115,18 @@ router.get('/api/instructors/:instructorId', async (request) => {
       WHERE ir.instructor_id = ? 
         AND DATE(ir.report_date) >= DATE('now', 'start of month')
     `).bind(instructorId).first();
-    
+
     // 認定資格
     const certifications = await request.env.DB.prepare(`
       SELECT * FROM instructor_certifications
       WHERE instructor_id = ? AND status = 'active'
       ORDER BY certification_date DESC
     `).bind(instructorId).all();
-    
+
     return new Response(JSON.stringify({
       instructor: {
         ...instructor,
-        specialties: instructor.instructor_specialties ? 
+        specialties: instructor.instructor_specialties ?
           JSON.parse(instructor.instructor_specialties) : []
       },
       assignments: assignments.results,
@@ -140,10 +140,10 @@ router.get('/api/instructors/:instructorId', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor details error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructor details',
       message: error.message
@@ -161,7 +161,7 @@ router.get('/api/instructors/:instructorId/schedule', async (request) => {
     const url = new URL(request.url);
     const date = url.searchParams.get('date') || new Date().toISOString().split('T')[0];
     const weeks = parseInt(url.searchParams.get('weeks')) || 2;
-    
+
     // 指定期間のスケジュール
     const schedule = await request.env.DB.prepare(`
       SELECT 
@@ -186,7 +186,7 @@ router.get('/api/instructors/:instructorId/schedule', async (request) => {
       new Date(Date.parse(date) + weeks * 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       instructorId
     ).all();
-    
+
     // 不在・休暇情報
     const absences = await request.env.DB.prepare(`
       SELECT * FROM instructor_absences
@@ -199,17 +199,17 @@ router.get('/api/instructors/:instructorId/schedule', async (request) => {
       new Date(Date.parse(date) + weeks * 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       date
     ).all();
-    
+
     return new Response(JSON.stringify({
       schedule: schedule.results,
       absences: absences.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor schedule error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructor schedule',
       message: error.message
@@ -227,7 +227,7 @@ router.get('/api/instructors/:instructorId/payroll', async (request) => {
     const url = new URL(request.url);
     const year = parseInt(url.searchParams.get('year')) || new Date().getFullYear();
     const month = parseInt(url.searchParams.get('month')) || new Date().getMonth() + 1;
-    
+
     // 指定月の給与明細
     const payroll = await request.env.DB.prepare(`
       SELECT 
@@ -242,7 +242,7 @@ router.get('/api/instructors/:instructorId/payroll', async (request) => {
         AND strftime('%Y', ip.period_start) = ?
         AND strftime('%m', ip.period_start) = ?
     `).bind(instructorId, year.toString(), month.toString().padStart(2, '0')).all();
-    
+
     // 給与明細詳細
     const payrollDetails = [];
     for (const payrollItem of payroll.results) {
@@ -251,13 +251,13 @@ router.get('/api/instructors/:instructorId/payroll', async (request) => {
         WHERE payroll_id = ?
         ORDER BY item_type, description
       `).bind(payrollItem.id).all();
-      
+
       payrollDetails.push({
         ...payrollItem,
         details: details.results
       });
     }
-    
+
     // 年間実績サマリー
     const yearlyStats = await request.env.DB.prepare(`
       SELECT 
@@ -271,7 +271,7 @@ router.get('/api/instructors/:instructorId/payroll', async (request) => {
         AND strftime('%Y', period_start) = ?
         AND payment_status = 'paid'
     `).bind(instructorId, year.toString()).first();
-    
+
     return new Response(JSON.stringify({
       payroll: payrollDetails,
       yearly_stats: yearlyStats || {
@@ -284,10 +284,10 @@ router.get('/api/instructors/:instructorId/payroll', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor payroll error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructor payroll',
       message: error.message
@@ -305,7 +305,7 @@ router.get('/api/instructors/:instructorId/ratings', async (request) => {
     const url = new URL(request.url);
     const limit = parseInt(url.searchParams.get('limit')) || 20;
     const offset = parseInt(url.searchParams.get('offset')) || 0;
-    
+
     // 評価一覧
     const ratings = await request.env.DB.prepare(`
       SELECT 
@@ -321,7 +321,7 @@ router.get('/api/instructors/:instructorId/ratings', async (request) => {
       ORDER BY ir.class_date DESC
       LIMIT ? OFFSET ?
     `).bind(instructorId, limit, offset).all();
-    
+
     // 評価統計
     const ratingStats = await request.env.DB.prepare(`
       SELECT 
@@ -335,7 +335,7 @@ router.get('/api/instructors/:instructorId/ratings', async (request) => {
       FROM instructor_ratings
       WHERE instructor_id = ?
     `).bind(instructorId).first();
-    
+
     return new Response(JSON.stringify({
       ratings: ratings.results.map(rating => ({
         ...rating,
@@ -359,10 +359,10 @@ router.get('/api/instructors/:instructorId/ratings', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor ratings error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructor ratings',
       message: error.message
@@ -388,7 +388,7 @@ router.post('/api/instructors/:instructorId/ratings', async (request) => {
       feedback,
       anonymous = false
     } = await request.json();
-    
+
     // バリデーション
     if (!schedule_id || !class_date || !overall_rating) {
       return new Response(JSON.stringify({
@@ -399,13 +399,13 @@ router.post('/api/instructors/:instructorId/ratings', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 重複評価チェック
     const existingRating = await request.env.DB.prepare(`
       SELECT id FROM instructor_ratings
       WHERE instructor_id = ? AND student_id = ? AND schedule_id = ? AND class_date = ?
     `).bind(instructorId, request.user.userId, schedule_id, class_date).first();
-    
+
     if (existingRating) {
       return new Response(JSON.stringify({
         error: 'Rating already submitted',
@@ -415,7 +415,7 @@ router.post('/api/instructors/:instructorId/ratings', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 評価作成
     const result = await request.env.DB.prepare(`
       INSERT INTO instructor_ratings (
@@ -437,7 +437,7 @@ router.post('/api/instructors/:instructorId/ratings', async (request) => {
       anonymous,
       new Date().toISOString()
     ).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Rating submitted successfully',
       rating_id: result.meta.last_row_id
@@ -445,10 +445,10 @@ router.post('/api/instructors/:instructorId/ratings', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Submit rating error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to submit rating',
       message: error.message
@@ -463,7 +463,7 @@ router.post('/api/instructors/:instructorId/ratings', async (request) => {
 router.get('/api/instructors/:instructorId/assignments', async (request) => {
   try {
     const { instructorId } = request.params;
-    
+
     const assignments = await request.env.DB.prepare(`
       SELECT 
         ida.*,
@@ -474,16 +474,16 @@ router.get('/api/instructors/:instructorId/assignments', async (request) => {
       WHERE ida.instructor_id = ?
       ORDER BY ida.status, ida.start_date DESC
     `).bind(instructorId).all();
-    
+
     return new Response(JSON.stringify({
       assignments: assignments.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor assignments error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get instructor assignments',
       message: error.message
@@ -500,7 +500,7 @@ router.post('/api/instructors/:instructorId/payroll', async (request) => {
     // 管理者権限チェック
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const { instructorId } = request.params;
     const {
       dojo_id,
@@ -514,13 +514,13 @@ router.post('/api/instructors/:instructorId/payroll', async (request) => {
       other_deductions,
       calculation_details
     } = await request.json();
-    
+
     // 道場割当情報取得
     const assignment = await request.env.DB.prepare(`
       SELECT * FROM instructor_dojo_assignments
       WHERE instructor_id = ? AND dojo_id = ? AND status = 'active'
     `).bind(instructorId, dojo_id).first();
-    
+
     if (!assignment) {
       return new Response(JSON.stringify({
         error: 'Assignment not found',
@@ -530,7 +530,7 @@ router.post('/api/instructors/:instructorId/payroll', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 給与計算
     let netPayment = 0;
     if (assignment.payment_type === 'revenue_share') {
@@ -540,7 +540,7 @@ router.post('/api/instructors/:instructorId/payroll', async (request) => {
     } else if (assignment.payment_type === 'fixed') {
       netPayment = assignment.fixed_monthly_fee - usage_fee - other_deductions;
     }
-    
+
     // 給与明細作成
     const result = await request.env.DB.prepare(`
       INSERT INTO instructor_payrolls (
@@ -566,7 +566,7 @@ router.post('/api/instructors/:instructorId/payroll', async (request) => {
       new Date().toISOString(),
       new Date().toISOString()
     ).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Payroll created successfully',
       payroll_id: result.meta.last_row_id,
@@ -575,10 +575,10 @@ router.post('/api/instructors/:instructorId/payroll', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Create payroll error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to create payroll',
       message: error.message

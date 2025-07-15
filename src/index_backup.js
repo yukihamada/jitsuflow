@@ -5,11 +5,8 @@
 
 import { Router } from 'itty-router';
 import { corsHeaders } from './middleware/cors';
-import { authMiddleware, rateLimitMiddleware } from './middleware/auth_simple';
-import { userRoutes } from './routes/users_test';
+import { authMiddleware } from './middleware/auth_simple';
 import { dojoRoutes } from './routes/dojo';
-import { videoRoutes } from './routes/videos';
-import { videoUploadRoutes } from './routes/video_upload';
 import { paymentRoutes } from './routes/payments';
 import { bookingRoutes } from './routes/bookings';
 import { teamRoutes } from './routes/teams';
@@ -22,7 +19,6 @@ import { studentInstructorRoutes } from './routes/student_instructor';
 import { productRoutes } from './routes/products';
 import { userRentalRoutes } from './routes/user_rentals';
 import { handleDataInitialization } from './data/initializeData';
-import { testRoutes } from './routes/test';
 
 const router = Router();
 
@@ -31,8 +27,8 @@ router.options('*', () => new Response(null, { headers: corsHeaders }));
 
 // Health check
 router.get('/api/health', () => {
-  return new Response(JSON.stringify({ 
-    status: 'healthy', 
+  return new Response(JSON.stringify({
+    status: 'healthy',
     timestamp: new Date().toISOString(),
     service: 'JitsuFlow API'
   }), {
@@ -47,20 +43,20 @@ router.post('/api/admin/initialize-data', authMiddleware, handleDataInitializati
 router.get('/api/videos', async (request) => {
   try {
     console.log('Videos endpoint called');
-    
+
     const videos = await request.env.DB.prepare(
       'SELECT * FROM videos ORDER BY created_at DESC'
     ).all();
-    
+
     return new Response(JSON.stringify({
       videos: videos.results || []
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Videos error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get videos',
       message: error.message
@@ -123,7 +119,7 @@ router.all('/api/orders/*', authMiddleware, productRoutes);
 router.all('/api/rentals/*', authMiddleware, userRentalRoutes);
 
 // 404 handler
-router.all('*', () => new Response('Not Found', { 
+router.all('*', () => new Response('Not Found', {
   status: 404,
   headers: corsHeaders
 }));
@@ -134,34 +130,34 @@ export default {
       // Add environment to request context
       request.env = env;
       request.ctx = ctx;
-      
+
       // Apply rate limiting (disabled for debugging)
       // const rateLimitResponse = await rateLimitMiddleware(request);
       // if (rateLimitResponse) {
       //   return rateLimitResponse;
       // }
-      
+
       // Handle request
       const response = await router.handle(request);
-      
+
       // Add rate limit headers to response
       if (request.rateLimitInfo && response) {
         const newHeaders = new Headers(response.headers);
         newHeaders.set('X-RateLimit-Limit', request.rateLimitInfo.limit.toString());
         newHeaders.set('X-RateLimit-Remaining', request.rateLimitInfo.remaining.toString());
         newHeaders.set('X-RateLimit-Reset', request.rateLimitInfo.reset);
-        
+
         return new Response(response.body, {
           status: response.status,
           statusText: response.statusText,
           headers: newHeaders
         });
       }
-      
+
       return response;
     } catch (error) {
       console.error('Worker error:', error);
-      
+
       return new Response(JSON.stringify({
         error: 'Internal Server Error',
         message: error.message

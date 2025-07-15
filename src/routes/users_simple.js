@@ -24,7 +24,7 @@ function simpleHash(password) {
 router.post('/api/users/register', async (request) => {
   try {
     const { email, password, name, phone } = await request.json();
-    
+
     // Validate input
     if (!email || !password || !name) {
       return new Response(JSON.stringify({
@@ -35,12 +35,12 @@ router.post('/api/users/register', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Check if user already exists
     const existingUser = await request.env.DB.prepare(
       'SELECT id FROM users WHERE email = ?'
     ).bind(email).first();
-    
+
     if (existingUser) {
       return new Response(JSON.stringify({
         error: 'User already exists',
@@ -50,23 +50,23 @@ router.post('/api/users/register', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Simple hash for demo
     const hashedPassword = simpleHash(password);
-    
+
     // Create user
     const result = await request.env.DB.prepare(
       'INSERT INTO users (email, password_hash, name, phone, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
     ).bind(email, hashedPassword, name, phone || null, 'user', new Date().toISOString(), new Date().toISOString()).run();
-    
+
     const userId = result.meta.last_row_id;
-    
+
     // Generate JWT token
     const token = await generateJWT(
       { userId, email, role: 'user' },
       request.env.JWT_SECRET || 'your-secret-key'
     );
-    
+
     return new Response(JSON.stringify({
       message: 'Registration successful',
       user: {
@@ -83,10 +83,10 @@ router.post('/api/users/register', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Registration error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Internal Server Error',
       message: error.message
@@ -101,7 +101,7 @@ router.post('/api/users/register', async (request) => {
 router.post('/api/users/login', async (request) => {
   try {
     const { email, password } = await request.json();
-    
+
     // Validate input
     if (!email || !password) {
       return new Response(JSON.stringify({
@@ -112,12 +112,12 @@ router.post('/api/users/login', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Find user
     const user = await request.env.DB.prepare(
       'SELECT * FROM users WHERE email = ?'
     ).bind(email).first();
-    
+
     if (!user) {
       return new Response(JSON.stringify({
         error: 'Invalid credentials',
@@ -127,7 +127,7 @@ router.post('/api/users/login', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Verify password (simple hash for demo)
     const hashedPassword = simpleHash(password);
     if (hashedPassword !== user.password_hash) {
@@ -139,13 +139,13 @@ router.post('/api/users/login', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Generate JWT token
     const token = await generateJWT(
       { userId: user.id, email: user.email, role: user.role || 'user' },
       request.env.JWT_SECRET || 'your-secret-key'
     );
-    
+
     return new Response(JSON.stringify({
       message: 'Login successful',
       user: {
@@ -161,10 +161,10 @@ router.post('/api/users/login', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Login error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Internal Server Error',
       message: error.message
@@ -179,11 +179,11 @@ router.post('/api/users/login', async (request) => {
 router.get('/api/users/profile', async (request) => {
   try {
     const userId = request.user.userId;
-    
+
     const user = await request.env.DB.prepare(
       'SELECT id, email, name, phone, stripe_customer_id, created_at, updated_at FROM users WHERE id = ?'
     ).bind(userId).first();
-    
+
     if (!user) {
       return new Response(JSON.stringify({
         error: 'User not found'
@@ -192,7 +192,7 @@ router.get('/api/users/profile', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     return new Response(JSON.stringify({
       user: {
         id: user.id,
@@ -206,10 +206,10 @@ router.get('/api/users/profile', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get profile error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get user profile',
       message: error.message
@@ -225,20 +225,20 @@ router.patch('/api/users/profile', async (request) => {
   try {
     const userId = request.user.userId;
     const { name, phone } = await request.json();
-    
+
     const updateFields = [];
     const updateValues = [];
-    
+
     if (name !== undefined) {
       updateFields.push('name = ?');
       updateValues.push(name);
     }
-    
+
     if (phone !== undefined) {
       updateFields.push('phone = ?');
       updateValues.push(phone);
     }
-    
+
     if (updateFields.length === 0) {
       return new Response(JSON.stringify({
         error: 'No fields to update'
@@ -247,24 +247,24 @@ router.patch('/api/users/profile', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     updateFields.push('updated_at = ?');
     updateValues.push(new Date().toISOString());
     updateValues.push(userId);
-    
+
     await request.env.DB.prepare(
       `UPDATE users SET ${updateFields.join(', ')} WHERE id = ?`
     ).bind(...updateValues).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Profile updated successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Update profile error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to update profile',
       message: error.message

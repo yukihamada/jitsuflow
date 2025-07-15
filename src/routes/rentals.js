@@ -16,7 +16,7 @@ router.get('/api/dojo-mode/:dojoId/rentals', async (request) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
     const status = url.searchParams.get('status') || 'available';
-    
+
     let query = `
       SELECT 
         r.*,
@@ -26,32 +26,32 @@ router.get('/api/dojo-mode/:dojoId/rentals', async (request) => {
       LEFT JOIN rental_transactions rt ON r.id = rt.rental_id AND rt.status = 'active'
       WHERE r.dojo_id = ?
     `;
-    
+
     const params = [dojoId];
-    
+
     if (category && category !== 'all') {
       query += ' AND r.item_type = ?';
       params.push(category);
     }
-    
+
     if (status) {
       query += ' AND r.status = ?';
       params.push(status);
     }
-    
+
     query += ' GROUP BY r.id ORDER BY r.item_type, r.item_name';
-    
+
     const rentals = await request.env.DB.prepare(query).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       rentals: rentals.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get rentals error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get rentals',
       message: error.message
@@ -68,13 +68,13 @@ router.post('/api/dojo-mode/:dojoId/rentals', async (request) => {
     // 管理者権限チェック
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const { dojoId } = request.params;
-    const { 
-      item_type, 
-      item_name, 
-      size, 
-      color, 
+    const {
+      item_type,
+      item_name,
+      size,
+      color,
       condition = 'good',
       total_quantity,
       rental_price,
@@ -82,7 +82,7 @@ router.post('/api/dojo-mode/:dojoId/rentals', async (request) => {
       barcode,
       notes
     } = await request.json();
-    
+
     // バリデーション
     if (!item_type || !item_name || !total_quantity || !rental_price) {
       return new Response(JSON.stringify({
@@ -93,7 +93,7 @@ router.post('/api/dojo-mode/:dojoId/rentals', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // レンタル商品作成
     const result = await request.env.DB.prepare(`
       INSERT INTO rentals (
@@ -118,12 +118,12 @@ router.post('/api/dojo-mode/:dojoId/rentals', async (request) => {
       new Date().toISOString(),
       new Date().toISOString()
     ).run();
-    
+
     // 作成された商品を取得
     const rental = await request.env.DB.prepare(
       'SELECT * FROM rentals WHERE id = ?'
     ).bind(result.meta.last_row_id).first();
-    
+
     return new Response(JSON.stringify({
       message: 'Rental item created successfully',
       rental
@@ -131,10 +131,10 @@ router.post('/api/dojo-mode/:dojoId/rentals', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Create rental error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to create rental item',
       message: error.message
@@ -149,20 +149,20 @@ router.post('/api/dojo-mode/:dojoId/rentals', async (request) => {
 router.post('/api/rentals/:rentalId/rent', async (request) => {
   try {
     const { rentalId } = request.params;
-    const { 
-      user_id, 
-      return_due_date, 
+    const {
+      user_id,
+      return_due_date,
       rental_days = 7,
       deposit_paid,
-      notes 
+      notes
     } = await request.json();
-    
+
     // レンタル商品の確認
     const rental = await request.env.DB.prepare(`
       SELECT * FROM rentals 
       WHERE id = ? AND status = 'available' AND available_quantity > 0
     `).bind(rentalId).first();
-    
+
     if (!rental) {
       return new Response(JSON.stringify({
         error: 'Rental not available',
@@ -172,12 +172,12 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // ユーザー確認
     const user = await request.env.DB.prepare(
       'SELECT * FROM users WHERE id = ?'
     ).bind(user_id).first();
-    
+
     if (!user) {
       return new Response(JSON.stringify({
         error: 'User not found',
@@ -187,18 +187,18 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // レンタル期間計算
     const rentalDate = new Date();
-    const returnDueDate = return_due_date ? 
-      new Date(return_due_date) : 
+    const returnDueDate = return_due_date ?
+      new Date(return_due_date) :
       new Date(Date.now() + rental_days * 24 * 60 * 60 * 1000);
-    
+
     // 料金計算
     const rentalFee = rental.rental_price * rental_days;
     const depositAmount = deposit_paid || rental.deposit_amount;
     const totalPaid = rentalFee + depositAmount;
-    
+
     // レンタル取引作成
     const transactionResult = await request.env.DB.prepare(`
       INSERT INTO rental_transactions (
@@ -217,7 +217,7 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
       notes,
       new Date().toISOString()
     ).run();
-    
+
     // 在庫更新
     await request.env.DB.prepare(`
       UPDATE rentals 
@@ -225,7 +225,7 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
           updated_at = ?
       WHERE id = ?
     `).bind(new Date().toISOString(), rentalId).run();
-    
+
     // 支払い記録作成
     await request.env.DB.prepare(`
       INSERT INTO payments (
@@ -247,7 +247,7 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
       new Date().toISOString(),
       new Date().toISOString()
     ).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Rental started successfully',
       transaction_id: transactionResult.meta.last_row_id,
@@ -259,10 +259,10 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Start rental error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to start rental',
       message: error.message
@@ -277,13 +277,13 @@ router.post('/api/rentals/:rentalId/rent', async (request) => {
 router.patch('/api/rental-transactions/:transactionId/return', async (request) => {
   try {
     const { transactionId } = request.params;
-    const { 
+    const {
       condition_on_return = 'good',
       damage_fee = 0,
       late_fee = 0,
-      notes 
+      notes
     } = await request.json();
-    
+
     // レンタル取引取得
     const transaction = await request.env.DB.prepare(`
       SELECT rt.*, r.item_name, r.deposit_amount, r.dojo_id
@@ -291,7 +291,7 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
       JOIN rentals r ON rt.rental_id = r.id
       WHERE rt.id = ? AND rt.status = 'active'
     `).bind(transactionId).first();
-    
+
     if (!transaction) {
       return new Response(JSON.stringify({
         error: 'Transaction not found',
@@ -301,21 +301,21 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // 遅延チェック
     const returnDate = new Date();
     const dueDate = new Date(transaction.return_due_date);
     const isLate = returnDate > dueDate;
     const lateDays = isLate ? Math.ceil((returnDate - dueDate) / (1000 * 60 * 60 * 24)) : 0;
-    
+
     // 追加料金計算
     const totalLateFee = late_fee || (isLate ? lateDays * 100 : 0); // 1日100円の遅延料
     const totalDamageFee = damage_fee;
     const additionalFees = totalLateFee + totalDamageFee;
-    
+
     // デポジット返却額計算
     const depositReturn = Math.max(0, transaction.deposit_paid - additionalFees);
-    
+
     // 取引更新
     await request.env.DB.prepare(`
       UPDATE rental_transactions 
@@ -337,7 +337,7 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
       new Date().toISOString(),
       transactionId
     ).run();
-    
+
     // 在庫復元
     await request.env.DB.prepare(`
       UPDATE rentals 
@@ -345,7 +345,7 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
           updated_at = ?
       WHERE id = ?
     `).bind(new Date().toISOString(), transaction.rental_id).run();
-    
+
     // 追加料金がある場合は支払い記録作成
     if (additionalFees > 0) {
       await request.env.DB.prepare(`
@@ -369,7 +369,7 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
         new Date().toISOString()
       ).run();
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Item returned successfully',
       late_days: lateDays,
@@ -380,10 +380,10 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Return rental error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to return rental',
       message: error.message
@@ -398,7 +398,7 @@ router.patch('/api/rental-transactions/:transactionId/return', async (request) =
 router.get('/api/dojo-mode/:dojoId/rentals/active', async (request) => {
   try {
     const { dojoId } = request.params;
-    
+
     const activeRentals = await request.env.DB.prepare(`
       SELECT 
         rt.*,
@@ -423,16 +423,16 @@ router.get('/api/dojo-mode/:dojoId/rentals/active', async (request) => {
         END,
         rt.return_due_date
     `).bind(dojoId).all();
-    
+
     return new Response(JSON.stringify({
       active_rentals: activeRentals.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get active rentals error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get active rentals',
       message: error.message
@@ -451,7 +451,7 @@ router.get('/api/dojo-mode/:dojoId/rentals/history', async (request) => {
     const limit = parseInt(url.searchParams.get('limit')) || 50;
     const offset = parseInt(url.searchParams.get('offset')) || 0;
     const userId = url.searchParams.get('user_id');
-    
+
     let query = `
       SELECT 
         rt.*,
@@ -463,19 +463,19 @@ router.get('/api/dojo-mode/:dojoId/rentals/history', async (request) => {
       JOIN users u ON rt.user_id = u.id
       WHERE r.dojo_id = ?
     `;
-    
+
     const params = [dojoId];
-    
+
     if (userId) {
       query += ' AND rt.user_id = ?';
       params.push(userId);
     }
-    
+
     query += ' ORDER BY rt.created_at DESC LIMIT ? OFFSET ?';
     params.push(limit, offset);
-    
+
     const history = await request.env.DB.prepare(query).bind(...params).all();
-    
+
     return new Response(JSON.stringify({
       rental_history: history.results,
       pagination: {
@@ -486,10 +486,10 @@ router.get('/api/dojo-mode/:dojoId/rentals/history', async (request) => {
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get rental history error:', error);
-    
+
     return new Response(JSON.stringify({
       error: 'Failed to get rental history',
       message: error.message

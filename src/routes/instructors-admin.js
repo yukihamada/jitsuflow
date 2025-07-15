@@ -28,11 +28,11 @@ router.get('/api/instructors', async (request) => {
       WHERE is_active = 1
       ORDER BY name
     `).all();
-    
+
     return new Response(JSON.stringify(instructors.results), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructors error:', error);
     return new Response(JSON.stringify({
@@ -49,11 +49,11 @@ router.get('/api/instructors', async (request) => {
 router.get('/api/instructors/:id', async (request) => {
   try {
     const { id } = request.params;
-    
+
     const instructor = await request.env.DB.prepare(`
       SELECT * FROM instructors WHERE id = ?
     `).bind(id).first();
-    
+
     if (!instructor) {
       return new Response(JSON.stringify({
         error: 'Instructor not found'
@@ -62,7 +62,7 @@ router.get('/api/instructors/:id', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Get assigned dojos
     const dojos = await request.env.DB.prepare(`
       SELECT 
@@ -76,14 +76,14 @@ router.get('/api/instructors/:id', async (request) => {
       WHERE id.instructor_id = ? AND id.is_active = 1
       ORDER BY d.name
     `).bind(id).all();
-    
+
     return new Response(JSON.stringify({
       ...instructor,
       dojos: dojos.results
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor details error:', error);
     return new Response(JSON.stringify({
@@ -100,7 +100,7 @@ router.get('/api/instructors/:id', async (request) => {
 router.get('/api/instructors/:id/dojos', async (request) => {
   try {
     const { id } = request.params;
-    
+
     const dojos = await request.env.DB.prepare(`
       SELECT 
         d.id,
@@ -115,11 +115,11 @@ router.get('/api/instructors/:id/dojos', async (request) => {
       WHERE id.instructor_id = ? AND id.is_active = 1
       ORDER BY d.name
     `).bind(id).all();
-    
+
     return new Response(JSON.stringify(dojos.results), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Get instructor dojos error:', error);
     return new Response(JSON.stringify({
@@ -137,7 +137,7 @@ router.post('/api/instructors', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const {
       name,
       email,
@@ -148,7 +148,7 @@ router.post('/api/instructors', async (request) => {
       profile_image_url,
       dojos = []
     } = await request.json();
-    
+
     // Validate required fields
     if (!name || !belt_rank) {
       return new Response(JSON.stringify({
@@ -159,7 +159,7 @@ router.post('/api/instructors', async (request) => {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     }
-    
+
     // Create instructor
     const result = await request.env.DB.prepare(`
       INSERT INTO instructors (
@@ -174,9 +174,9 @@ router.post('/api/instructors', async (request) => {
       bio || null,
       profile_image_url || null
     ).run();
-    
+
     const instructorId = result.meta.last_row_id;
-    
+
     // Assign to dojos
     for (const dojo of dojos) {
       await request.env.DB.prepare(`
@@ -190,7 +190,7 @@ router.post('/api/instructors', async (request) => {
         dojo.start_date || new Date().toISOString().split('T')[0]
       ).run();
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor created successfully',
       instructor_id: instructorId
@@ -198,7 +198,7 @@ router.post('/api/instructors', async (request) => {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Create instructor error:', error);
     return new Response(JSON.stringify({
@@ -216,7 +216,7 @@ router.put('/api/instructors/:id', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const { id } = request.params;
     const {
       name,
@@ -229,7 +229,7 @@ router.put('/api/instructors/:id', async (request) => {
       is_active,
       dojos
     } = await request.json();
-    
+
     // Update instructor basic info
     await request.env.DB.prepare(`
       UPDATE instructors SET
@@ -254,14 +254,14 @@ router.put('/api/instructors/:id', async (request) => {
       is_active !== undefined ? is_active : 1,
       id
     ).run();
-    
+
     // Update dojo assignments if provided
     if (dojos !== undefined) {
       // Deactivate all current assignments
       await request.env.DB.prepare(`
         UPDATE instructor_dojos SET is_active = 0 WHERE instructor_id = ?
       `).bind(id).run();
-      
+
       // Add new assignments
       for (const dojo of dojos) {
         await request.env.DB.prepare(`
@@ -276,13 +276,13 @@ router.put('/api/instructors/:id', async (request) => {
         ).run();
       }
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor updated successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Update instructor error:', error);
     return new Response(JSON.stringify({
@@ -300,25 +300,25 @@ router.delete('/api/instructors/:id', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const { id } = request.params;
-    
+
     // Soft delete - just deactivate
     await request.env.DB.prepare(`
       UPDATE instructors SET is_active = 0, updated_at = datetime('now') WHERE id = ?
     `).bind(id).run();
-    
+
     // Also deactivate all dojo assignments
     await request.env.DB.prepare(`
       UPDATE instructor_dojos SET is_active = 0 WHERE instructor_id = ?
     `).bind(id).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor deleted successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Delete instructor error:', error);
     return new Response(JSON.stringify({
@@ -336,16 +336,16 @@ router.post('/api/instructors/:id/dojos', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const { id } = request.params;
     const { dojo_id, role = 'instructor', start_date } = await request.json();
-    
+
     // Check if assignment already exists
     const existing = await request.env.DB.prepare(`
       SELECT * FROM instructor_dojos 
       WHERE instructor_id = ? AND dojo_id = ?
     `).bind(id, dojo_id).first();
-    
+
     if (existing) {
       // Update existing assignment
       await request.env.DB.prepare(`
@@ -368,14 +368,14 @@ router.post('/api/instructors/:id/dojos', async (request) => {
         start_date || new Date().toISOString().split('T')[0]
       ).run();
     }
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor assigned to dojo successfully'
     }), {
       status: 201,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Assign instructor to dojo error:', error);
     return new Response(JSON.stringify({
@@ -393,20 +393,20 @@ router.delete('/api/instructors/:id/dojos/:dojoId', async (request) => {
   try {
     const adminCheck = requireAdmin(request);
     if (adminCheck) return adminCheck;
-    
+
     const { id, dojoId } = request.params;
-    
+
     await request.env.DB.prepare(`
       UPDATE instructor_dojos SET is_active = 0 
       WHERE instructor_id = ? AND dojo_id = ?
     `).bind(id, dojoId).run();
-    
+
     return new Response(JSON.stringify({
       message: 'Instructor removed from dojo successfully'
     }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
-    
+
   } catch (error) {
     console.error('Remove instructor from dojo error:', error);
     return new Response(JSON.stringify({

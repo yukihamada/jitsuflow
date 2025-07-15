@@ -14,14 +14,14 @@ export async function authMiddleware(request) {
     '/api/health',
     '/api/payments/webhook'
   ];
-  
+
   const url = new URL(request.url);
   if (publicEndpoints.some(endpoint => url.pathname.includes(endpoint))) {
     return;
   }
-  
+
   const authHeader = request.headers.get('Authorization');
-  
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return new Response(JSON.stringify({
       error: 'Unauthorized',
@@ -31,25 +31,25 @@ export async function authMiddleware(request) {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
   }
-  
+
   try {
     const token = authHeader.substring(7);
-    
+
     // Verify JWT token
     const payload = await verifyJWT(token, request.env.JWT_SECRET || 'your-secret-key');
-    
+
     // Check token expiration
     if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
       throw new Error('Token expired');
     }
-    
+
     // Attach user info to request
     request.user = {
       userId: payload.userId,
       email: payload.email,
       role: payload.role || 'user'
     };
-    
+
   } catch (error) {
     return new Response(JSON.stringify({
       error: 'Unauthorized',
@@ -67,14 +67,13 @@ export async function rateLimitMiddleware(request) {
   const key = `ratelimit:${ip}`;
   const limit = 100; // requests per hour
   const windowMs = 60 * 60 * 1000; // 1 hour
-  
+
   try {
     const now = Date.now();
-    const windowStart = now - windowMs;
-    
+
     // Get current count from KV
     const data = await request.env.SESSIONS.get(key, 'json');
-    
+
     if (data && data.count && data.resetTime > now) {
       if (data.count >= limit) {
         return new Response(JSON.stringify({
@@ -91,7 +90,7 @@ export async function rateLimitMiddleware(request) {
           }
         });
       }
-      
+
       // Increment count
       await request.env.SESSIONS.put(key, JSON.stringify({
         count: data.count + 1,
@@ -99,7 +98,7 @@ export async function rateLimitMiddleware(request) {
       }), {
         expirationTtl: Math.floor((data.resetTime - now) / 1000)
       });
-      
+
       request.rateLimitInfo = {
         limit,
         remaining: limit - data.count - 1,
@@ -114,7 +113,7 @@ export async function rateLimitMiddleware(request) {
       }), {
         expirationTtl: Math.floor(windowMs / 1000)
       });
-      
+
       request.rateLimitInfo = {
         limit,
         remaining: limit - 1,
