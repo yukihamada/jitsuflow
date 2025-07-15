@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JitsuFlow API Documentation</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #475569;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+        
+        .header {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            opacity: 0.8;
+        }
+        
+        .nav {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 96px;
+            z-index: 90;
+        }
+        
+        .nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+        
+        .nav a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav a:hover {
+            color: var(--primary);
+        }
+        
+        .content {
+            padding: 3rem 0;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .section h3 {
+            font-size: 1.25rem;
+            margin: 2rem 0 1rem;
+            color: var(--dark);
+        }
+        
+        .endpoint {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.875rem;
+            color: white;
+        }
+        
+        .method.get { background: var(--success); }
+        .method.post { background: var(--primary); }
+        .method.put { background: var(--warning); }
+        .method.patch { background: var(--warning); }
+        .method.delete { background: var(--danger); }
+        
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: var(--dark);
+        }
+        
+        .endpoint-description {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .parameters, .response {
+            margin-top: 1.5rem;
+        }
+        
+        .parameters h4, .response h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.5rem;
+        }
+        
+        .param-table th,
+        .param-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .param-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .param-table .required {
+            color: var(--danger);
+            font-weight: bold;
+        }
+        
+        .param-table .optional {
+            color: var(--secondary);
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 0.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        code {
+            background: var(--light);
+            padding: 0.125rem 0.375rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: var(--danger);
+        }
+        
+        .auth-required {
+            display: inline-block;
+            background: var(--warning);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+        
+        .example-section {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .example-section h5 {
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            color: var(--secondary);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .base-url {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .base-url strong {
+            color: var(--primary);
+        }
+        
+        .status-codes {
+            margin-top: 1rem;
+        }
+        
+        .status-code {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        .status-code.success { background: #dcfce7; color: #166534; }
+        .status-code.client-error { background: #fee2e2; color: #991b1b; }
+        .status-code.server-error { background: #fef3c7; color: #92400e; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>JitsuFlow API Documentation</h1>
+            <p>ブラジリアン柔術トレーニング＆道場予約システムAPI v1.0</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">概要</a></li>
+                <li><a href="#authentication">認証</a></li>
+                <li><a href="#users">ユーザー</a></li>
+                <li><a href="#dojos">道場</a></li>
+                <li><a href="#bookings">予約</a></li>
+                <li><a href="#products">商品</a></li>
+                <li><a href="#videos">動画</a></li>
+                <li><a href="#rentals">レンタル</a></li>
+                <li><a href="#errors">エラー</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="container">
+            <!-- Overview Section -->
+            <section id="overview" class="section">
+                <h2>API概要</h2>
+                
+                <div class="base-url">
+                    <strong>Base URL:</strong> <code>https://api.jitsuflow.app</code>
+                </div>
+
+                <h3>リクエスト形式</h3>
+                <ul>
+                    <li>すべてのリクエストは <code>Content-Type: application/json</code> を使用</li>
+                    <li>認証が必要なエンドポイントは <code>Authorization: Bearer {token}</code> ヘッダーが必要</li>
+                    <li>レスポンスはすべてJSON形式</li>
+                </ul>
+
+                <h3>レート制限</h3>
+                <ul>
+                    <li>1分間に100リクエストまで</li>
+                    <li>制限を超えた場合は429エラーを返却</li>
+                </ul>
+            </section>
+
+            <!-- Authentication Section -->
+            <section id="authentication" class="section">
+                <h2>認証</h2>
+                <p>JitsuFlow APIはJWT (JSON Web Token)を使用した認証を実装しています。</p>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/api/users/register</span>
+                    </div>
+                    <p class="endpoint-description">新規ユーザー登録</p>
+                    
+                    <div class="parameters">
+                        <h4>リクエストボディ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>メールアドレス</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>パスワード（8文字以上）</td>
+                                </tr>
+                                <tr>
+                                    <td>name</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>ユーザー名</td>
+                                </tr>
+                                <tr>
+                                    <td>phone</td>
+                                    <td>string</td>
+                                    <td class="optional">任意</td>
+                                    <td>電話番号</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-section">
+                        <h5>リクエスト例</h5>
+                        <pre>{
+  "email": "user@example.com",
+  "password": "securepassword123",
+  "name": "山田太郎",
+  "phone": "090-1234-5678"
+}</pre>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">201 Created</span>
+                            <span class="status-code client-error">400 Bad Request</span>
+                            <span class="status-code client-error">409 Conflict</span>
+                        </div>
+                        <pre>{
+  "message": "Registration successful",
+  "user": {
+    "id": 1,
+    "email": "user@example.com",
+    "name": "山田太郎",
+    "phone": "090-1234-5678"
+  },
+  "token": "eyJ1c2VySWQiOjEsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzUyNTM3ODk2OTIxfQ=="
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/api/users/login</span>
+                    </div>
+                    <p class="endpoint-description">ユーザーログイン</p>
+                    
+                    <div class="parameters">
+                        <h4>リクエストボディ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>email</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>メールアドレス</td>
+                                </tr>
+                                <tr>
+                                    <td>password</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>パスワード</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-section">
+                        <h5>リクエスト例</h5>
+                        <pre>{
+  "email": "user@example.com",
+  "password": "securepassword123"
+}</pre>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "message": "Login successful",
+  "user": {
+    "id": 1,
+    "email": "user@example.com",
+    "name": "山田太郎",
+    "phone": "090-1234-5678"
+  },
+  "token": "eyJ1c2VySWQiOjEsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsInJvbGUiOiJ1c2VyIiwiZXhwIjoxNzUyNTM3ODk2OTIxfQ=="
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dojos Section -->
+            <section id="dojos" class="section">
+                <h2>道場</h2>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/dojos</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">道場一覧を取得</p>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "dojos": [
+    {
+      "id": 1,
+      "name": "YAWARA JIU-JITSU ACADEMY",
+      "address": "東京都渋谷区神宮前1-8-10 The Ice Cubes 8-9F",
+      "phone": null,
+      "email": null,
+      "website": null,
+      "description": null,
+      "max_capacity": 20,
+      "instructor": "Ryozo Murata (村田良蔵)",
+      "pricing_info": "なでしこプラン¥12,000/月、Yawara-8プラン¥22,000/月、フルタイムプラン¥33,000/月",
+      "booking_system": null,
+      "created_at": "2025-07-13 14:56:57",
+      "updated_at": "2025-07-13 14:56:57"
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bookings Section -->
+            <section id="bookings" class="section">
+                <h2>予約</h2>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/api/dojo/bookings</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">新規予約を作成</p>
+                    
+                    <div class="parameters">
+                        <h4>リクエストボディ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dojo_id</td>
+                                    <td>integer</td>
+                                    <td class="required">必須</td>
+                                    <td>道場ID</td>
+                                </tr>
+                                <tr>
+                                    <td>class_type</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>クラスタイプ（beginners, all_levels, advanced）</td>
+                                </tr>
+                                <tr>
+                                    <td>booking_date</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>予約日（YYYY-MM-DD形式）</td>
+                                </tr>
+                                <tr>
+                                    <td>booking_time</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>予約時間（HH:MM形式）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-section">
+                        <h5>リクエスト例</h5>
+                        <pre>{
+  "dojo_id": 1,
+  "class_type": "beginners",
+  "booking_date": "2025-01-20",
+  "booking_time": "19:00"
+}</pre>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">201 Created</span>
+                            <span class="status-code client-error">400 Bad Request</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "booking": {
+    "id": 1,
+    "user_id": 1,
+    "dojo_id": 1,
+    "class_type": "beginners",
+    "booking_date": "2025-01-20",
+    "booking_time": "19:00",
+    "status": "confirmed"
+  }
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/dojo/bookings</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">自分の予約一覧を取得</p>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "bookings": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "dojo_id": 1,
+      "dojo_name": "YAWARA JIU-JITSU ACADEMY",
+      "class_type": "beginners",
+      "booking_date": "2025-01-20",
+      "booking_time": "19:00",
+      "status": "confirmed",
+      "created_at": "2025-01-14T10:00:00Z",
+      "updated_at": "2025-01-14T10:00:00Z"
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="section">
+                <h2>商品</h2>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/products</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">商品一覧を取得</p>
+                    
+                    <div class="parameters">
+                        <h4>クエリパラメータ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>category</td>
+                                    <td>string</td>
+                                    <td class="optional">任意</td>
+                                    <td>カテゴリでフィルター（gi, belt, protector, apparel, equipment, other）</td>
+                                </tr>
+                                <tr>
+                                    <td>limit</td>
+                                    <td>integer</td>
+                                    <td class="optional">任意</td>
+                                    <td>取得件数（デフォルト: 20）</td>
+                                </tr>
+                                <tr>
+                                    <td>offset</td>
+                                    <td>integer</td>
+                                    <td class="optional">任意</td>
+                                    <td>オフセット（デフォルト: 0）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-section">
+                        <h5>リクエスト例</h5>
+                        <pre>GET /api/products?category=gi&limit=10</pre>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "products": [
+    {
+      "id": 11,
+      "name": "YAWARA プレミアム道着",
+      "description": "最高級コットン100%使用の高品質道着。試合規定対応。耐久性と快適性を両立。",
+      "price": 18000,
+      "category": "gi",
+      "image_url": "https://images.unsplash.com/photo-1604009506606-fd4989d50e6d?w=800",
+      "stock_quantity": 12,
+      "is_active": 1,
+      "size": "A2",
+      "color": "white",
+      "attributes": {
+        "material": "コットン100%",
+        "weight": "550gsm",
+        "certification": "IBJJF認定"
+      },
+      "created_at": "2025-07-13 14:57:37",
+      "updated_at": "2025-07-13 14:57:37"
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/api/cart/add</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">商品をカートに追加</p>
+                    
+                    <div class="parameters">
+                        <h4>リクエストボディ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>product_id</td>
+                                    <td>integer</td>
+                                    <td class="required">必須</td>
+                                    <td>商品ID</td>
+                                </tr>
+                                <tr>
+                                    <td>quantity</td>
+                                    <td>integer</td>
+                                    <td class="required">必須</td>
+                                    <td>数量</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-section">
+                        <h5>リクエスト例</h5>
+                        <pre>{
+  "product_id": 11,
+  "quantity": 1
+}</pre>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">400 Bad Request</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "message": "Added to cart"
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/cart</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">カート内容を取得</p>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "items": [
+    {
+      "product": {
+        "id": 11,
+        "name": "YAWARA プレミアム道着",
+        "price": 18000,
+        "description": "最高級コットン100%使用の高品質道着。",
+        "category": "gi",
+        "image_url": "https://images.unsplash.com/photo-1604009506606-fd4989d50e6d?w=800",
+        "stock_quantity": 12
+      },
+      "quantity": 1
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Videos Section -->
+            <section id="videos" class="section">
+                <h2>動画</h2>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/videos</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">動画一覧を取得</p>
+                    
+                    <div class="parameters">
+                        <h4>クエリパラメータ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>premium</td>
+                                    <td>boolean</td>
+                                    <td class="optional">任意</td>
+                                    <td>プレミアム動画のみ取得（true/false）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "videos": [
+    {
+      "id": 1,
+      "title": "基本的なガードパス",
+      "description": "初心者向けのガードパステクニック",
+      "instructor_id": 1,
+      "duration": 600,
+      "thumbnail_url": "https://example.com/thumbnail.jpg",
+      "video_url": "https://example.com/video.mp4",
+      "is_premium": false,
+      "status": "published",
+      "created_at": "2025-01-14T10:00:00Z"
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rentals Section -->
+            <section id="rentals" class="section">
+                <h2>レンタル</h2>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method get">GET</span>
+                        <span class="endpoint-path">/api/dojo-mode/{dojoId}/rentals</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">道場のレンタル品一覧を取得</p>
+                    
+                    <div class="parameters">
+                        <h4>パスパラメータ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dojoId</td>
+                                    <td>integer</td>
+                                    <td class="required">必須</td>
+                                    <td>道場ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">200 OK</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "rentals": [
+    {
+      "id": 1,
+      "dojo_id": 1,
+      "item_name": "レンタル道着 A2",
+      "item_type": "gi",
+      "size": "A2",
+      "rental_price": 500,
+      "deposit_amount": 2000,
+      "total_quantity": 5,
+      "available_quantity": 3,
+      "status": "available",
+      "created_at": "2025-01-14T10:00:00Z"
+    }
+  ]
+}</pre>
+                    </div>
+                </div>
+
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method post">POST</span>
+                        <span class="endpoint-path">/api/rentals/{rentalId}/rent</span>
+                        <span class="auth-required">認証必須</span>
+                    </div>
+                    <p class="endpoint-description">レンタル品を借りる</p>
+                    
+                    <div class="parameters">
+                        <h4>パスパラメータ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>rentalId</td>
+                                    <td>integer</td>
+                                    <td class="required">必須</td>
+                                    <td>レンタル品ID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="parameters">
+                        <h4>リクエストボディ</h4>
+                        <table class="param-table">
+                            <thead>
+                                <tr>
+                                    <th>パラメータ</th>
+                                    <th>型</th>
+                                    <th>必須</th>
+                                    <th>説明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>user_id</td>
+                                    <td>integer</td>
+                                    <td class="required">必須</td>
+                                    <td>ユーザーID</td>
+                                </tr>
+                                <tr>
+                                    <td>return_due_date</td>
+                                    <td>string</td>
+                                    <td class="required">必須</td>
+                                    <td>返却予定日（YYYY-MM-DD形式）</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="example-section">
+                        <h5>リクエスト例</h5>
+                        <pre>{
+  "user_id": 1,
+  "return_due_date": "2025-01-21"
+}</pre>
+                    </div>
+
+                    <div class="response">
+                        <h4>レスポンス</h4>
+                        <div class="status-codes">
+                            <span class="status-code success">201 Created</span>
+                            <span class="status-code client-error">400 Bad Request</span>
+                            <span class="status-code client-error">401 Unauthorized</span>
+                        </div>
+                        <pre>{
+  "transaction": {
+    "id": 1,
+    "rental_id": 1,
+    "user_id": 1,
+    "rental_date": "2025-01-14T10:00:00Z",
+    "return_due_date": "2025-01-21",
+    "status": "active"
+  }
+}</pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Errors Section -->
+            <section id="errors" class="section">
+                <h2>エラーレスポンス</h2>
+                
+                <h3>エラー形式</h3>
+                <p>すべてのエラーレスポンスは以下の形式で返されます：</p>
+                <pre>{
+  "error": "エラータイプ",
+  "message": "エラーの詳細説明"
+}</pre>
+
+                <h3>HTTPステータスコード</h3>
+                <table class="param-table">
+                    <thead>
+                        <tr>
+                            <th>コード</th>
+                            <th>説明</th>
+                            <th>例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="status-code success">200</span></td>
+                            <td>成功</td>
+                            <td>リクエストが正常に処理されました</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code success">201</span></td>
+                            <td>作成成功</td>
+                            <td>新しいリソースが作成されました</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code client-error">400</span></td>
+                            <td>不正なリクエスト</td>
+                            <td>必須パラメータが不足している、形式が正しくない</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code client-error">401</span></td>
+                            <td>認証エラー</td>
+                            <td>認証トークンが無効または期限切れ</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code client-error">404</span></td>
+                            <td>見つかりません</td>
+                            <td>指定されたリソースが存在しない</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code client-error">409</span></td>
+                            <td>競合</td>
+                            <td>既に同じメールアドレスで登録されている</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code client-error">429</span></td>
+                            <td>リクエスト過多</td>
+                            <td>レート制限を超過しました</td>
+                        </tr>
+                        <tr>
+                            <td><span class="status-code server-error">500</span></td>
+                            <td>サーバーエラー</td>
+                            <td>サーバー側で予期しないエラーが発生</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>よくあるエラー例</h3>
+                
+                <h4>認証エラー（401）</h4>
+                <pre>{
+  "error": "Unauthorized",
+  "message": "Invalid token"
+}</pre>
+
+                <h4>バリデーションエラー（400）</h4>
+                <pre>{
+  "error": "Missing required fields",
+  "message": "Email, password, and name are required"
+}</pre>
+
+                <h4>重複エラー（409）</h4>
+                <pre>{
+  "error": "User already exists",
+  "message": "Email is already registered"
+}</pre>
+            </section>
+
+            <!-- Rate Limiting Section -->
+            <section class="section">
+                <h2>レート制限</h2>
+                <p>APIには以下のレート制限が適用されます：</p>
+                <ul>
+                    <li>1分間に100リクエストまで</li>
+                    <li>IPアドレスごとに制限</li>
+                    <li>制限を超えた場合は429エラーが返されます</li>
+                </ul>
+
+                <h3>レート制限ヘッダー</h3>
+                <p>レスポンスには以下のヘッダーが含まれます：</p>
+                <ul>
+                    <li><code>X-RateLimit-Limit</code>: 制限数（100）</li>
+                    <li><code>X-RateLimit-Remaining</code>: 残りリクエスト数</li>
+                    <li><code>X-RateLimit-Reset</code>: リセット時刻（ISO 8601形式）</li>
+                </ul>
+            </section>
+
+            <!-- SDKs Section -->
+            <section class="section">
+                <h2>SDK & ツール</h2>
+                
+                <h3>cURL例</h3>
+                <pre># ユーザー登録
+curl -X POST https://api.jitsuflow.app/api/users/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "securepassword123",
+    "name": "山田太郎"
+  }'
+
+# ログイン
+curl -X POST https://api.jitsuflow.app/api/users/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "securepassword123"
+  }'
+
+# 認証付きリクエスト
+curl -X GET https://api.jitsuflow.app/api/products \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE" \
+  -H "Content-Type: application/json"</pre>
+
+                <h3>JavaScript (Fetch API)</h3>
+                <pre>// ログイン
+const login = async () => {
+  const response = await fetch('https://api.jitsuflow.app/api/users/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: 'user@example.com',
+      password: 'securepassword123'
+    })
+  });
+  
+  const data = await response.json();
+  return data.token;
+};
+
+// 認証付きリクエスト
+const getProducts = async (token) => {
+  const response = await fetch('https://api.jitsuflow.app/api/products', {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+  
+  return await response.json();
+};</pre>
+
+                <h3>Flutter (Dart)</h3>
+                <pre>import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+// ログイン
+Future<String> login(String email, String password) async {
+  final response = await http.post(
+    Uri.parse('https://api.jitsuflow.app/api/users/login'),
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'email': email,
+      'password': password,
+    }),
+  );
+  
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data['token'];
+  } else {
+    throw Exception('Failed to login');
+  }
+}
+
+// 認証付きリクエスト
+Future<List<dynamic>> getProducts(String token) async {
+  final response = await http.get(
+    Uri.parse('https://api.jitsuflow.app/api/products'),
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    },
+  );
+  
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return data['products'];
+  } else {
+    throw Exception('Failed to load products');
+  }
+}</pre>
+            </section>
+
+            <!-- Support Section -->
+            <section class="section">
+                <h2>サポート</h2>
+                <p>APIに関する質問やバグ報告は以下までお願いします：</p>
+                <ul>
+                    <li>Email: <a href="mailto:support@jitsuflow.app">support@jitsuflow.app</a></li>
+                    <li>GitHub Issues: <a href="https://github.com/jitsuflow/api/issues">https://github.com/jitsuflow/api/issues</a></li>
+                </ul>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

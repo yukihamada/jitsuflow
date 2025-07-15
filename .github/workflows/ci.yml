@@ -1,0 +1,272 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.24.0'
+  NODE_VERSION: '20.x'
+
+jobs:
+  # Flutter Build and Test
+  flutter-test:
+    name: Flutter Build & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        channel: 'stable'
+    
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.pub-cache
+          build/
+        key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-flutter-
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Analyze code
+      run: flutter analyze
+    
+    - name: Run tests
+      run: flutter test --coverage
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage/lcov.info
+        flags: flutter
+    
+    - name: Build Web
+      run: flutter build web --release
+    
+    - name: Upload Flutter build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: flutter-web-build
+        path: build/web/
+
+  # Node.js API Test
+  api-test:
+    name: API Test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run ESLint
+      run: npm run lint
+    
+    - name: Run API tests
+      run: npm test
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        flags: api
+
+  # E2E Tests with Playwright
+  e2e-test:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    needs: [flutter-test, api-test]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install Playwright
+      run: |
+        npm ci
+        npx playwright install --with-deps
+    
+    - name: Download Flutter build
+      uses: actions/download-artifact@v3
+      with:
+        name: flutter-web-build
+        path: build/web/
+    
+    - name: Start test server
+      run: |
+        npm run test:server &
+        npx wait-on http://localhost:8787/api/health
+    
+    - name: Run E2E tests
+      run: npm run test:e2e
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+  # Deploy to Cloudflare (Staging)
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [flutter-test, api-test]
+    if: github.ref == 'refs/heads/develop'
+    environment: staging
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Download Flutter build
+      uses: actions/download-artifact@v3
+      with:
+        name: flutter-web-build
+        path: build/web/
+    
+    - name: Deploy Workers to Staging
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: |
+        npx wrangler deploy --env staging
+    
+    - name: Deploy Flutter to Cloudflare Pages
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        command: pages deploy build/web --project-name=jitsuflow-staging
+
+  # Deploy to Production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [flutter-test, api-test, e2e-test]
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: ${{ env.FLUTTER_VERSION }}
+        channel: 'stable'
+    
+    - name: Install dependencies
+      run: |
+        flutter pub get
+        npm ci
+    
+    - name: Build Flutter for production
+      run: |
+        flutter build web --release --dart-define=ENVIRONMENT=production
+    
+    - name: Run database migrations
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: |
+        npx wrangler d1 execute jitsuflow_db --file=schema.sql --env production
+    
+    - name: Deploy Workers to Production
+      env:
+        CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      run: |
+        npx wrangler deploy --env production
+    
+    - name: Deploy Flutter to Cloudflare Pages
+      uses: cloudflare/wrangler-action@v3
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        command: pages deploy build/web --project-name=jitsuflow
+    
+    - name: Create GitHub Release
+      if: success()
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ github.run_number }}
+        release_name: Release v${{ github.run_number }}
+        body: |
+          ## Changes in this Release
+          - Automated deployment from commit ${{ github.sha }}
+          - Flutter Web build
+          - Cloudflare Workers API
+          - Database migrations applied
+        draft: false
+        prerelease: false
+
+  # Security Scan
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run npm audit
+      run: npm audit --production
+    
+    - name: Run Flutter security scan
+      run: |
+        flutter pub get
+        flutter pub outdated
+    
+    - name: Run Trivy security scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        ignore-unfixed: true
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+    
+    - name: Upload Trivy results to GitHub Security
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'

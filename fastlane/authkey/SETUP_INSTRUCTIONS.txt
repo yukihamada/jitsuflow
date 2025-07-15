@@ -1,0 +1,21 @@
+App Store Connect API Key設定手順:
+
+1. App Store Connectにログイン
+   https://appstoreconnect.apple.com/
+
+2. ユーザーとアクセス → キー → APIキーを生成
+
+3. 以下の情報でキーを作成:
+   - キー名: JitsuFlow Fastlane
+   - アクセス: App Manager
+   
+4. 生成されたAuthKey_088414.p8ファイルをこのディレクトリに配置
+
+5. Key IDとIssuer IDを確認:
+   - Key ID: 088414 (設定済み)
+   - Issuer ID: 408133 (設定済み)
+
+6. Team IDを確認してAppfileに設定
+
+注意: AuthKey_*.p8ファイルは一度しかダウンロードできません。
+大切に保管してください。

@@ -1,0 +1,11 @@
+name = "jitsuflow-landing"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+site = { bucket = "./public" }
+
+[env.production]
+name = "jitsuflow-landing-prod"
+
+[[env.production.routes]]
+pattern = "jitsuflow.app"
+custom_domain = true

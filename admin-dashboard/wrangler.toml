@@ -1,0 +1,12 @@
+name = "jitsuflow-admin"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+site = { bucket = "./public" }
+
+[env.production]
+name = "jitsuflow-admin-prod"
+site = { bucket = "./public" }
+
+[[env.production.routes]]
+pattern = "admin.jitsuflow.app"
+custom_domain = true

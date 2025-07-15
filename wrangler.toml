@@ -1,0 +1,76 @@
+name = "jitsuflow-worker"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+ENVIRONMENT = "development"
+JWT_SECRET = "your-jwt-secret-key-change-this-in-production"
+OPENAI_API_KEY = "your-openai-api-key-here"
+GROQ_API_KEY = "your-groq-api-key-here"
+STRIPE_SECRET_KEY = "your-stripe-secret-key-here"
+STRIPE_WEBHOOK_SECRET = "your-stripe-webhook-secret-here"
+RESEND_API_KEY = "your-resend-api-key-here"
+SLACK_WEBHOOK_URL = "your-slack-webhook-url-here"
+
+# Database
+[[d1_databases]]
+binding = "DB"
+database_name = "jitsuflow-db"
+database_id = "88dcd30f-150e-495e-a4fa-b72d228e9fb4"
+
+# R2 Storage
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "jitsuflow-assets"
+preview_bucket_name = "jitsuflow-assets-preview"
+
+# KV Storage for sessions
+[[kv_namespaces]]
+binding = "SESSIONS"
+id = "03f57dba5a964634a495a0eaaa9868f1"
+preview_id = "03f57dba5a964634a495a0eaaa9868f1"
+
+# Environment-specific settings
+[env.production]
+name = "jitsuflow-worker-prod"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+JWT_SECRET = "your-jwt-secret-key-change-this-in-production"
+OPENAI_API_KEY = "your-openai-api-key-here"
+GROQ_API_KEY = "your-groq-api-key-here"
+STRIPE_SECRET_KEY = "your-stripe-secret-key-here"
+STRIPE_WEBHOOK_SECRET = "your-stripe-webhook-secret-here"
+RESEND_API_KEY = "your-resend-api-key-here"
+SLACK_WEBHOOK_URL = "your-slack-webhook-url-here"
+
+# Custom domain for API
+[[env.production.routes]]
+pattern = "api.jitsuflow.app"
+custom_domain = true
+
+
+# Inherit bindings from top level
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "jitsuflow-db"
+database_id = "88dcd30f-150e-495e-a4fa-b72d228e9fb4"
+
+[[env.production.r2_buckets]]
+binding = "BUCKET"
+bucket_name = "jitsuflow-assets"
+
+[[env.production.kv_namespaces]]
+binding = "SESSIONS"
+id = "03f57dba5a964634a495a0eaaa9868f1"
+
+[env.staging]
+name = "jitsuflow-worker-staging"
+vars = { ENVIRONMENT = "staging" }
+
+# Build configuration
+[build]
+command = "npm run build"
+cwd = "."
+watch_dir = "src"

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JitsuFlow - ブラジリアン柔術の練習と道場管理アプリ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #1B5E20;
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 160px);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #1B5E20 0%, #2E7D32 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background-color: white;
+            color: #1B5E20;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            padding: 4rem 0;
+            background-color: white;
+        }
+        
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1B5E20;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background-color: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1B5E20;
+        }
+        
+        .screenshots {
+            padding: 4rem 0;
+            background-color: #f5f5f5;
+        }
+        
+        .screenshots h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1B5E20;
+        }
+        
+        .screenshot-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .screenshot {
+            width: 300px;
+            height: auto;
+            background-color: #ddd;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        
+        footer {
+            background-color: #1B5E20;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">JitsuFlow</div>
+            <ul class="nav-links">
+                <li><a href="#features">機能</a></li>
+                <li><a href="#screenshots">スクリーンショット</a></li>
+                <li><a href="/support">サポート</a></li>
+                <li><a href="/privacy">プライバシー</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>JitsuFlow</h1>
+                <p>ブラジリアン柔術の練習と道場管理を革新するアプリ</p>
+                <a href="#" class="cta-button">App Storeでダウンロード</a>
+            </div>
+        </section>
+        
+        <section class="features" id="features">
+            <div class="container">
+                <h2>主な機能</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>簡単予約システム</h3>
+                        <p>道場のクラス予約を簡単操作で。リアルタイムで空き状況を確認できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🥋</div>
+                        <h3>インストラクター情報</h3>
+                        <p>経験豊富な指導者のプロフィールと実績を確認。最適な指導者を見つけましょう。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📹</div>
+                        <h3>技術動画ライブラリ</h3>
+                        <p>無料・プレミアム動画で技術を学習。プロの技を動画で確認できます。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>スキルアセスメント</h3>
+                        <p>15の基本技術を評価。自分の成長を可視化して、モチベーションを維持。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>トレーニング履歴</h3>
+                        <p>練習記録を自動保存。成長の軌跡を振り返り、次の目標を設定しましょう。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛒</div>
+                        <h3>ショップ機能</h3>
+                        <p>道着や装備品をアプリ内で購入。必要なものをすぐに手に入れられます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="screenshots" id="screenshots">
+            <div class="container">
+                <h2>アプリ画面</h2>
+                <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                    実際のアプリ画面をご覧ください。直感的で使いやすいインターフェースを提供しています。
+                </p>
+                <div class="screenshot-container">
+                    <div class="screenshot">
+                        <img src="/images/home_screen.png" alt="JitsuFlow ホーム画面" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="screenshot">
+                        <img src="/images/booking_screen.png" alt="JitsuFlow 予約画面" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="screenshot">
+                        <img src="/images/video_screen.png" alt="JitsuFlow 動画画面" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="screenshot">
+                        <img src="/images/profile_screen.png" alt="JitsuFlow プロフィール画面" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="/support">サポート</a>
+                <a href="/privacy">プライバシーポリシー</a>
+                <a href="/terms">利用規約</a>
+            </div>
+            <p>&copy; 2025 JitsuFlow. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,41 @@
+name = "jitsuflow"
+pages_build_output_dir = "build/web"
+compatibility_date = "2024-09-23"
+
+# Production domain configuration
+[env.production]
+routes = [
+  "jitsuflow.app/*",
+  "www.jitsuflow.app/*"
+]
+
+# Custom domains
+[[env.production.custom_domains]]
+pattern = "jitsuflow.app"
+
+[[env.production.custom_domains]]
+pattern = "www.jitsuflow.app"
+
+# Headers configuration
+[[env.production.headers]]
+  for = "/*"
+  [env.production.headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[env.production.headers]]
+  for = "/*.js"
+  [env.production.headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[env.production.headers]]
+  for = "/*.css"
+  [env.production.headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[env.production.headers]]
+  for = "/index.html"
+  [env.production.headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

@@ -1,0 +1,6 @@
+-- Insert dojo data with correct structure
+INSERT INTO dojos (name, address, phone, email, website, description, max_capacity, instructor, pricing_info, created_at, updated_at) VALUES
+('YAWARA道場', '東京都渋谷区道玄坂1-15-3', '03-1234-5678', 'yawara@jitsuflow.app', 'https://yawara.jitsuflow.app', 'YAWARAブランドの総本山。初心者から上級者まで幅広く対応。最新設備を完備し、プロフェッショナルな指導を提供。', 30, '山田太郎', '月額15,000円、ドロップイン3,000円', datetime('now'), datetime('now')),
+('SWEEP道場', '東京都港区赤坂3-21-10', '03-2345-6789', 'sweep@jitsuflow.app', 'https://sweep.jitsuflow.app', 'SWEEP愛好者が集まる専門道場。テクニカルな技術指導に定評があり、競技者育成にも力を入れています。', 25, '鈴木一郎', '月額13,000円、ドロップイン2,500円', datetime('now'), datetime('now')),
+('OverLimit道場', '東京都新宿区歌舞伎町2-19-13', '03-3456-7890', 'overlimit@jitsuflow.app', 'https://overlimit.jitsuflow.app', '限界を超える、をモットーに激しいトレーニングを提供。アスリート向けの本格的な道場。', 20, '佐藤健', '月額18,000円、ドロップイン3,500円', datetime('now'), datetime('now')),
+('札幌柔術アカデミー', '北海道札幌市中央区南3条西5丁目1-1', '011-123-4567', 'sapporo@jitsuflow.app', 'https://sapporo.jitsuflow.app', '北海道最大級の柔術道場。広々とした施設で、初心者にも優しい指導が特徴。冬季も快適な室内環境。', 40, '北野武', '月額12,000円、ドロップイン2,000円', datetime('now'), datetime('now'));

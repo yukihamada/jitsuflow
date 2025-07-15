@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JitsuFlow 管理ダッシュボード</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .stat-card {
+            transition: transform 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .qr-container {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- ヘッダー -->
+    <header class="bg-purple-900 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold">JitsuFlow 管理ダッシュボード</h1>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm bg-purple-700 px-3 py-1 rounded-full">管理者モード</span>
+                    <button onclick="logout()" class="hover:bg-purple-800 px-4 py-2 rounded transition-colors">
+                        <i class="fas fa-sign-out-alt mr-2"></i>ログアウト
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 統計カード -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- アクティブユーザー -->
+            <div class="stat-card bg-white rounded-lg shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-blue-100 p-3 rounded-full">
+                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                    </div>
+                    <span class="text-sm text-gray-500">総数</span>
+                </div>
+                <h3 id="total-users" class="text-2xl font-bold text-gray-800">
+                    <span class="loading"></span>
+                </h3>
+                <p class="text-gray-600">登録ユーザー</p>
+            </div>
+
+            <!-- 予約数 -->
+            <div class="stat-card bg-white rounded-lg shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-green-100 p-3 rounded-full">
+                        <i class="fas fa-calendar-check text-green-600 text-2xl"></i>
+                    </div>
+                    <span class="text-sm text-gray-500">今月</span>
+                </div>
+                <h3 id="total-bookings" class="text-2xl font-bold text-gray-800">
+                    <span class="loading"></span>
+                </h3>
+                <p class="text-gray-600">予約数</p>
+            </div>
+
+            <!-- 商品数 -->
+            <div class="stat-card bg-white rounded-lg shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-yellow-100 p-3 rounded-full">
+                        <i class="fas fa-shopping-bag text-yellow-600 text-2xl"></i>
+                    </div>
+                    <span class="text-sm text-gray-500">在庫</span>
+                </div>
+                <h3 id="total-products" class="text-2xl font-bold text-gray-800">
+                    <span class="loading"></span>
+                </h3>
+                <p class="text-gray-600">商品数</p>
+            </div>
+
+            <!-- 動画数 -->
+            <div class="stat-card bg-white rounded-lg shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-purple-100 p-3 rounded-full">
+                        <i class="fas fa-video text-purple-600 text-2xl"></i>
+                    </div>
+                    <span class="text-sm text-gray-500">公開中</span>
+                </div>
+                <h3 id="total-videos" class="text-2xl font-bold text-gray-800">
+                    <span class="loading"></span>
+                </h3>
+                <p class="text-gray-600">動画コンテンツ</p>
+            </div>
+        </div>
+
+        <!-- 道場統計カード -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- 道場数 -->
+            <div class="stat-card bg-white rounded-lg shadow-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="bg-orange-100 p-3 rounded-full">
+                        <i class="fas fa-building text-orange-600 text-2xl"></i>
+                    </div>
+                    <span class="text-sm text-gray-500">登録済み</span>
+                </div>
+                <h3 id="total-dojos" class="text-2xl font-bold text-gray-800">
+                    <span class="loading"></span>
+                </h3>
+                <p class="text-gray-600">道場数</p>
+            </div>
+        </div>
+
+        <!-- タブメニュー -->
+        <div class="bg-white rounded-lg shadow-lg mb-8">
+            <div class="border-b">
+                <nav class="flex">
+                    <button onclick="showTab('users')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="users">
+                        <i class="fas fa-users mr-2"></i>ユーザー管理
+                    </button>
+                    <button onclick="showTab('bookings')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="bookings">
+                        <i class="fas fa-calendar mr-2"></i>予約管理
+                    </button>
+                    <button onclick="showTab('products')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="products">
+                        <i class="fas fa-shopping-cart mr-2"></i>商品管理
+                    </button>
+                    <button onclick="showTab('videos')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="videos">
+                        <i class="fas fa-video mr-2"></i>動画管理
+                    </button>
+                    <button onclick="showTab('dojos')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="dojos">
+                        <i class="fas fa-building mr-2"></i>道場管理
+                    </button>
+                    <button onclick="showTab('instructors')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="instructors">
+                        <i class="fas fa-user-ninja mr-2"></i>インストラクター
+                    </button>
+                    <button onclick="showTab('revenue')" class="tab-btn px-6 py-3 text-gray-700 hover:text-purple-600 border-b-2 border-transparent hover:border-purple-600 transition-colors" data-tab="revenue">
+                        <i class="fas fa-percentage mr-2"></i>収益配分設定
+                    </button>
+                </nav>
+            </div>
+
+            <!-- タブコンテンツ -->
+            <div class="p-6">
+                <!-- ユーザー管理 -->
+                <div id="users-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">ユーザー一覧</h3>
+                        <button onclick="addUser()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                            <i class="fas fa-plus mr-2"></i>新規追加
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">ID</th>
+                                    <th class="px-4 py-2 text-left">名前</th>
+                                    <th class="px-4 py-2 text-left">メール</th>
+                                    <th class="px-4 py-2 text-left">役割</th>
+                                    <th class="px-4 py-2 text-left">登録日</th>
+                                    <th class="px-4 py-2 text-left">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-list">
+                                <tr><td colspan="6" class="text-center py-4">読み込み中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 予約管理 -->
+                <div id="bookings-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">予約一覧</h3>
+                        <button onclick="refreshBookings()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            <i class="fas fa-sync mr-2"></i>更新
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">ID</th>
+                                    <th class="px-4 py-2 text-left">ユーザー</th>
+                                    <th class="px-4 py-2 text-left">道場</th>
+                                    <th class="px-4 py-2 text-left">日時</th>
+                                    <th class="px-4 py-2 text-left">クラス</th>
+                                    <th class="px-4 py-2 text-left">ステータス</th>
+                                    <th class="px-4 py-2 text-left">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bookings-list">
+                                <tr><td colspan="7" class="text-center py-4">読み込み中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 商品管理 -->
+                <div id="products-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">商品一覧</h3>
+                        <button onclick="addProduct()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                            <i class="fas fa-plus mr-2"></i>新規追加
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="products-list">
+                        <div class="text-center py-8">読み込み中...</div>
+                    </div>
+                </div>
+
+                <!-- 動画管理 -->
+                <div id="videos-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">動画一覧</h3>
+                        <button onclick="addVideo()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                            <i class="fas fa-plus mr-2"></i>新規追加
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="videos-list">
+                        <div class="text-center py-8">読み込み中...</div>
+                    </div>
+                </div>
+
+                <!-- 道場管理 -->
+                <div id="dojos-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">道場一覧</h3>
+                        <button onclick="addDojo()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                            <i class="fas fa-plus mr-2"></i>新規追加
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">ID</th>
+                                    <th class="px-4 py-2 text-left">道場名</th>
+                                    <th class="px-4 py-2 text-left">住所</th>
+                                    <th class="px-4 py-2 text-left">電話番号</th>
+                                    <th class="px-4 py-2 text-left">ウェブサイト</th>
+                                    <th class="px-4 py-2 text-left">インストラクター</th>
+                                    <th class="px-4 py-2 text-left">定員</th>
+                                    <th class="px-4 py-2 text-left">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dojos-list">
+                                <tr><td colspan="8" class="text-center py-4">読み込み中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- インストラクター管理 -->
+                <div id="instructors-tab" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold">インストラクター一覧</h3>
+                        <button onclick="addInstructor()" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                            <i class="fas fa-plus mr-2"></i>新規追加
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">ID</th>
+                                    <th class="px-4 py-2 text-left">名前</th>
+                                    <th class="px-4 py-2 text-left">メール</th>
+                                    <th class="px-4 py-2 text-left">帯</th>
+                                    <th class="px-4 py-2 text-left">経験年数</th>
+                                    <th class="px-4 py-2 text-left">所属道場</th>
+                                    <th class="px-4 py-2 text-left">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="instructors-list">
+                                <tr><td colspan="7" class="text-center py-4">読み込み中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 収益配分設定 -->
+                <div id="revenue-tab" class="tab-content hidden">
+                    <h3 class="text-xl font-bold mb-4">道場デフォルト設定</h3>
+                    <div class="space-y-4 mb-8">
+                        <div id="dojo-revenue-settings" class="space-y-4">
+                            <!-- 道場設定がここに動的に表示される -->
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-4">インストラクター個別設定</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="px-4 py-2 text-left">インストラクター</th>
+                                    <th class="px-4 py-2 text-left">道場</th>
+                                    <th class="px-4 py-2 text-left">インストラクター取り分</th>
+                                    <th class="px-4 py-2 text-left">道場取り分</th>
+                                    <th class="px-4 py-2 text-left">使用料</th>
+                                    <th class="px-4 py-2 text-left">備考</th>
+                                    <th class="px-4 py-2 text-left">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="instructor-revenue-list">
+                                <tr><td colspan="7" class="text-center py-4">読み込み中...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QRコード機能セクション -->
+        <div class="bg-white rounded-lg shadow-lg p-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">
+                <i class="fas fa-qrcode mr-2"></i>クイックアクセス QRコード
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="qr-container text-center">
+                    <h3 class="font-bold mb-3">道場予約管理</h3>
+                    <div id="qr-bookings" class="mb-3"></div>
+                    <p class="text-sm text-gray-600">予約の確認・変更</p>
+                </div>
+                <div class="qr-container text-center">
+                    <h3 class="font-bold mb-3">会員管理</h3>
+                    <div id="qr-members" class="mb-3"></div>
+                    <p class="text-sm text-gray-600">会員情報の編集</p>
+                </div>
+                <div class="qr-container text-center">
+                    <h3 class="font-bold mb-3">売上分析</h3>
+                    <div id="qr-analytics" class="mb-3"></div>
+                    <p class="text-sm text-gray-600">詳細レポート</p>
+                </div>
+                <div class="qr-container text-center">
+                    <h3 class="font-bold mb-3">商品管理</h3>
+                    <div id="qr-products" class="mb-3"></div>
+                    <p class="text-sm text-gray-600">在庫管理</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- モーダル -->
+    <div id="modal" class="modal">
+        <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-title" class="text-xl font-bold"></h3>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'https://api.jitsuflow.app';
+        let authToken = localStorage.getItem('jitsuflow_admin_token');
+
+        // 初期化
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!authToken) {
+                showLoginForm();
+            } else {
+                loadDashboard();
+                showTab('users');
+            }
+            // QRコード生成を遅延実行
+            setTimeout(generateQRCodes, 1000);
+        });
+
+        // ログイン処理
+        async function login(email, password) {
+            try {
+                const response = await fetch(`${API_BASE}/api/users/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    authToken = data.token;
+                    localStorage.setItem('jitsuflow_admin_token', authToken);
+                    
+                    // Parse token to get role (for future use)
+                    // const tokenData = JSON.parse(atob(authToken));
+                    
+                    closeModal();
+                    loadDashboard();
+                    showTab('users');
+                } else {
+                    alert('ログインに失敗しました');
+                }
+            } catch (error) {
+                alert('エラーが発生しました: ' + error.message);
+            }
+        }
+
+        // ログアウト
+        function logout() {
+            localStorage.removeItem('jitsuflow_admin_token');
+            authToken = null;
+            location.reload();
+        }
+
+        // ログインフォーム表示
+        function showLoginForm() {
+            document.getElementById('modal-title').textContent = 'ログイン';
+            document.getElementById('modal-content').innerHTML = `
+                <form onsubmit="event.preventDefault(); login(this.email.value, this.password.value)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">メールアドレス</label>
+                        <input type="email" name="email" required class="w-full border rounded px-3 py-2" value="admin@jitsuflow.app">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">パスワード</label>
+                        <input type="password" name="password" required class="w-full border rounded px-3 py-2" value="admin123">
+                    </div>
+                    <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 w-full">
+                        ログイン
+                    </button>
+                </form>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        // ダッシュボード読み込み
+        async function loadDashboard() {
+            // 統計情報の取得
+            fetchStats();
+        }
+
+        // 統計情報取得
+        async function fetchStats() {
+            try {
+                // ユーザー数
+                const usersResponse = await fetch(`${API_BASE}/api/users`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (usersResponse.ok) {
+                    const users = await usersResponse.json();
+                    document.getElementById('total-users').textContent = users.length;
+                }
+
+                // 予約数
+                const bookingsResponse = await fetch(`${API_BASE}/api/dojo/bookings`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (bookingsResponse.ok) {
+                    const data = await bookingsResponse.json();
+                    const bookings = data.bookings || [];
+                    document.getElementById('total-bookings').textContent = bookings.length;
+                }
+
+                // 商品数
+                const productsResponse = await fetch(`${API_BASE}/api/products`);
+                if (productsResponse.ok) {
+                    const data = await productsResponse.json();
+                    const products = data.products || [];
+                    document.getElementById('total-products').textContent = products.length;
+                }
+
+                // 動画数
+                const videosResponse = await fetch(`${API_BASE}/api/videos`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                if (videosResponse.ok) {
+                    const data = await videosResponse.json();
+                    const videos = data.videos || [];
+                    document.getElementById('total-videos').textContent = videos.length;
+                }
+
+                // 道場数
+                const dojosResponse = await fetch(`${API_BASE}/api/dojos`);
+                if (dojosResponse.ok) {
+                    const dojos = await dojosResponse.json();
+                    document.getElementById('total-dojos').textContent = dojos.length;
+                }
+            } catch (error) {
+                console.error('Stats fetch error:', error);
+            }
+        }
+
+        // タブ切り替え
+        function showTab(tabName) {
+            // タブボタンのスタイル更新
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('text-purple-600', 'border-purple-600');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('text-purple-600', 'border-purple-600');
+                }
+            });
+
+            // タブコンテンツの表示切り替え
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+
+            // データ読み込み
+            switch(tabName) {
+                case 'users':
+                    loadUsers();
+                    break;
+                case 'bookings':
+                    loadBookings();
+                    break;
+                case 'products':
+                    loadProducts();
+                    break;
+                case 'videos':
+                    loadVideos();
+                    break;
+                case 'dojos':
+                    loadDojos();
+                    break;
+                case 'instructors':
+                    loadInstructors();
+                    break;
+                case 'revenue':
+                    loadRevenueSettings();
+                    break;
+            }
+        }
+
+        // ユーザー一覧読み込み
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/api/users`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const users = await response.json();
+                    const tbody = document.getElementById('users-list');
+                    tbody.innerHTML = users.map(user => `
+                        <tr>
+                            <td class="px-4 py-2">${user.id}</td>
+                            <td class="px-4 py-2">${user.name}</td>
+                            <td class="px-4 py-2">${user.email}</td>
+                            <td class="px-4 py-2">
+                                <span class="px-2 py-1 text-xs rounded ${
+                                    user.role === 'admin' ? 'bg-red-100 text-red-700' :
+                                    user.role === 'instructor' ? 'bg-blue-100 text-blue-700' :
+                                    'bg-gray-100 text-gray-700'
+                                }">${user.role}</span>
+                            </td>
+                            <td class="px-4 py-2">${new Date(user.created_at).toLocaleDateString('ja-JP')}</td>
+                            <td class="px-4 py-2">
+                                <button onclick="editUser(${user.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Users fetch error:', error);
+            }
+        }
+
+        // 予約一覧読み込み
+        async function loadBookings() {
+            try {
+                const response = await fetch(`${API_BASE}/api/dojo/bookings`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const bookings = data.bookings || [];
+                    const tbody = document.getElementById('bookings-list');
+                    tbody.innerHTML = bookings.map(booking => `
+                        <tr>
+                            <td class="px-4 py-2">${booking.id}</td>
+                            <td class="px-4 py-2">${booking.user_name || 'ユーザー'}</td>
+                            <td class="px-4 py-2">${booking.dojo_name || '道場'}</td>
+                            <td class="px-4 py-2">${booking.class_date} ${booking.class_time}</td>
+                            <td class="px-4 py-2">${booking.class_type}</td>
+                            <td class="px-4 py-2">
+                                <span class="px-2 py-1 text-xs rounded ${
+                                    booking.status === 'confirmed' ? 'bg-green-100 text-green-700' :
+                                    booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                    'bg-yellow-100 text-yellow-700'
+                                }">${booking.status}</span>
+                            </td>
+                            <td class="px-4 py-2">
+                                <button onclick="cancelBooking(${booking.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('') || '<tr><td colspan="7" class="text-center py-4">予約がありません</td></tr>';
+                }
+            } catch (error) {
+                console.error('Bookings fetch error:', error);
+            }
+        }
+
+        // 商品一覧読み込み
+        async function loadProducts() {
+            try {
+                const response = await fetch(`${API_BASE}/api/products`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const products = data.products || [];
+                    const container = document.getElementById('products-list');
+                    container.innerHTML = products.map(product => `
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <img src="${product.image_url || 'https://via.placeholder.com/300x200'}" alt="${product.name}" class="w-full h-48 object-cover rounded mb-4" onerror="this.src='https://via.placeholder.com/300x200'">
+                            <h4 class="font-bold mb-2">${product.name}</h4>
+                            <p class="text-gray-600 text-sm mb-2">${product.brand || product.category}</p>
+                            <p class="text-purple-600 font-bold mb-2">¥${product.price ? product.price.toLocaleString() : '0'}</p>
+                            <p class="text-sm text-gray-500 mb-3">在庫: ${product.stock_quantity || 0}</p>
+                            <div class="flex gap-2">
+                                <button onclick="editProduct(${product.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                    編集
+                                </button>
+                                <button onclick="deleteProduct(${product.id})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                                    削除
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Products fetch error:', error);
+            }
+        }
+
+        // 動画一覧読み込み
+        async function loadVideos() {
+            try {
+                const response = await fetch(`${API_BASE}/api/videos`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const videos = data.videos || [];
+                    const container = document.getElementById('videos-list');
+                    container.innerHTML = videos.map(video => `
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="w-full h-48 bg-gray-200 rounded mb-4 flex items-center justify-center">
+                                <i class="fas fa-video text-4xl text-gray-400"></i>
+                            </div>
+                            <h4 class="font-bold mb-2">${video.title}</h4>
+                            <p class="text-sm text-gray-600 mb-2">${video.category}</p>
+                            <p class="text-sm mb-3">
+                                ${video.is_premium ? 
+                                    '<span class="bg-purple-100 text-purple-700 px-2 py-1 rounded">プレミアム</span>' : 
+                                    '<span class="bg-gray-100 text-gray-700 px-2 py-1 rounded">無料</span>'
+                                }
+                            </p>
+                            <div class="flex gap-2">
+                                <button onclick="editVideo(${video.id})" class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+                                    編集
+                                </button>
+                                <button onclick="deleteVideo(${video.id})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">
+                                    削除
+                                </button>
+                            </div>
+                        </div>
+                    `).join('') || '<div class="text-center py-8">動画がありません</div>';
+                }
+            } catch (error) {
+                console.error('Videos fetch error:', error);
+            }
+        }
+
+        // 編集・削除機能
+        async function editUser(id) {
+            // 実装予定
+            alert('ユーザー編集機能は実装中です');
+        }
+
+        async function deleteUser(id) {
+            if (confirm('このユーザーを削除しますか？')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/users/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        loadUsers();
+                        fetchStats();
+                    }
+                } catch (error) {
+                    alert('削除に失敗しました');
+                }
+            }
+        }
+
+        async function cancelBooking(id) {
+            if (confirm('この予約をキャンセルしますか？')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/bookings/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        loadBookings();
+                        fetchStats();
+                    }
+                } catch (error) {
+                    alert('キャンセルに失敗しました');
+                }
+            }
+        }
+
+        async function editProduct(id) {
+            const product = await fetch(`${API_BASE}/api/products/${id}`).then(r => r.json());
+            
+            document.getElementById('modal-title').textContent = '商品編集';
+            document.getElementById('modal-content').innerHTML = `
+                <form onsubmit="event.preventDefault(); updateProduct(${id})">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">商品名</label>
+                        <input type="text" id="edit-name" value="${product.name}" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">価格</label>
+                        <input type="number" id="edit-price" value="${product.price}" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">在庫数</label>
+                        <input type="number" id="edit-stock" value="${product.stock_quantity}" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+                        更新
+                    </button>
+                </form>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        async function updateProduct(id) {
+            const data = {
+                name: document.getElementById('edit-name').value,
+                price: parseInt(document.getElementById('edit-price').value),
+                stock_quantity: parseInt(document.getElementById('edit-stock').value)
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    closeModal();
+                    loadProducts();
+                    fetchStats();
+                }
+            } catch (error) {
+                alert('更新に失敗しました');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('この商品を削除しますか？')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/products/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        loadProducts();
+                        fetchStats();
+                    }
+                } catch (error) {
+                    alert('削除に失敗しました');
+                }
+            }
+        }
+
+        async function deleteVideo(id) {
+            if (confirm('この動画を削除しますか？')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/videos/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        loadVideos();
+                        fetchStats();
+                    }
+                } catch (error) {
+                    alert('削除に失敗しました');
+                }
+            }
+        }
+
+        // モーダル操作
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // QRコード生成
+        function generateQRCodes() {
+            // QRCodeライブラリが読み込まれているか確認
+            if (typeof QRCode === 'undefined') {
+                console.warn('QRCode library not loaded yet');
+                return;
+            }
+            
+            const qrOptions = {
+                width: 150,
+                height: 150,
+                colorDark: "#000000",
+                colorLight: "#FFFFFF",
+                correctLevel: QRCode.CorrectLevel.H
+            };
+
+            const deepLinks = {
+                bookings: "jitsuflow://admin/bookings",
+                members: "jitsuflow://admin/members",
+                analytics: "jitsuflow://admin/analytics",
+                products: "jitsuflow://admin/products"
+            };
+
+            Object.entries(deepLinks).forEach(([key, url]) => {
+                const element = document.getElementById(`qr-${key}`);
+                if (element) {
+                    new QRCode(element, {
+                        text: url,
+                        width: qrOptions.width,
+                        height: qrOptions.height,
+                        colorDark: qrOptions.colorDark,
+                        colorLight: qrOptions.colorLight
+                    });
+                }
+            });
+        }
+
+        // リフレッシュ機能
+        function refreshBookings() {
+            loadBookings();
+        }
+
+        // 道場一覧読み込み
+        async function loadDojos() {
+            try {
+                const response = await fetch(`${API_BASE}/api/dojos`);
+                
+                if (response.ok) {
+                    const dojos = await response.json();
+                    const tbody = document.getElementById('dojos-list');
+                    tbody.innerHTML = dojos.map(dojo => `
+                        <tr>
+                            <td class="px-4 py-2">${dojo.id}</td>
+                            <td class="px-4 py-2 font-semibold">${dojo.name}</td>
+                            <td class="px-4 py-2">${dojo.address}</td>
+                            <td class="px-4 py-2">${dojo.phone || '-'}</td>
+                            <td class="px-4 py-2">
+                                ${dojo.website ? `<a href="${dojo.website}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                    <i class="fas fa-external-link-alt mr-1"></i>${new URL(dojo.website).hostname}
+                                </a>` : '-'}
+                            </td>
+                            <td class="px-4 py-2">${dojo.instructor || '-'}</td>
+                            <td class="px-4 py-2">${dojo.max_capacity || 20}名</td>
+                            <td class="px-4 py-2">
+                                <button onclick="editDojo(${dojo.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteDojo(${dojo.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('') || '<tr><td colspan="8" class="text-center py-4">道場がありません</td></tr>';
+                }
+            } catch (error) {
+                console.error('Dojos fetch error:', error);
+            }
+        }
+
+        // 道場編集
+        async function editDojo(id) {
+            alert('道場編集機能は実装中です');
+        }
+
+        // 道場削除
+        async function deleteDojo(id) {
+            if (confirm('この道場を削除しますか？')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/dojos/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        loadDojos();
+                    }
+                } catch (error) {
+                    alert('削除に失敗しました');
+                }
+            }
+        }
+
+        // 追加機能（実装予定）
+        function addUser() {
+            alert('ユーザー追加機能は実装中です');
+        }
+
+        function addProduct() {
+            alert('商品追加機能は実装中です');
+        }
+
+        function addVideo() {
+            alert('動画追加機能は実装中です');
+        }
+
+        function addDojo() {
+            alert('道場追加機能は実装中です');
+        }
+
+        function editVideo(id) {
+            alert('動画編集機能は実装中です');
+        }
+
+        // インストラクター一覧読み込み
+        async function loadInstructors() {
+            try {
+                const response = await fetch(`${API_BASE}/api/instructors`);
+                
+                if (response.ok) {
+                    const instructors = await response.json();
+                    const tbody = document.getElementById('instructors-list');
+                    
+                    // 各インストラクターの所属道場を取得
+                    const instructorsWithDojos = await Promise.all(instructors.map(async (instructor) => {
+                        const dojosResponse = await fetch(`${API_BASE}/api/instructors/${instructor.id}/dojos`);
+                        if (dojosResponse.ok) {
+                            const dojos = await dojosResponse.json();
+                            instructor.dojos = dojos;
+                        } else {
+                            instructor.dojos = [];
+                        }
+                        return instructor;
+                    }));
+                    
+                    tbody.innerHTML = instructorsWithDojos.map(instructor => `
+                        <tr>
+                            <td class="px-4 py-2">${instructor.id}</td>
+                            <td class="px-4 py-2 font-semibold">${instructor.name}</td>
+                            <td class="px-4 py-2">${instructor.email || '-'}</td>
+                            <td class="px-4 py-2">
+                                <span class="px-2 py-1 text-xs rounded ${
+                                    instructor.belt_rank.includes('黒帯') ? 'bg-gray-800 text-white' :
+                                    instructor.belt_rank.includes('茶帯') ? 'bg-amber-700 text-white' :
+                                    instructor.belt_rank.includes('紫帯') ? 'bg-purple-700 text-white' :
+                                    'bg-gray-400 text-white'
+                                }">${instructor.belt_rank}</span>
+                            </td>
+                            <td class="px-4 py-2">${instructor.years_experience || 0}年</td>
+                            <td class="px-4 py-2">
+                                ${instructor.dojos.map(d => `
+                                    <span class="text-xs ${d.role === 'head_instructor' ? 'font-bold text-purple-600' : 'text-gray-600'}">
+                                        ${d.dojo_name}${d.role === 'head_instructor' ? '(主任)' : ''}
+                                    </span>
+                                `).join(', ') || '-'}
+                            </td>
+                            <td class="px-4 py-2">
+                                <button onclick="editInstructor(${instructor.id})" class="text-blue-600 hover:text-blue-800 mr-2">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="deleteInstructor(${instructor.id})" class="text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `).join('') || '<tr><td colspan="7" class="text-center py-4">インストラクターがいません</td></tr>';
+                }
+            } catch (error) {
+                console.error('Instructors fetch error:', error);
+                // ダミーデータで表示
+                const tbody = document.getElementById('instructors-list');
+                tbody.innerHTML = `
+                    <tr>
+                        <td class="px-4 py-2">1</td>
+                        <td class="px-4 py-2 font-semibold">山田太郎</td>
+                        <td class="px-4 py-2">yamada@jitsuflow.app</td>
+                        <td class="px-4 py-2">
+                            <span class="px-2 py-1 text-xs rounded bg-gray-800 text-white">黒帯3段</span>
+                        </td>
+                        <td class="px-4 py-2">15年</td>
+                        <td class="px-4 py-2">
+                            <span class="text-xs font-bold text-purple-600">YAWARA東京(主任)</span>, 
+                            <span class="text-xs text-gray-600">SWEEP東京</span>
+                        </td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructor(1)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructor(1)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">2</td>
+                        <td class="px-4 py-2 font-semibold">鈴木一郎</td>
+                        <td class="px-4 py-2">suzuki@jitsuflow.app</td>
+                        <td class="px-4 py-2">
+                            <span class="px-2 py-1 text-xs rounded bg-gray-800 text-white">黒帯2段</span>
+                        </td>
+                        <td class="px-4 py-2">12年</td>
+                        <td class="px-4 py-2">
+                            <span class="text-xs font-bold text-purple-600">SWEEP東京(主任)</span>
+                        </td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructor(2)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructor(2)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">3</td>
+                        <td class="px-4 py-2 font-semibold">佐藤健</td>
+                        <td class="px-4 py-2">sato@jitsuflow.app</td>
+                        <td class="px-4 py-2">
+                            <span class="px-2 py-1 text-xs rounded bg-gray-800 text-white">黒帯1段</span>
+                        </td>
+                        <td class="px-4 py-2">8年</td>
+                        <td class="px-4 py-2">
+                            <span class="text-xs text-gray-600">YAWARA東京</span>, 
+                            <span class="text-xs text-gray-600">OverLimit札幌</span>
+                        </td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructor(3)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructor(3)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">4</td>
+                        <td class="px-4 py-2 font-semibold">北野武</td>
+                        <td class="px-4 py-2">kitano@jitsuflow.app</td>
+                        <td class="px-4 py-2">
+                            <span class="px-2 py-1 text-xs rounded bg-amber-700 text-white">茶帯</span>
+                        </td>
+                        <td class="px-4 py-2">5年</td>
+                        <td class="px-4 py-2">
+                            <span class="text-xs font-bold text-purple-600">OverLimit札幌(主任)</span>
+                        </td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructor(4)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructor(4)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">5</td>
+                        <td class="px-4 py-2 font-semibold">田中美咲</td>
+                        <td class="px-4 py-2">tanaka@jitsuflow.app</td>
+                        <td class="px-4 py-2">
+                            <span class="px-2 py-1 text-xs rounded bg-purple-700 text-white">紫帯</span>
+                        </td>
+                        <td class="px-4 py-2">4年</td>
+                        <td class="px-4 py-2">
+                            <span class="text-xs text-gray-600">YAWARA東京</span>, 
+                            <span class="text-xs text-gray-600">SWEEP東京</span>
+                        </td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructor(5)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructor(5)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // インストラクター編集
+        async function editInstructor(id) {
+            try {
+                const response = await fetch(`${API_BASE}/api/instructors/${id}`);
+                if (!response.ok) return;
+                
+                const instructor = await response.json();
+                
+                // 道場リストを取得
+                const dojosResponse = await fetch(`${API_BASE}/api/dojos`);
+                const dojos = await dojosResponse.json();
+                
+                document.getElementById('modal-title').textContent = 'インストラクター編集';
+                document.getElementById('modal-content').innerHTML = `
+                    <form onsubmit="event.preventDefault(); updateInstructor(${id}, this)">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">名前 <span class="text-red-500">*</span></label>
+                            <input type="text" name="name" value="${instructor.name}" required class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">メール</label>
+                            <input type="email" name="email" value="${instructor.email || ''}" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">電話番号</label>
+                            <input type="tel" name="phone" value="${instructor.phone || ''}" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">帯ランク <span class="text-red-500">*</span></label>
+                            <select name="belt_rank" required class="w-full border rounded px-3 py-2">
+                                <option value="黒帯3段" ${instructor.belt_rank === '黒帯3段' ? 'selected' : ''}>黒帯3段</option>
+                                <option value="黒帯2段" ${instructor.belt_rank === '黒帯2段' ? 'selected' : ''}>黒帯2段</option>
+                                <option value="黒帯1段" ${instructor.belt_rank === '黒帯1段' ? 'selected' : ''}>黒帯1段</option>
+                                <option value="茶帯" ${instructor.belt_rank === '茶帯' ? 'selected' : ''}>茶帯</option>
+                                <option value="紫帯" ${instructor.belt_rank === '紫帯' ? 'selected' : ''}>紫帯</option>
+                                <option value="青帯" ${instructor.belt_rank === '青帯' ? 'selected' : ''}>青帯</option>
+                                <option value="白帯" ${instructor.belt_rank === '白帯' ? 'selected' : ''}>白帯</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">経験年数</label>
+                            <input type="number" name="years_experience" value="${instructor.years_experience || 0}" min="0" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">プロフィール</label>
+                            <textarea name="bio" rows="3" class="w-full border rounded px-3 py-2">${instructor.bio || ''}</textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">所属道場</label>
+                            <div class="space-y-2">
+                                ${dojos.map(dojo => {
+                                    const assignment = instructor.dojos?.find(d => d.dojo_id === dojo.id);
+                                    return `
+                                        <div class="flex items-center gap-2">
+                                            <input type="checkbox" name="dojos" value="${dojo.id}" 
+                                                ${assignment ? 'checked' : ''} 
+                                                class="dojo-checkbox" data-dojo-id="${dojo.id}">
+                                            <span>${dojo.name}</span>
+                                            <select name="role_${dojo.id}" class="ml-2 border rounded px-2 py-1" 
+                                                ${!assignment ? 'disabled' : ''}>
+                                                <option value="instructor" ${assignment?.role === 'instructor' ? 'selected' : ''}>インストラクター</option>
+                                                <option value="head_instructor" ${assignment?.role === 'head_instructor' ? 'selected' : ''}>主任インストラクター</option>
+                                            </select>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
+                                更新
+                            </button>
+                            <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+                                キャンセル
+                            </button>
+                        </div>
+                    </form>
+                `;
+                
+                // チェックボックスの状態でロール選択を切り替え
+                document.querySelectorAll('.dojo-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const roleSelect = document.querySelector(`select[name="role_${this.dataset.dojoId}"]`);
+                        roleSelect.disabled = !this.checked;
+                    });
+                });
+                
+                document.getElementById('modal').classList.add('active');
+            } catch (error) {
+                console.error('Load instructor error:', error);
+            }
+        }
+
+        // インストラクター削除
+        async function deleteInstructor(id) {
+            if (confirm('このインストラクターを削除しますか？')) {
+                try {
+                    const response = await fetch(`${API_BASE}/api/instructors/${id}`, {
+                        method: 'DELETE',
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    });
+                    
+                    if (response.ok) {
+                        loadInstructors();
+                    }
+                } catch (error) {
+                    alert('削除に失敗しました');
+                }
+            }
+        }
+
+        // インストラクター追加
+        async function addInstructor() {
+            try {
+                // 道場リストを取得
+                const dojosResponse = await fetch(`${API_BASE}/api/dojos`);
+                const dojos = await dojosResponse.json();
+                
+                document.getElementById('modal-title').textContent = '新規インストラクター追加';
+                document.getElementById('modal-content').innerHTML = `
+                    <form onsubmit="event.preventDefault(); createInstructor(this)">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">名前 <span class="text-red-500">*</span></label>
+                            <input type="text" name="name" required class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">メール</label>
+                            <input type="email" name="email" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">電話番号</label>
+                            <input type="tel" name="phone" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">帯ランク <span class="text-red-500">*</span></label>
+                            <select name="belt_rank" required class="w-full border rounded px-3 py-2">
+                                <option value="">選択してください</option>
+                                <option value="黒帯3段">黒帯3段</option>
+                                <option value="黒帯2段">黒帯2段</option>
+                                <option value="黒帯1段">黒帯1段</option>
+                                <option value="茶帯">茶帯</option>
+                                <option value="紫帯">紫帯</option>
+                                <option value="青帯">青帯</option>
+                                <option value="白帯">白帯</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">経験年数</label>
+                            <input type="number" name="years_experience" value="0" min="0" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">プロフィール</label>
+                            <textarea name="bio" rows="3" class="w-full border rounded px-3 py-2"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">所属道場</label>
+                            <div class="space-y-2">
+                                ${dojos.map(dojo => `
+                                    <div class="flex items-center gap-2">
+                                        <input type="checkbox" name="dojos" value="${dojo.id}" 
+                                            class="dojo-checkbox" data-dojo-id="${dojo.id}">
+                                        <span>${dojo.name}</span>
+                                        <select name="role_${dojo.id}" class="ml-2 border rounded px-2 py-1" disabled>
+                                            <option value="instructor">インストラクター</option>
+                                            <option value="head_instructor">主任インストラクター</option>
+                                        </select>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
+                                追加
+                            </button>
+                            <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+                                キャンセル
+                            </button>
+                        </div>
+                    </form>
+                `;
+                
+                // チェックボックスの状態でロール選択を切り替え
+                document.querySelectorAll('.dojo-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', function() {
+                        const roleSelect = document.querySelector(`select[name="role_${this.dataset.dojoId}"]`);
+                        roleSelect.disabled = !this.checked;
+                    });
+                });
+                
+                document.getElementById('modal').classList.add('active');
+            } catch (error) {
+                console.error('Load dojos error:', error);
+            }
+        }
+
+        // インストラクター作成
+        async function createInstructor(form) {
+            try {
+                const formData = new FormData(form);
+                const dojoCheckboxes = form.querySelectorAll('input[name="dojos"]:checked');
+                const dojos = [];
+                
+                dojoCheckboxes.forEach(checkbox => {
+                    const dojoId = checkbox.value;
+                    const role = form.querySelector(`select[name="role_${dojoId}"]`).value;
+                    dojos.push({ dojo_id: dojoId, role });
+                });
+                
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email') || null,
+                    phone: formData.get('phone') || null,
+                    belt_rank: formData.get('belt_rank'),
+                    years_experience: parseInt(formData.get('years_experience')) || 0,
+                    bio: formData.get('bio') || null,
+                    dojos: dojos
+                };
+                
+                const response = await fetch(`${API_BASE}/api/instructors`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    closeModal();
+                    loadInstructors();
+                } else {
+                    const error = await response.json();
+                    alert('エラー: ' + error.message);
+                }
+            } catch (error) {
+                console.error('Create instructor error:', error);
+                alert('追加に失敗しました');
+            }
+        }
+
+        // インストラクター更新
+        async function updateInstructor(id, form) {
+            try {
+                const formData = new FormData(form);
+                const dojoCheckboxes = form.querySelectorAll('input[name="dojos"]:checked');
+                const dojos = [];
+                
+                dojoCheckboxes.forEach(checkbox => {
+                    const dojoId = checkbox.value;
+                    const role = form.querySelector(`select[name="role_${dojoId}"]`).value;
+                    dojos.push({ dojo_id: dojoId, role });
+                });
+                
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email') || null,
+                    phone: formData.get('phone') || null,
+                    belt_rank: formData.get('belt_rank'),
+                    years_experience: parseInt(formData.get('years_experience')) || 0,
+                    bio: formData.get('bio') || null,
+                    is_active: 1,
+                    dojos: dojos
+                };
+                
+                const response = await fetch(`${API_BASE}/api/instructors/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    closeModal();
+                    loadInstructors();
+                } else {
+                    const error = await response.json();
+                    alert('エラー: ' + error.message);
+                }
+            } catch (error) {
+                console.error('Update instructor error:', error);
+                alert('更新に失敗しました');
+            }
+        }
+
+        // 収益配分設定読み込み
+        async function loadRevenueSettings() {
+            try {
+                // 道場設定を読み込み
+                const dojosResponse = await fetch(`${API_BASE}/api/dojos`);
+                const dojos = await dojosResponse.json();
+                
+                const dojoSettingsDiv = document.getElementById('dojo-revenue-settings');
+                dojoSettingsDiv.innerHTML = dojos.map(dojo => `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <h4 class="font-semibold text-lg">${dojo.name}</h4>
+                            <button onclick="editDojoRevenue(${dojo.id})" class="text-blue-600 hover:text-blue-800">
+                                <i class="fas fa-edit"></i> 編集
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <span class="text-gray-600">インストラクター取り分:</span>
+                                <span class="font-semibold ml-2" id="dojo-instructor-rate-${dojo.id}">70%</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">道場取り分:</span>
+                                <span class="font-semibold ml-2" id="dojo-rate-${dojo.id}">30%</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">使用料:</span>
+                                <span class="font-semibold ml-2" id="dojo-usage-fee-${dojo.id}">¥3,000</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // インストラクター個別設定を読み込み
+                loadInstructorRevenueSettings();
+                
+            } catch (error) {
+                console.error('Load revenue settings error:', error);
+            }
+        }
+
+        // インストラクター個別収益設定読み込み
+        async function loadInstructorRevenueSettings() {
+            try {
+                const instructorsResponse = await fetch(`${API_BASE}/api/instructors`);
+                const instructors = await instructorsResponse.json();
+                
+                const tbody = document.getElementById('instructor-revenue-list');
+                
+                // ダミーデータで表示（APIエンドポイントが実装されるまで）
+                tbody.innerHTML = `
+                    <tr>
+                        <td class="px-4 py-2">一木</td>
+                        <td class="px-4 py-2">YAWARA東京</td>
+                        <td class="px-4 py-2 font-semibold text-green-600">80%</td>
+                        <td class="px-4 py-2">20%</td>
+                        <td class="px-4 py-2">¥2,000</td>
+                        <td class="px-4 py-2">特別レート</td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructorRevenue(1, 1)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructorRevenue(1, 1)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">村田</td>
+                        <td class="px-4 py-2">YAWARA東京</td>
+                        <td class="px-4 py-2 font-semibold text-green-600">85%</td>
+                        <td class="px-4 py-2">15%</td>
+                        <td class="px-4 py-2">¥1,500</td>
+                        <td class="px-4 py-2">特別レート</td>
+                        <td class="px-4 py-2">
+                            <button onclick="editInstructorRevenue(7, 1)" class="text-blue-600 hover:text-blue-800 mr-2">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteInstructorRevenue(7, 1)" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            } catch (error) {
+                console.error('Load instructor revenue settings error:', error);
+            }
+        }
+
+        // 道場収益設定編集
+        function editDojoRevenue(dojoId) {
+            document.getElementById('modal-title').textContent = '道場収益設定編集';
+            document.getElementById('modal-content').innerHTML = `
+                <form onsubmit="event.preventDefault(); updateDojoRevenue(${dojoId}, this)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">インストラクター取り分 (%)</label>
+                        <input type="number" name="instructor_rate" value="70" min="0" max="100" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">道場取り分 (%)</label>
+                        <input type="number" name="dojo_rate" value="30" min="0" max="100" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">使用料 (円)</label>
+                        <input type="number" name="usage_fee" value="3000" min="0" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
+                            更新
+                        </button>
+                        <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+                            キャンセル
+                        </button>
+                    </div>
+                </form>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        // インストラクター個別収益設定編集
+        function editInstructorRevenue(instructorId, dojoId) {
+            document.getElementById('modal-title').textContent = 'インストラクター個別収益設定';
+            document.getElementById('modal-content').innerHTML = `
+                <form onsubmit="event.preventDefault(); updateInstructorRevenue(${instructorId}, ${dojoId}, this)">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">インストラクター取り分 (%)</label>
+                        <input type="number" name="instructor_rate" value="80" min="0" max="100" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">道場取り分 (%)</label>
+                        <input type="number" name="dojo_rate" value="20" min="0" max="100" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">使用料 (円)</label>
+                        <input type="number" name="usage_fee" value="2000" min="0" required class="w-full border rounded px-3 py-2">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 mb-2">備考</label>
+                        <textarea name="notes" rows="2" class="w-full border rounded px-3 py-2"></textarea>
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700">
+                            更新
+                        </button>
+                        <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400">
+                            キャンセル
+                        </button>
+                    </div>
+                </form>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        // 道場収益設定更新（実装予定）
+        function updateDojoRevenue(dojoId, form) {
+            alert('道場収益設定の更新機能は実装中です');
+            closeModal();
+        }
+
+        // インストラクター個別収益設定更新（実装予定）
+        function updateInstructorRevenue(instructorId, dojoId, form) {
+            alert('インストラクター個別収益設定の更新機能は実装中です');
+            closeModal();
+        }
+
+        // インストラクター個別収益設定削除（実装予定）
+        function deleteInstructorRevenue(instructorId, dojoId) {
+            if (confirm('この個別設定を削除しますか？')) {
+                alert('削除機能は実装中です');
+            }
+        }
+    </script>
+</body>
+</html>

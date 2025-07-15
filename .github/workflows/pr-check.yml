@@ -1,0 +1,104 @@
+name: Pull Request Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  # PR Title Check
+  pr-title:
+    name: PR Title Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: amannn/action-semantic-pull-request@v5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        types: |
+          feat
+          fix
+          docs
+          style
+          refactor
+          test
+          chore
+          perf
+          ci
+          build
+          revert
+
+  # Code Quality Check
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    
+    - name: Install dependencies
+      run: |
+        flutter pub get
+        npm ci
+    
+    - name: Flutter format check
+      run: flutter format --set-exit-if-changed .
+    
+    - name: Flutter analyze
+      run: flutter analyze --no-fatal-infos
+    
+    - name: ESLint check
+      run: npm run lint
+    
+    - name: Check for secrets
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: ${{ github.event.repository.default_branch }}
+        head: HEAD
+
+  # Size Check
+  size-check:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+    
+    - name: Build and check size
+      run: |
+        flutter build web --release
+        echo "### 📊 Bundle Size Report" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
+        echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+        find build/web -name "*.js" -o -name "*.css" | while read file; do
+          size=$(du -h "$file" | cut -f1)
+          echo "| ${file#build/web/} | $size |" >> $GITHUB_STEP_SUMMARY
+        done
+
+  # Dependency Review
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/dependency-review-action@v3
+      with:
+        fail-on-severity: moderate

@@ -1,0 +1,14 @@
+name = "jitsuflow-www-redirect"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[[routes]]
+pattern = "www.jitsuflow.app/*"
+zone_name = "jitsuflow.app"
+
+[env.production]
+name = "jitsuflow-www-redirect-prod"
+
+[[env.production.routes]]
+pattern = "www.jitsuflow.app/*"
+zone_name = "jitsuflow.app"

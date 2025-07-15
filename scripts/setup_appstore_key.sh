@@ -1,0 +1,41 @@
+#!/bin/bash
+# App Store Connect API Key設定スクリプト
+
+echo "🔑 App Store Connect API Key設定"
+echo "================================="
+echo ""
+echo "設定情報:"
+echo "  Key ID: 088414"
+echo "  Issuer ID: 408133"
+echo ""
+echo "📱 次の手順でAPIキーをダウンロードしてください:"
+echo ""
+echo "1. App Store Connectにログイン"
+echo "   https://appstoreconnect.apple.com/"
+echo ""
+echo "2. ユーザーとアクセス → キー に移動"
+echo ""
+echo "3. 「キーを生成」または既存のキー（088414）をクリック"
+echo ""
+echo "4. 以下の設定でキーを作成（既に作成済みの場合はスキップ）:"
+echo "   - キー名: JitsuFlow Fastlane"
+echo "   - アクセス: App Manager"
+echo ""
+echo "5. AuthKey_088414.p8ファイルをダウンロード"
+echo ""
+echo "6. ダウンロードしたファイルを以下の場所に配置:"
+echo "   /Users/yuki/jitsuflow/fastlane/authkey/AuthKey_088414.p8"
+echo ""
+echo "⚠️  重要: このファイルは一度しかダウンロードできません！"
+echo ""
+
+# authkeyディレクトリが存在しない場合は作成
+mkdir -p /Users/yuki/jitsuflow/fastlane/authkey
+
+echo "✅ authkeyディレクトリを作成しました"
+echo ""
+echo "APIキーファイルを配置したら、以下のコマンドでアップロードを実行:"
+echo ""
+echo "  make ios-metadata    # メタデータのみアップロード"
+echo "  make ios-release     # 審査提出"
+echo ""

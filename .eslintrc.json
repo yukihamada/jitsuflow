@@ -1,0 +1,30 @@
+{
+  "env": {
+    "es2022": true,
+    "node": true,
+    "worker": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-console": "off",
+    "semi": ["error", "always"],
+    "quotes": ["error", "single"],
+    "indent": ["error", 2],
+    "no-trailing-spaces": "error",
+    "eol-last": ["error", "always"],
+    "max-len": ["warn", { "code": 120 }]
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    ".wrangler/",
+    "admin-dashboard/",
+    "migrations/",
+    "test/"
+  ]
+}

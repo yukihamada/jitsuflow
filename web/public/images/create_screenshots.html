@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JitsuFlow Screenshots</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .screenshot-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .iphone-frame {
+            width: 300px;
+            height: 600px;
+            background-color: #1a1a1a;
+            border-radius: 40px;
+            padding: 10px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .screen {
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* ステータスバー */
+        .status-bar {
+            height: 44px;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            font-size: 12px;
+        }
+        
+        .time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        /* ホーム画面 */
+        .home-screen .content {
+            padding: 20px;
+            background-color: #f5f5f5;
+            height: calc(100% - 44px);
+        }
+        
+        .home-header {
+            background-color: #1B5E20;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .dojo-card {
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .dojo-name {
+            font-weight: bold;
+            color: #1B5E20;
+            margin-bottom: 5px;
+        }
+        
+        /* 予約画面 */
+        .booking-screen .content {
+            padding: 20px;
+            background-color: white;
+            height: calc(100% - 44px);
+        }
+        
+        .calendar {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1B5E20;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        
+        .calendar-day.selected {
+            background-color: #1B5E20;
+            color: white;
+        }
+        
+        /* 動画画面 */
+        .video-screen .content {
+            padding: 20px;
+            background-color: #f5f5f5;
+            height: calc(100% - 44px);
+        }
+        
+        .video-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #1B5E20, #2E7D32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+        
+        .video-info {
+            padding: 10px;
+        }
+        
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .video-badge {
+            display: inline-block;
+            background-color: #FFD700;
+            color: #333;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+        }
+        
+        /* プロフィール画面 */
+        .profile-screen .content {
+            padding: 20px;
+            background-color: white;
+            height: calc(100% - 44px);
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background-color: #1B5E20;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+        
+        .skill-section {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .skill-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .skill-bar {
+            width: 100px;
+            height: 8px;
+            background-color: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .skill-fill {
+            height: 100%;
+            background-color: #1B5E20;
+        }
+        
+        /* ボトムナビゲーション */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+        }
+        
+        .nav-item.active {
+            color: #1B5E20;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screenshot-container">
+        <!-- ホーム画面 -->
+        <div class="iphone-frame">
+            <div class="screen home-screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">📶 📶 🔋</div>
+                </div>
+                <div class="content">
+                    <div class="home-header">
+                        <h2 style="margin: 0;">JitsuFlow</h2>
+                        <p style="margin: 5px 0; opacity: 0.9;">ようこそ、田中さん</p>
+                    </div>
+                    <h3 style="color: #1B5E20; margin-bottom: 15px;">近くの道場</h3>
+                    <div class="dojo-card">
+                        <div class="dojo-name">YAWARA JIU-JITSU ACADEMY</div>
+                        <div style="font-size: 12px; color: #666;">渋谷区神宮前 • 徒歩5分</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 5px;">本日19:00〜 空きあり</div>
+                    </div>
+                    <div class="dojo-card">
+                        <div class="dojo-name">Over Limit Sapporo</div>
+                        <div style="font-size: 12px; color: #666;">札幌市中央区 • 2.5km</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 5px;">本日20:00〜 残り2枠</div>
+                    </div>
+                    <div class="dojo-card">
+                        <div class="dojo-name">スイープ</div>
+                        <div style="font-size: 12px; color: #666;">千駄ヶ谷 • 徒歩8分</div>
+                        <div style="font-size: 11px; color: #888; margin-top: 5px;">明日15:00〜 空きあり</div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item active">
+                        <div class="nav-icon">🏠</div>
+                        <div>ホーム</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📅</div>
+                        <div>予約</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📹</div>
+                        <div>動画</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">🛒</div>
+                        <div>ショップ</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">👤</div>
+                        <div>プロフィール</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 予約画面 -->
+        <div class="iphone-frame">
+            <div class="screen booking-screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">📶 📶 🔋</div>
+                </div>
+                <div class="content">
+                    <h2 style="color: #1B5E20; margin-bottom: 20px;">クラス予約</h2>
+                    <div class="calendar">
+                        <div class="calendar-header">2025年7月</div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day">日</div>
+                            <div class="calendar-day">月</div>
+                            <div class="calendar-day">火</div>
+                            <div class="calendar-day">水</div>
+                            <div class="calendar-day">木</div>
+                            <div class="calendar-day">金</div>
+                            <div class="calendar-day">土</div>
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day">3</div>
+                            <div class="calendar-day">4</div>
+                            <div class="calendar-day">5</div>
+                            <div class="calendar-day">6</div>
+                            <div class="calendar-day">7</div>
+                            <div class="calendar-day">8</div>
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day">10</div>
+                            <div class="calendar-day selected">11</div>
+                            <div class="calendar-day">12</div>
+                            <div class="calendar-day">13</div>
+                            <div class="calendar-day">14</div>
+                        </div>
+                    </div>
+                    <h3 style="color: #1B5E20; margin-bottom: 10px;">利用可能なクラス</h3>
+                    <div style="background-color: #f5f5f5; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">ベーシッククラス</div>
+                        <div style="font-size: 12px; color: #666;">19:00 - 20:30 • 村田良蔵</div>
+                        <div style="font-size: 11px; color: #1B5E20; margin-top: 5px;">空きあり</div>
+                    </div>
+                    <div style="background-color: #f5f5f5; padding: 15px; border-radius: 10px;">
+                        <div style="font-weight: bold; margin-bottom: 5px;">アドバンスクラス</div>
+                        <div style="font-size: 12px; color: #666;">20:30 - 22:00 • 諸澤陽斗</div>
+                        <div style="font-size: 11px; color: #ff6b6b; margin-top: 5px;">残り1枠</div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon">🏠</div>
+                        <div>ホーム</div>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">📅</div>
+                        <div>予約</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📹</div>
+                        <div>動画</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">🛒</div>
+                        <div>ショップ</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">👤</div>
+                        <div>プロフィール</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 動画画面 -->
+        <div class="iphone-frame">
+            <div class="screen video-screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">📶 📶 🔋</div>
+                </div>
+                <div class="content">
+                    <h2 style="color: #1B5E20; margin-bottom: 20px;">技術動画</h2>
+                    <div class="video-card">
+                        <div class="video-thumbnail">▶️</div>
+                        <div class="video-info">
+                            <div class="video-title">クローズドガードの基本</div>
+                            <div style="font-size: 12px; color: #666;">村田良蔵 • 13:20</div>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">🔒</div>
+                        <div class="video-info">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div class="video-title">ベリンボロシステム完全解説</div>
+                                <span class="video-badge">プレミアム</span>
+                            </div>
+                            <div style="font-size: 12px; color: #666;">村田良蔵 • 27:00</div>
+                        </div>
+                    </div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">▶️</div>
+                        <div class="video-info">
+                            <div class="video-title">パスガードの基本動作</div>
+                            <div style="font-size: 12px; color: #666;">廣鰭翔大 • 15:20</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon">🏠</div>
+                        <div>ホーム</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📅</div>
+                        <div>予約</div>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">📹</div>
+                        <div>動画</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">🛒</div>
+                        <div>ショップ</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">👤</div>
+                        <div>プロフィール</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- プロフィール画面 -->
+        <div class="iphone-frame">
+            <div class="screen profile-screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">📶 📶 🔋</div>
+                </div>
+                <div class="content">
+                    <div class="profile-header">
+                        <div class="avatar">田</div>
+                        <h2 style="margin: 0;">田中太郎</h2>
+                        <p style="margin: 5px 0; color: #666; font-size: 14px;">白帯 • 6ヶ月</p>
+                    </div>
+                    <h3 style="color: #1B5E20; margin-bottom: 15px;">スキル評価</h3>
+                    <div class="skill-section">
+                        <div class="skill-item">
+                            <span style="font-size: 14px;">引き込み</span>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span style="font-size: 14px;">ガードビルド</span>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span style="font-size: 14px;">クローズドガード三角</span>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span style="font-size: 14px;">サイドコントロール</span>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span style="font-size: 14px;">マウントキープ</span>
+                            <div class="skill-bar">
+                                <div class="skill-fill" style="width: 40%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <div style="background-color: #1B5E20; color: white; padding: 10px 20px; border-radius: 20px; display: inline-block; font-size: 14px;">
+                            トレーニング履歴を見る
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-nav">
+                    <div class="nav-item">
+                        <div class="nav-icon">🏠</div>
+                        <div>ホーム</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📅</div>
+                        <div>予約</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">📹</div>
+                        <div>動画</div>
+                    </div>
+                    <div class="nav-item">
+                        <div class="nav-icon">🛒</div>
+                        <div>ショップ</div>
+                    </div>
+                    <div class="nav-item active">
+                        <div class="nav-icon">👤</div>
+                        <div>プロフィール</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

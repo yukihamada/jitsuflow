@@ -1,0 +1,31 @@
+# JitsuFlow タスク管理ファイル
+
+## 🚀 現在進行中のタスク
+- [ ] Flutter プロジェクトの初期化と基本構成
+- [ ] Cloudflare Workers, R2, D1の設定ファイル作成
+- [ ] Cloudflare開発環境の設定
+- [ ] CI/CDパイプライン（GitHub Actions）の設定
+- [ ] E2Eテスト環境（Playwright）の初期設定
+
+## 🔥 優先度高
+- [ ] ユーザー認証機能（Flutter + Cloudflare D1）
+- [ ] 道場予約システム（予約管理・時間管理）
+- [ ] 動画アップロード機能（R2ストレージ）
+- [ ] Stripe課金システム統合
+
+## 📋 中期計画
+- [ ] 動画ストリーミング機能
+- [ ] リアルタイム通知システム
+- [ ] SEO最適化（Jaspr）
+- [ ] Cloudflare Analytics統合
+
+## 🎯 長期計画
+- [ ] 多言語対応（日本語・英語・ポルトガル語）
+- [ ] モバイルアプリ配信（App Store・Google Play）
+- [ ] 外部道場との連携機能
+- [ ] AI によるトレーニング推奨機能
+
+## ✅ 完了済み
+- [x] プロジェクト設定ファイル作成（claude.json）
+- [x] 環境変数ファイル作成（claude.env）
+- [x] 機密情報管理ファイル作成（claude.secrets）
