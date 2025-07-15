@@ -47,7 +47,9 @@ app.*.map.json
 
 # iOS/macOS
 /ios/Pods/
+/ios/build/
 /macos/Pods/
+/macos/build/
 
 # Node.js
 node_modules/
