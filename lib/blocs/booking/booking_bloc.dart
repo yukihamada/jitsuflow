@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../services/api_service.dart';
+import '../../services/notification_service.dart';
 import '../../models/booking.dart';
 
 part 'booking_event.dart';
@@ -32,7 +33,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     Emitter<BookingState> emit,
   ) async {
     emit(BookingLoading());
-    
+
     try {
       final booking = await ApiService.createBooking(
         dojoId: event.dojoId,
@@ -40,7 +41,29 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         bookingDate: event.bookingDate,
         bookingTime: event.bookingTime,
       );
-      
+
+      // クラス開始1時間前のリマインダー通知をスケジュール
+      final timeParts = event.bookingTime.split(':');
+      if (timeParts.length == 2) {
+        final hour = int.tryParse(timeParts[0]);
+        final minute = int.tryParse(timeParts[1]);
+        if (hour != null && minute != null) {
+          final classTime = DateTime(
+            event.bookingDate.year,
+            event.bookingDate.month,
+            event.bookingDate.day,
+            hour,
+            minute,
+          );
+          await NotificationService.scheduleBookingReminder(
+            bookingId: booking.id,
+            className: event.classType,
+            dojoName: event.dojoName,
+            classTime: classTime,
+          );
+        }
+      }
+
       emit(BookingCreateSuccess(booking: booking));
     } catch (e) {
       emit(BookingFailure(message: e.toString()));

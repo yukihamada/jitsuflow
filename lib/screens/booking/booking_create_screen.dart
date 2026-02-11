@@ -355,9 +355,13 @@ class _BookingCreateScreenState extends State<BookingCreateScreen> {
 
   void _submitBooking() {
     if (_formKey.currentState!.validate() && _canSubmit()) {
+      final selectedDojo = _dojos.firstWhere(
+        (dojo) => dojo['id'] == _selectedDojoId,
+      );
       context.read<BookingBloc>().add(
         BookingCreateRequested(
           dojoId: _selectedDojoId!,
+          dojoName: selectedDojo['name'] as String,
           classType: _selectedClassType!,
           bookingDate: _selectedDate!,
           bookingTime: _selectedTime!,

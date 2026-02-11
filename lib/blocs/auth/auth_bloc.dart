@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRegisterRequested>(_onRegisterRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
     on<AuthCheckRequested>(_onCheckRequested);
+    on<AuthGuestLoginRequested>(_onGuestLoginRequested);
   }
 
   Future<void> _onLoginRequested(
@@ -79,5 +80,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // Check if user is already logged in
     // This would typically check stored token and validate it
     emit(AuthInitial());
+  }
+
+  Future<void> _onGuestLoginRequested(
+    AuthGuestLoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+
+    try {
+      final response = await ApiService.loginAsGuest();
+      final user = User.fromJson(response['user']);
+      emit(AuthSuccess(user: user, token: response['token']));
+    } catch (e) {
+      emit(AuthFailure(message: e.toString()));
+    }
   }
 }

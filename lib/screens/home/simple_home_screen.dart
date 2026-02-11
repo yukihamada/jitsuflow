@@ -232,8 +232,54 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionCard(
+                    icon: Icons.receipt_long,
+                    title: '注文履歴',
+                    subtitle: '過去の注文',
+                    colorIndex: 4,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/orders');
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildActionCard(
+                    icon: Icons.assignment_return,
+                    title: 'レンタル履歴',
+                    subtitle: 'レンタル状況',
+                    colorIndex: 5,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/my-rentals');
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionCard(
+                    icon: Icons.groups,
+                    title: 'チーム',
+                    subtitle: 'チーム管理',
+                    colorIndex: 0,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/teams');
+                    },
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(child: SizedBox()),
+              ],
+            ),
             const SizedBox(height: 24),
-            
+
             // Skill Assessment Section
             Card(
               elevation: 4,

@@ -13,19 +13,21 @@ class BookingLoadRequested extends BookingEvent {
 
 class BookingCreateRequested extends BookingEvent {
   final int dojoId;
+  final String dojoName;
   final String classType;
   final DateTime bookingDate;
   final String bookingTime;
 
   const BookingCreateRequested({
     required this.dojoId,
+    this.dojoName = '',
     required this.classType,
     required this.bookingDate,
     required this.bookingTime,
   });
 
   @override
-  List<Object> get props => [dojoId, classType, bookingDate, bookingTime];
+  List<Object> get props => [dojoId, dojoName, classType, bookingDate, bookingTime];
 }
 
 class BookingAvailabilityRequested extends BookingEvent {

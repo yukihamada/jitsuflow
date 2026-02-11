@@ -125,33 +125,6 @@ class ApiService {
     required String name,
     String? phone,
   }) async {
-    // Demo mode - simulate successful registration
-    await Future.delayed(const Duration(milliseconds: 1500)); // Simulate network delay
-    
-    // Check for duplicate email (demo validation)
-    if (email == 'user@jitsuflow.app' || email == 'admin@jitsuflow.app') {
-      throw Exception('このメールアドレスは既に使用されています');
-    }
-    
-    final demoToken = 'demo_token_${DateTime.now().millisecondsSinceEpoch}';
-    await _saveToken(demoToken);
-    
-    return {
-      'message': 'Registration successful',
-      'user': {
-        'id': DateTime.now().millisecondsSinceEpoch % 10000,
-        'email': email,
-        'name': name,
-        'phone': phone,
-        'stripeCustomerId': null,
-        'createdAt': DateTime.now().toIso8601String(),
-        'updatedAt': DateTime.now().toIso8601String(),
-      },
-      'token': demoToken,
-    };
-
-    // Real implementation would be:
-    /*
     final response = await http.post(
       Uri.parse('$_baseUrl/users/register'),
       headers: _getHeaders(),
@@ -164,42 +137,19 @@ class ApiService {
     );
 
     final data = jsonDecode(response.body);
-    
-    if (response.statusCode == 201) {
+
+    if (response.statusCode == 201 || response.statusCode == 200) {
       await _saveToken(data['token']);
       return data;
     } else {
-      throw Exception(data['message'] ?? 'Registration failed');
+      throw Exception(data['message'] ?? '登録に失敗しました');
     }
-    */
   }
 
   static Future<Map<String, dynamic>> login({
     required String email,
     required String password,
   }) async {
-    // Demo mode - simulate successful login for demo accounts
-    if (email == 'user@jitsuflow.app' || email == 'admin@jitsuflow.app') {
-      final isAdmin = email == 'admin@jitsuflow.app';
-      final demoToken = 'demo_token_${DateTime.now().millisecondsSinceEpoch}';
-      
-      await _saveToken(demoToken);
-      
-      return {
-        'message': 'Login successful',
-        'user': {
-          'id': isAdmin ? 999 : 1,
-          'email': email,
-          'name': isAdmin ? '管理者' : 'デモユーザー',
-          'phone': null,
-          'stripeCustomerId': null,
-          'createdAt': DateTime.now().toIso8601String(),
-          'updatedAt': DateTime.now().toIso8601String(),
-        },
-        'token': demoToken,
-      };
-    }
-
     final response = await http.post(
       Uri.parse('$_baseUrl/users/login'),
       headers: _getHeaders(),
@@ -210,13 +160,32 @@ class ApiService {
     );
 
     final data = jsonDecode(response.body);
-    
+
     if (response.statusCode == 200) {
       await _saveToken(data['token']);
       return data;
     } else {
-      throw Exception(data['message'] ?? 'Login failed');
+      throw Exception(data['message'] ?? 'ログインに失敗しました');
     }
+  }
+
+  static Future<Map<String, dynamic>> loginAsGuest() async {
+    final guestToken = 'guest_token_${DateTime.now().millisecondsSinceEpoch}';
+    await _saveToken(guestToken);
+
+    return {
+      'message': 'Guest login successful',
+      'user': {
+        'id': 0,
+        'email': 'guest@jitsuflow.app',
+        'name': 'ゲストユーザー',
+        'phone': null,
+        'stripeCustomerId': null,
+        'createdAt': DateTime.now().toIso8601String(),
+        'updatedAt': DateTime.now().toIso8601String(),
+      },
+      'token': guestToken,
+    };
   }
 
   static Future<void> logout() async {
@@ -2033,6 +2002,199 @@ class ApiService {
     } else {
       final data = jsonDecode(response.body);
       throw Exception(data['message'] ?? 'Failed to create order');
+    }
+  }
+
+  static Future<List<Order>> getOrders() async {
+    final token = await _getToken();
+    if (token == null) throw Exception('Not authenticated');
+
+    // Demo mode - return sample orders
+    if (token.startsWith('demo_token_')) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      return [
+        Order(
+          id: 1001,
+          userId: 1,
+          items: [
+            OrderItem(
+              id: 1,
+              orderId: 1001,
+              productId: 1,
+              productName: 'YAWARA プレミアム道着',
+              unitPrice: 18000.0,
+              quantity: 1,
+              totalPrice: 18000.0,
+            ),
+            OrderItem(
+              id: 2,
+              orderId: 1001,
+              productId: 8,
+              productName: '白帯 A1サイズ',
+              unitPrice: 2500.0,
+              quantity: 1,
+              totalPrice: 2500.0,
+            ),
+          ],
+          subtotal: 20500.0,
+          tax: 2050.0,
+          total: 22550.0,
+          status: 'delivered',
+          shippingAddress: '東京都渋谷区神宮前1-8-10',
+          trackingNumber: 'JP123456789',
+          createdAt: DateTime.now().subtract(const Duration(days: 30)),
+          shippedAt: DateTime.now().subtract(const Duration(days: 28)),
+          deliveredAt: DateTime.now().subtract(const Duration(days: 26)),
+        ),
+        Order(
+          id: 1002,
+          userId: 1,
+          items: [
+            OrderItem(
+              id: 3,
+              orderId: 1002,
+              productId: 4,
+              productName: 'JitsuFlow Tシャツ',
+              unitPrice: 3500.0,
+              quantity: 2,
+              totalPrice: 7000.0,
+            ),
+          ],
+          subtotal: 7000.0,
+          tax: 700.0,
+          total: 7700.0,
+          status: 'shipped',
+          shippingAddress: '東京都渋谷区神宮前1-8-10',
+          trackingNumber: 'JP987654321',
+          createdAt: DateTime.now().subtract(const Duration(days: 5)),
+          shippedAt: DateTime.now().subtract(const Duration(days: 3)),
+        ),
+        Order(
+          id: 1003,
+          userId: 1,
+          items: [
+            OrderItem(
+              id: 4,
+              orderId: 1003,
+              productId: 3,
+              productName: 'プロ仕様マウスガード',
+              unitPrice: 2800.0,
+              quantity: 1,
+              totalPrice: 2800.0,
+            ),
+          ],
+          subtotal: 2800.0,
+          tax: 280.0,
+          total: 3080.0,
+          status: 'pending',
+          shippingAddress: '東京都渋谷区神宮前1-8-10',
+          createdAt: DateTime.now().subtract(const Duration(days: 1)),
+        ),
+      ];
+    }
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/orders'),
+      headers: _getHeaders(token),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return (data['orders'] as List)
+          .map((order) => Order.fromJson(order))
+          .toList();
+    } else {
+      throw Exception('Failed to load orders');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> getUserRentals() async {
+    final token = await _getToken();
+    if (token == null) throw Exception('Not authenticated');
+
+    // Demo mode - return sample user rentals
+    if (token.startsWith('demo_token_')) {
+      await Future.delayed(const Duration(milliseconds: 500));
+      return [
+        {
+          'id': 1,
+          'item_name': '道着（白帯用）A2',
+          'category': 'gi',
+          'start_date': DateTime.now().subtract(const Duration(days: 5)).toIso8601String(),
+          'end_date': DateTime.now().add(const Duration(days: 2)).toIso8601String(),
+          'status': 'active',
+          'deposit_amount': 5000,
+          'daily_rate': 1000,
+        },
+        {
+          'id': 2,
+          'item_name': 'ヘッドギア Mサイズ',
+          'category': 'protector',
+          'start_date': DateTime.now().subtract(const Duration(days: 14)).toIso8601String(),
+          'end_date': DateTime.now().subtract(const Duration(days: 7)).toIso8601String(),
+          'status': 'returned',
+          'deposit_amount': 3000,
+          'daily_rate': 500,
+        },
+        {
+          'id': 3,
+          'item_name': '青帯 A2サイズ',
+          'category': 'belt',
+          'start_date': DateTime.now().subtract(const Duration(days: 10)).toIso8601String(),
+          'end_date': DateTime.now().subtract(const Duration(days: 3)).toIso8601String(),
+          'status': 'overdue',
+          'deposit_amount': 2000,
+          'daily_rate': 300,
+        },
+      ];
+    }
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/rentals/my'),
+      headers: _getHeaders(token),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return List<Map<String, dynamic>>.from(data['rentals']);
+    } else {
+      throw Exception('Failed to load user rentals');
+    }
+  }
+
+  static Future<List<Map<String, dynamic>>> getTeamMembers(int teamId) async {
+    final token = await _getToken();
+    if (token == null) throw Exception('Not authenticated');
+
+    // Demo mode - return sample team members
+    if (token.startsWith('demo_token_')) {
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (teamId == 1) {
+        return [
+          {'id': 1, 'name': 'デモユーザー', 'belt_rank': 'blue', 'role': 'admin'},
+          {'id': 2, 'name': 'インストラクター太郎', 'belt_rank': 'black', 'role': 'member'},
+          {'id': 5, 'name': '田中健一', 'belt_rank': 'blue', 'role': 'member'},
+          {'id': 9, 'name': '伊藤大輔', 'belt_rank': 'brown', 'role': 'member'},
+        ];
+      } else {
+        return [
+          {'id': 1, 'name': 'デモユーザー', 'belt_rank': 'blue', 'role': 'member'},
+          {'id': 3, 'name': '山田花子', 'belt_rank': 'white', 'role': 'admin'},
+          {'id': 6, 'name': '佐藤美咲', 'belt_rank': 'white', 'role': 'member'},
+        ];
+      }
+    }
+
+    final response = await http.get(
+      Uri.parse('$_baseUrl/teams/$teamId/members'),
+      headers: _getHeaders(token),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return List<Map<String, dynamic>>.from(data['members']);
+    } else {
+      throw Exception('Failed to load team members');
     }
   }
 }

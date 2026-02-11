@@ -13,12 +13,17 @@ import 'screens/auth/simple_login_screen.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/home/simple_home_screen.dart';
 import 'screens/instructor/instructor_dashboard_screen.dart';
+import 'screens/shop/order_history_screen.dart';
+import 'screens/rental/my_rentals_screen.dart';
+import 'screens/teams/team_screen.dart';
 import 'utils/demo_auth.dart';
 import 'themes/colorful_theme.dart';
+import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ja_JP', null);
+  await NotificationService.initialize();
   runApp(const JitsuFlowApp());
 }
 
@@ -65,6 +70,9 @@ class JitsuFlowApp extends StatelessWidget {
           '/register': (context) => const RegisterScreen(),
           '/home': (context) => const SimpleHomeScreen(),
           '/instructor/dashboard': (context) => const InstructorDashboardScreen(),
+          '/orders': (context) => const OrderHistoryScreen(),
+          '/my-rentals': (context) => const MyRentalsScreen(),
+          '/teams': (context) => const TeamScreen(),
         },
         debugShowCheckedModeBanner: false,
       ),

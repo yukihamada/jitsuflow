@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../models/revenue_summary.dart';
+import '../../services/api_service.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   final int dojoId;
-  
+
   const AnalyticsScreen({
     super.key,
     required this.dojoId,
@@ -14,9 +15,10 @@ class AnalyticsScreen extends StatefulWidget {
 }
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
-  String _selectedPeriod = 'month';
+  String _selectedPeriod = 'monthly';
   List<RevenueSummary> _revenueData = [];
-  Map<String, dynamic> _kpiData = {};
+  bool _isLoading = true;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -25,33 +27,23 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   }
 
   Future<void> _loadAnalyticsData() async {
-    // TODO: Load from API
-    // Dummy data for demo
     setState(() {
-      _revenueData = [
-        RevenueSummary(
-          dojoId: widget.dojoId,
-          dojoName: 'デモ道場',
-          period: DateTime.now(),
-          membershipRevenue: 850000,
-          productRevenue: 120000,
-          rentalRevenue: 35000,
-          totalRevenue: 1005000,
-          instructorCosts: 350000,
-          grossProfit: 655000,
-        ),
-      ];
-      
-      _kpiData = {
-        'total_members': 45,
-        'active_members': 38,
-        'new_members_this_month': 3,
-        'retention_rate': 92.5,
-        'average_revenue_per_member': 26315,
-        'class_attendance_rate': 78.5,
-        'instructor_utilization': 85.0,
-      };
+      _isLoading = true;
+      _errorMessage = null;
     });
+
+    try {
+      final data = await ApiService.getRevenueSummary(_selectedPeriod);
+      setState(() {
+        _revenueData = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -59,7 +51,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('経営分析'),
-        backgroundColor: Colors.purple,
+        backgroundColor: const Color(0xFF1B5E20),
         foregroundColor: Colors.white,
         actions: [
           PopupMenuButton<String>(
@@ -70,10 +62,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               _loadAnalyticsData();
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'week', child: Text('週間')),
-              const PopupMenuItem(value: 'month', child: Text('月間')),
-              const PopupMenuItem(value: 'quarter', child: Text('四半期')),
-              const PopupMenuItem(value: 'year', child: Text('年間')),
+              const PopupMenuItem(value: 'weekly', child: Text('週間')),
+              const PopupMenuItem(value: 'monthly', child: Text('月間')),
+              const PopupMenuItem(value: 'quarterly', child: Text('四半期')),
+              const PopupMenuItem(value: 'yearly', child: Text('年間')),
             ],
             child: Container(
               margin: const EdgeInsets.only(right: 16),
@@ -99,44 +91,116 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: _loadAnalyticsData,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+        child: _buildBody(),
+      ),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Color(0xFF1B5E20),
+        ),
+      );
+    }
+
+    if (_errorMessage != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Revenue Summary
-              _buildRevenueSection(),
+              const Icon(
+                Icons.error_outline,
+                size: 64,
+                color: Colors.red,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'データの読み込みに失敗しました',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[800],
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _errorMessage!,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
               const SizedBox(height: 24),
-              
-              // KPI Cards
-              _buildKPISection(),
-              const SizedBox(height: 24),
-              
-              // Charts Section
-              _buildChartsSection(),
-              const SizedBox(height: 24),
-              
-              // Instructor Performance
-              _buildInstructorSection(),
+              ElevatedButton.icon(
+                onPressed: _loadAnalyticsData,
+                icon: const Icon(Icons.refresh),
+                label: const Text('再読み込み'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1B5E20),
+                  foregroundColor: Colors.white,
+                ),
+              ),
             ],
           ),
         ),
+      );
+    }
+
+    if (_revenueData.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.analytics_outlined,
+              size: 64,
+              color: Colors.grey[400],
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'データがありません',
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Revenue Summary
+          _buildRevenueSection(),
+          const SizedBox(height: 24),
+
+          // Revenue Breakdown Chart
+          _buildRevenueBreakdownChart(),
+          const SizedBox(height: 24),
+
+          // Revenue Trend Bar Chart
+          _buildRevenueTrendChart(),
+          const SizedBox(height: 24),
+
+          // Cost & Profit Section
+          _buildCostProfitSection(),
+        ],
       ),
     );
   }
 
   Widget _buildRevenueSection() {
-    if (_revenueData.isEmpty) {
-      return const Card(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Center(child: CircularProgressIndicator()),
-        ),
-      );
-    }
-
     final revenue = _revenueData.first;
-    
+
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(
@@ -151,7 +215,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               children: [
                 const Icon(
                   Icons.trending_up,
-                  color: Colors.purple,
+                  color: Color(0xFF1B5E20),
                   size: 28,
                 ),
                 const SizedBox(width: 8),
@@ -165,13 +229,13 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               ],
             ),
             const SizedBox(height: 20),
-            
-            // Total Revenue
+
+            // Total Revenue Banner
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Colors.purple, Colors.deepPurple],
+                  colors: [Color(0xFF1B5E20), Color(0xFF2E7D32)],
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -234,17 +298,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
-            // Revenue Breakdown
+
+            // Revenue Breakdown Cards
             Row(
               children: [
                 Expanded(
                   child: _buildRevenueCard(
                     '会員費',
                     revenue.membershipRevenue,
-                    Colors.green,
+                    const Color(0xFF1B5E20),
                     Icons.people,
                   ),
                 ),
@@ -274,9 +338,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildRevenueCard(String title, int amount, Color color, IconData icon) {
-    final formattedAmount = '¥${amount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}';
-    
+  Widget _buildRevenueCard(
+      String title, int amount, Color color, IconData icon) {
+    final formattedAmount =
+        '¥${amount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}';
+
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -306,93 +372,15 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildKPISection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'KPI指標',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 12),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.5,
-          children: [
-            _buildKPICard(
-              '総会員数',
-              '${_kpiData['total_members'] ?? 0}人',
-              Icons.people,
-              Colors.blue,
-            ),
-            _buildKPICard(
-              'アクティブ会員',
-              '${_kpiData['active_members'] ?? 0}人',
-              Icons.person_pin,
-              Colors.green,
-            ),
-            _buildKPICard(
-              '継続率',
-              '${_kpiData['retention_rate'] ?? 0}%',
-              Icons.trending_up,
-              Colors.purple,
-            ),
-            _buildKPICard(
-              '出席率',
-              '${_kpiData['class_attendance_rate'] ?? 0}%',
-              Icons.check_circle,
-              Colors.orange,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+  Widget _buildRevenueBreakdownChart() {
+    final revenue = _revenueData.first;
+    final total = revenue.totalRevenue;
+    if (total == 0) return const SizedBox.shrink();
 
-  Widget _buildKPICard(String title, String value, IconData icon, Color color) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: color, size: 32),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    final membershipPct = revenue.membershipRevenue / total;
+    final productPct = revenue.productRevenue / total;
+    final rentalPct = revenue.rentalRevenue / total;
 
-  Widget _buildChartsSection() {
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -404,40 +392,120 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              '売上推移',
+              '売上構成比',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 16),
-            Container(
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey[100],
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+
+            // Horizontal stacked bar
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: SizedBox(
+                height: 32,
+                child: Row(
                   children: [
-                    Icon(Icons.bar_chart, size: 48, color: Colors.grey),
-                    SizedBox(height: 8),
-                    Text(
-                      'チャートライブラリ統合予定',
-                      style: TextStyle(color: Colors.grey),
+                    Expanded(
+                      flex: (membershipPct * 1000).round(),
+                      child: Container(color: const Color(0xFF1B5E20)),
+                    ),
+                    Expanded(
+                      flex: (productPct * 1000).round(),
+                      child: Container(color: Colors.blue),
+                    ),
+                    Expanded(
+                      flex: (rentalPct * 1000).round(),
+                      child: Container(color: Colors.orange),
                     ),
                   ],
                 ),
               ),
             ),
+            const SizedBox(height: 16),
+
+            // Legend
+            _buildLegendItem(
+              '会員費',
+              revenue.membershipRevenue,
+              (membershipPct * 100).toStringAsFixed(1),
+              const Color(0xFF1B5E20),
+            ),
+            const SizedBox(height: 8),
+            _buildLegendItem(
+              '物販',
+              revenue.productRevenue,
+              (productPct * 100).toStringAsFixed(1),
+              Colors.blue,
+            ),
+            const SizedBox(height: 8),
+            _buildLegendItem(
+              'レンタル',
+              revenue.rentalRevenue,
+              (rentalPct * 100).toStringAsFixed(1),
+              Colors.orange,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInstructorSection() {
+  Widget _buildLegendItem(
+      String label, int amount, String percentage, Color color) {
+    final formattedAmount =
+        '¥${amount.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}';
+
+    return Row(
+      children: [
+        Container(
+          width: 16,
+          height: 16,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 14),
+        ),
+        const Spacer(),
+        Text(
+          formattedAmount,
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          '$percentage%',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRevenueTrendChart() {
+    final revenue = _revenueData.first;
+    final maxValue = revenue.totalRevenue.toDouble();
+    if (maxValue == 0) return const SizedBox.shrink();
+
+    // Build bar data from the revenue categories
+    final barData = [
+      _BarData('会員費', revenue.membershipRevenue.toDouble(), const Color(0xFF1B5E20)),
+      _BarData('物販', revenue.productRevenue.toDouble(), Colors.blue),
+      _BarData('レンタル', revenue.rentalRevenue.toDouble(), Colors.orange),
+      _BarData('コスト', revenue.instructorCosts.toDouble(), Colors.red[300]!),
+      _BarData('粗利益', revenue.grossProfit.toDouble(), Colors.teal),
+    ];
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
@@ -449,32 +517,62 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'インストラクター実績',
+              '売上内訳グラフ',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 16),
-            _buildInstructorItem(
-              '村田良蔵',
-              45,
-              280000,
-              '黒帯',
-            ),
-            const Divider(),
-            _buildInstructorItem(
-              '廣鰭翔大',
-              32,
-              190000,
-              '茶帯',
-            ),
-            const Divider(),
-            _buildInstructorItem(
-              '佐藤正幸',
-              28,
-              150000,
-              '紫帯',
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 200,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: barData.map((bar) {
+                  final heightRatio = maxValue > 0 ? bar.value / maxValue : 0.0;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text(
+                            _formatShortAmount(bar.value.round()),
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: bar.color,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 600),
+                            curve: Curves.easeOutCubic,
+                            height: 160 * heightRatio,
+                            decoration: BoxDecoration(
+                              color: bar.color,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(6),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            bar.label,
+                            style: const TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ],
         ),
@@ -482,87 +580,180 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     );
   }
 
-  Widget _buildInstructorItem(String name, int classes, int payment, String belt) {
-    final formattedPayment = '¥${payment.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}';
-    
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: _getBeltColor(belt),
-            child: Text(
-              name[0],
-              style: const TextStyle(
-                color: Colors.white,
+  Widget _buildCostProfitSection() {
+    final revenue = _revenueData.first;
+
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'コスト・利益分析',
+              style: TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  '$belt • ${classes}クラス担当',
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+            const SizedBox(height: 16),
+            _buildCostRow(
+              '総売上',
+              revenue.formattedTotalRevenue,
+              const Color(0xFF1B5E20),
+              Icons.account_balance_wallet,
             ),
-          ),
-          Text(
-            formattedPayment,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.green,
+            const Divider(height: 24),
+            _buildCostRow(
+              'インストラクター費用',
+              revenue.formattedInstructorCosts,
+              Colors.red[400]!,
+              Icons.person,
             ),
-          ),
-        ],
+            const Divider(height: 24),
+            _buildCostRow(
+              '粗利益',
+              revenue.formattedGrossProfit,
+              Colors.teal,
+              Icons.trending_up,
+            ),
+            const SizedBox(height: 16),
+
+            // Profit margin indicator
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: _getProfitMarginColor(revenue.profitMargin)
+                    .withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: _getProfitMarginColor(revenue.profitMargin)
+                      .withOpacity(0.3),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    revenue.profitMargin >= 50
+                        ? Icons.sentiment_very_satisfied
+                        : revenue.profitMargin >= 30
+                            ? Icons.sentiment_satisfied
+                            : Icons.sentiment_dissatisfied,
+                    color: _getProfitMarginColor(revenue.profitMargin),
+                    size: 28,
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        '利益率',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        '${revenue.profitMargin.toStringAsFixed(1)}%',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color:
+                              _getProfitMarginColor(revenue.profitMargin),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(
+                    _getProfitMarginLabel(revenue.profitMargin),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: _getProfitMarginColor(revenue.profitMargin),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Color _getBeltColor(String belt) {
-    switch (belt) {
-      case '黒帯':
-        return Colors.black;
-      case '茶帯':
-        return Colors.brown;
-      case '紫帯':
-        return Colors.purple;
-      case '青帯':
-        return Colors.blue;
-      case '白帯':
-        return Colors.grey;
-      default:
-        return Colors.grey;
+  Widget _buildCostRow(
+      String label, String value, Color color, IconData icon) {
+    return Row(
+      children: [
+        Icon(icon, color: color, size: 24),
+        const SizedBox(width: 12),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: color,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Color _getProfitMarginColor(double margin) {
+    if (margin >= 50) return const Color(0xFF1B5E20);
+    if (margin >= 30) return Colors.orange;
+    return Colors.red;
+  }
+
+  String _getProfitMarginLabel(double margin) {
+    if (margin >= 50) return '良好';
+    if (margin >= 30) return '普通';
+    return '要改善';
+  }
+
+  String _formatShortAmount(int amount) {
+    if (amount >= 10000) {
+      return '${(amount / 10000).toStringAsFixed(0)}万';
     }
+    if (amount >= 1000) {
+      return '${(amount / 1000).toStringAsFixed(0)}千';
+    }
+    return '$amount';
   }
 
   String _getPeriodDisplay(String period) {
     switch (period) {
-      case 'week':
+      case 'weekly':
         return '週間';
-      case 'month':
+      case 'monthly':
         return '月間';
-      case 'quarter':
+      case 'quarterly':
         return '四半期';
-      case 'year':
+      case 'yearly':
         return '年間';
       default:
         return '月間';
     }
   }
+}
+
+class _BarData {
+  final String label;
+  final double value;
+  final Color color;
+
+  _BarData(this.label, this.value, this.color);
 }
