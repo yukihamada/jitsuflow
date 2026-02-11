@@ -44,9 +44,9 @@
                     最も効率的に行えるプラットフォーム
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a href="#testflight" class="bg-white text-purple-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-2">
-                        <i class="fab fa-apple"></i>
-                        TestFlightで試す
+                    <a href="#waitlist" class="bg-white text-purple-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors inline-flex items-center gap-2">
+                        <i class="fas fa-envelope"></i>
+                        事前登録する
                     </a>
                     <a href="#features" class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-purple-700 transition-colors">
                         機能を見る
@@ -193,52 +193,106 @@
         </div>
     </section>
 
-    <!-- TestFlightセクション -->
-    <section id="testflight" class="py-20 gradient-bg text-white">
+    <!-- 料金プランセクション -->
+    <section id="pricing" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto text-center">
+                <h2 class="text-4xl font-bold mb-4 text-gray-800 scroll-fade-in">料金プラン</h2>
+                <p class="text-xl text-gray-600 mb-12 scroll-fade-in">初回1ヶ月間無料トライアル付き</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                    <!-- フリープラン -->
+                    <div class="bg-gray-50 rounded-2xl shadow-lg p-8 scroll-fade-in">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">フリー</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-1">
+                            <span class="text-lg font-normal text-gray-500">月額</span> ¥0
+                        </div>
+                        <p class="text-gray-500 text-sm mb-6">ずっと無料</p>
+                        <ul class="text-left text-gray-600 space-y-3 mb-8">
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 週2回まで道場予約</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 無料動画の視聴</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> ショップ閲覧・購入</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-green-500"></i> 道着レンタル予約</li>
+                        </ul>
+                        <a href="#waitlist" class="block w-full text-center border-2 border-purple-600 text-purple-600 px-6 py-3 rounded-full font-bold hover:bg-purple-50 transition-colors">
+                            事前登録する
+                        </a>
+                    </div>
+
+                    <!-- プレミアムプラン -->
+                    <div class="bg-purple-600 rounded-2xl shadow-lg p-8 text-white relative scroll-fade-in">
+                        <span class="absolute -top-3 right-6 bg-yellow-400 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">おすすめ</span>
+                        <h3 class="text-2xl font-bold mb-2">プレミアム</h3>
+                        <div class="text-4xl font-bold mb-1">
+                            <span class="text-lg font-normal opacity-80">月額</span> ¥980
+                        </div>
+                        <p class="text-sm opacity-80 mb-6">年払い ¥9,996/年（15%OFF）</p>
+                        <ul class="text-left space-y-3 mb-8">
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-300"></i> 予約回数無制限</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-300"></i> 全動画見放題</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-300"></i> ライブ配信参加権</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-300"></i> 予約優先権</li>
+                            <li class="flex items-center gap-2"><i class="fas fa-check text-yellow-300"></i> ショップ会員限定割引</li>
+                        </ul>
+                        <a href="#waitlist" class="block w-full text-center bg-white text-purple-700 px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors">
+                            事前登録する
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 事前登録（ウェイトリスト）セクション -->
+    <section id="waitlist" class="py-20 gradient-bg text-white">
         <div class="container mx-auto px-4">
             <div class="max-w-4xl mx-auto text-center">
                 <h2 class="text-4xl font-bold mb-8">
-                    今すぐTestFlightで試そう
+                    まもなくリリース
                 </h2>
                 <p class="text-xl mb-12 opacity-90">
-                    JitsuFlowは現在ベータテスト中です。<br>
-                    TestFlightから無料でアプリをダウンロードして、全機能をお試しください。
+                    JitsuFlowは現在開発中です。<br>
+                    事前登録いただくと、リリース時にいち早くお知らせします。
                 </p>
-                
+
                 <div class="bg-white bg-opacity-10 backdrop-blur rounded-2xl p-8 mb-8">
-                    <h3 class="text-2xl font-bold mb-6">TestFlight参加方法</h3>
-                    <ol class="text-left max-w-2xl mx-auto space-y-4">
-                        <li class="flex items-start gap-3">
-                            <span class="bg-white text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">1</span>
-                            <div>
-                                <p class="font-semibold">TestFlightアプリをインストール</p>
-                                <p class="text-sm opacity-80">App StoreからTestFlightアプリをダウンロード</p>
+                    <h3 class="text-2xl font-bold mb-6">事前登録の特典</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                        <div>
+                            <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-bell text-xl"></i>
                             </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="bg-white text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">2</span>
-                            <div>
-                                <p class="font-semibold">招待リンクをタップ</p>
-                                <p class="text-sm opacity-80">下のボタンからTestFlightの招待ページへ</p>
+                            <p class="font-semibold">リリース通知</p>
+                            <p class="text-sm opacity-80">アプリ公開時にすぐお届け</p>
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-gift text-xl"></i>
                             </div>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="bg-white text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0">3</span>
-                            <div>
-                                <p class="font-semibold">JitsuFlowをインストール</p>
-                                <p class="text-sm opacity-80">「インストール」をタップしてアプリを開始</p>
+                            <p class="font-semibold">早期特典</p>
+                            <p class="text-sm opacity-80">プレミアム1ヶ月無料トライアル</p>
+                        </div>
+                        <div>
+                            <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-star text-xl"></i>
                             </div>
-                        </li>
-                    </ol>
+                            <p class="font-semibold">優先アクセス</p>
+                            <p class="text-sm opacity-80">ベータテストへの招待</p>
+                        </div>
+                    </div>
                 </div>
 
-                <a href="https://testflight.apple.com/join/YOUR_TESTFLIGHT_ID" class="inline-flex items-center gap-3 bg-white text-purple-700 px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-100 transition-colors">
-                    <i class="fab fa-apple text-2xl"></i>
-                    TestFlightで参加する
-                </a>
-                
-                <p class="mt-6 text-sm opacity-70">
-                    ※ iOSデバイスのみ対応。Android版は開発中です。
+                <form id="waitlist-form" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3" onsubmit="handleWaitlistSubmit(event)">
+                    <input type="email" id="waitlist-email" required placeholder="メールアドレスを入力"
+                        class="flex-1 px-6 py-4 rounded-full text-gray-800 text-lg focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    <button type="submit" class="bg-white text-purple-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors whitespace-nowrap">
+                        事前登録
+                    </button>
+                </form>
+                <p id="waitlist-message" class="mt-4 text-sm opacity-0 transition-opacity duration-300"></p>
+
+                <p class="mt-8 text-sm opacity-70">
+                    iOS / Android 両対応で開発中です。
                 </p>
             </div>
         </div>
@@ -272,7 +326,7 @@
                     </div>
                 </div>
                 <div class="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
-                    <p>&copy; 2025 JitsuFlow. All rights reserved.</p>
+                    <p>&copy; 2025-2026 JitsuFlow. All rights reserved.</p>
                 </div>
             </div>
         </div>
@@ -311,6 +365,26 @@
                 }
             });
         });
+
+        // ウェイトリストフォーム送信
+        function handleWaitlistSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('waitlist-email').value;
+            const msg = document.getElementById('waitlist-message');
+            const form = document.getElementById('waitlist-form');
+
+            // メールアドレスをlocalStorageに保存（バックエンド連携時に送信）
+            const waitlist = JSON.parse(localStorage.getItem('jitsuflow_waitlist') || '[]');
+            if (!waitlist.includes(email)) {
+                waitlist.push(email);
+                localStorage.setItem('jitsuflow_waitlist', JSON.stringify(waitlist));
+            }
+
+            msg.textContent = 'ご登録ありがとうございます！リリース時にお知らせします。';
+            msg.classList.remove('opacity-0');
+            msg.classList.add('opacity-100');
+            form.reset();
+        }
     </script>
 </body>
 </html>
