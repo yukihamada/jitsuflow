@@ -4,7 +4,7 @@
  */
 
 import { Router } from 'itty-router';
-import { verifyStripeSignature } from '../utils/stripe_webhook.js';
+import { verifyStripeSignature, WebhookConfigError } from '../utils/stripe_webhook.js';
 
 const router = Router();
 
@@ -284,7 +284,19 @@ router.post('/api/payments/webhook', async (request) => {
       request.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
-    console.error('Stripe webhook signature verification failed:', error.message);
+    if (error instanceof WebhookConfigError) {
+      // Server-side problem — distinct log key + 500 so Stripe keeps
+      // retrying and ops sees the alert pile up. Returning 400 here
+      // would silently drop events.
+      console.error('webhook.secret_unconfigured:', error.message);
+      return new Response(JSON.stringify({
+        error: 'Webhook handler misconfigured'
+      }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
+    console.error('webhook.signature_verification_failed:', error.message);
     return new Response(JSON.stringify({
       error: 'Webhook signature verification failed'
     }), {

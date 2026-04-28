@@ -8,6 +8,20 @@
 
 const DEFAULT_TOLERANCE_SECONDS = 300;
 
+/**
+ * Thrown when verification cannot run because the server is misconfigured
+ * (missing or empty STRIPE_WEBHOOK_SECRET). Callers should respond 500
+ * (ops alert) — Stripe will retry, and the retry pile-up is the signal
+ * that ops needs to set the secret. Distinct from a real signature
+ * mismatch (which is the caller's fault → 400).
+ */
+export class WebhookConfigError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'WebhookConfigError';
+  }
+}
+
 function parseSignatureHeader(header) {
   const parts = {};
   for (const segment of header.split(',')) {
@@ -75,7 +89,7 @@ async function computeHmacHex(secret, payload) {
  */
 export async function verifyStripeSignature(rawBody, signatureHeader, secret, options = {}) {
   if (!secret) {
-    throw new Error('Webhook secret is not configured');
+    throw new WebhookConfigError('Webhook secret is not configured');
   }
   if (!signatureHeader) {
     throw new Error('Missing Stripe-Signature header');

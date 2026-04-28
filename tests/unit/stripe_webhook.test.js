@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { verifyStripeSignature } from '../../src/utils/stripe_webhook.js';
+import { verifyStripeSignature, WebhookConfigError } from '../../src/utils/stripe_webhook.js';
 
 const SECRET = 'whsec_test_secret';
 
@@ -57,10 +57,19 @@ describe('verifyStripeSignature', () => {
     ).rejects.toThrow(/does not match/);
   });
 
-  it('rejects timestamps outside the tolerance window', async () => {
+  it('rejects timestamps too far in the past (replay protection)', async () => {
     const { header, timestamp } = await buildHeader(body);
     await expect(
       verifyStripeSignature(body, header, SECRET, { nowSeconds: timestamp + 10_000 })
+    ).rejects.toThrow(/tolerance/);
+  });
+
+  it('rejects timestamps too far in the future (clock-skew protection)', async () => {
+    // Symmetric to the past-side check: a header with t=now+10000 must
+    // also be rejected if the verifier's clock is "earlier" by 10k.
+    const { header, timestamp } = await buildHeader(body);
+    await expect(
+      verifyStripeSignature(body, header, SECRET, { nowSeconds: timestamp - 10_000 })
     ).rejects.toThrow(/tolerance/);
   });
 
@@ -76,11 +85,17 @@ describe('verifyStripeSignature', () => {
     ).rejects.toThrow(/Missing Stripe-Signature/);
   });
 
-  it('rejects when the secret is not configured', async () => {
+  it('throws WebhookConfigError when the secret is not configured', async () => {
+    // Distinct error class so the HTTP handler can return 500 (ops alert)
+    // instead of 400 (Stripe-facing) — Stripe will retry, the retry pile-up
+    // is the signal.
     const { header } = await buildHeader(body);
     await expect(
       verifyStripeSignature(body, header, '')
-    ).rejects.toThrow(/not configured/);
+    ).rejects.toBeInstanceOf(WebhookConfigError);
+    await expect(
+      verifyStripeSignature(body, header, undefined)
+    ).rejects.toBeInstanceOf(WebhookConfigError);
   });
 
   it('rejects when the verified payload is not valid JSON', async () => {
