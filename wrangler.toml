@@ -6,13 +6,14 @@ account_id = "46bf2542468db352a9741f14b84d2744"
 
 [vars]
 ENVIRONMENT = "development"
-JWT_SECRET = "your-jwt-secret-key-change-this-in-production"
-OPENAI_API_KEY = "your-openai-api-key-here"
-GROQ_API_KEY = "your-groq-api-key-here"
-STRIPE_SECRET_KEY = "your-stripe-secret-key-here"
-STRIPE_WEBHOOK_SECRET = "your-stripe-webhook-secret-here"
-RESEND_API_KEY = "your-resend-api-key-here"
-SLACK_WEBHOOK_URL = "your-slack-webhook-url-here"
+
+# All secrets below are managed via `wrangler secret put <NAME>` and
+# (for local dev) `.dev.vars`. Do NOT hard-code values here — placeholder
+# strings used to silently ship to production if a real secret was never
+# set. Required keys:
+#   JWT_SECRET, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
+#   RESEND_API_KEY, SLACK_WEBHOOK_URL,
+#   OPENAI_API_KEY, GROQ_API_KEY (only if AI features are enabled)
 
 # Database
 [[d1_databases]]
@@ -38,13 +39,10 @@ name = "jitsuflow-worker-prod"
 
 [env.production.vars]
 ENVIRONMENT = "production"
-JWT_SECRET = "your-jwt-secret-key-change-this-in-production"
-OPENAI_API_KEY = "your-openai-api-key-here"
-GROQ_API_KEY = "your-groq-api-key-here"
-STRIPE_SECRET_KEY = "your-stripe-secret-key-here"
-STRIPE_WEBHOOK_SECRET = "your-stripe-webhook-secret-here"
-RESEND_API_KEY = "your-resend-api-key-here"
-SLACK_WEBHOOK_URL = "your-slack-webhook-url-here"
+
+# Production secrets live in `wrangler secret put --env production <NAME>`.
+# See [vars] above for the required key list. Verify presence before
+# deploy: `wrangler secret list --env production`.
 
 # Custom domain for API
 [[env.production.routes]]
