@@ -1,0 +1,11 @@
+# Copy to `.dev.vars` for local `wrangler dev`. Never commit `.dev.vars`
+# (already in .gitignore). Production secrets live in `wrangler secret
+# put --env production <NAME>` instead.
+
+JWT_SECRET=replace-with-a-long-random-string
+STRIPE_SECRET_KEY=sk_test_replace_me
+STRIPE_WEBHOOK_SECRET=whsec_replace_me
+RESEND_API_KEY=re_replace_me
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/REPLACE/ME
+OPENAI_API_KEY=sk-replace-if-using-ai-features
+GROQ_API_KEY=gsk_replace_if_using_ai_features

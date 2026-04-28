@@ -1,4 +1,16 @@
 /**
+ * DEPRECATED — dead code. Not imported by src/index.js. Only the
+ * deprecated routes (src/routes/users.js, users_simple.js,
+ * members.js, src/middleware/auth_simple.js) reference this file.
+ *
+ * Replacements in active use:
+ *   hashPassword / verifyPassword → src/utils/password.js (PBKDF2)
+ *   generateJWT / verifyJWT       → src/middleware/auth.js (HS256)
+ *
+ * The hashPassword here is SHA-256 with a fixed string salt and
+ * one iteration — not a password hash, do not adopt.
+ *
+ * --- original header ---
  * Crypto utilities for Cloudflare Workers
  * Simple implementations that work in Workers environment
  */

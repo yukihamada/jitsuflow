@@ -1,4 +1,11 @@
 /**
+ * DEPRECATED — dead code. Not imported by src/index.js. Member CRUD
+ * is currently unimplemented in the active worker (see admin-routes
+ * in src/routes/admin.js for what is wired up). This file relies on
+ * the weak hashPassword in src/utils/crypto.js. Do not edit;
+ * do not import.
+ *
+ * --- original header ---
  * Member management routes for JitsuFlow API
  */
 
