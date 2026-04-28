@@ -73,6 +73,33 @@ describe('logger', () => {
     expect(parsed.PASSWORD).toBe('[REDACTED]');
   });
 
+  it('redacts nested sensitive keys (objects and arrays)', () => {
+    logInfo('event', {
+      kind: 'webhook',
+      payload: {
+        id: 'evt_1',
+        data: {
+          object: {
+            id: 'pi_1',
+            client_secret: 'sk_should_not_appear',
+            // nested 'password' deep inside an object
+            customer: { email: 'a@b.c', password: 'plaintext' }
+          }
+        }
+      },
+      arr: [
+        { authorization: 'Bearer abc' }
+      ]
+    });
+    const parsed = JSON.parse(cap.out.log[0]);
+    expect(parsed.kind).toBe('webhook');
+    expect(parsed.payload.id).toBe('evt_1');
+    expect(parsed.payload.data.object.id).toBe('pi_1');
+    expect(parsed.payload.data.object.customer.email).toBe('a@b.c');
+    expect(parsed.payload.data.object.customer.password).toBe('[REDACTED]');
+    expect(parsed.arr[0].authorization).toBe('[REDACTED]');
+  });
+
   it('falls back gracefully when context is unserializable', () => {
     const cyclic = {};
     cyclic.self = cyclic;

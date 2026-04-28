@@ -54,9 +54,13 @@ async function rateLimitMiddleware(request) {
     return;
   }
 
-  const clientIp = request.headers.get('CF-Connecting-IP') ||
-                   request.headers.get('X-Forwarded-For') ||
-                   'unknown';
+  // Cloudflare always sets CF-Connecting-IP for traffic that reaches
+  // a Worker (it's set by the edge before the script runs and cannot
+  // be spoofed by the caller). X-Forwarded-For, in contrast, is just
+  // a request header and can be set to anything by an attacker hitting
+  // the workers.dev URL directly — using it as a fallback would let
+  // them rotate IPs and bypass the rate limit. Don't fall back.
+  const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown';
 
   const windowSec = parseInt(request.env.RATE_LIMIT_WINDOW_SECONDS || '60', 10);
   const maxRequests = parseInt(request.env.RATE_LIMIT_MAX || '100', 10);

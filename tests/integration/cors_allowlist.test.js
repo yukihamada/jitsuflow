@@ -37,6 +37,16 @@ describe('integration: CORS allowlist', () => {
       const res = await env.fetch('/api/health');
       expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull();
     });
+
+    it('matches case-insensitively (origin scheme/host are ASCII case-insensitive)', async () => {
+      // QA M17: a misconfigured allowlist with mixed case should still
+      // match a normally-cased browser Origin.
+      const res = await env.fetch('/api/health', {
+        headers: { Origin: 'https://JitsuFlow.app' }
+      });
+      // Reflect the request's Origin (case preserved, per spec).
+      expect(res.headers.get('Access-Control-Allow-Origin')).toBe('https://JitsuFlow.app');
+    });
   });
 
   describe('without CORS_ALLOWED_ORIGINS in production', () => {

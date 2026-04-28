@@ -45,8 +45,16 @@ export function pickAllowedOrigin(request, env) {
   }
 
   if (allowlist.includes('*')) return '*';
-  if (requestOrigin && allowlist.includes(requestOrigin)) return requestOrigin;
-  return undefined;
+  if (!requestOrigin) return undefined;
+  // RFC 6454: scheme/host of an origin are ASCII case-insensitive
+  // (port is exact). Normalize both sides for comparison so a
+  // misconfigured allowlist like "https://JitsuFlow.app" still
+  // matches a browser-sent "https://jitsuflow.app". Reflect the
+  // *original* request Origin in the response header to keep
+  // browsers happy.
+  const normalizedRequestOrigin = requestOrigin.toLowerCase();
+  const matched = allowlist.some(o => o.toLowerCase() === normalizedRequestOrigin);
+  return matched ? requestOrigin : undefined;
 }
 
 /**

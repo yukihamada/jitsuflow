@@ -23,17 +23,16 @@ const SENSITIVE_KEYS = new Set([
   'stripe_webhook_secret'
 ]);
 
-function scrub(context) {
-  if (!context || typeof context !== 'object') return undefined;
-  const out = {};
-  for (const [k, v] of Object.entries(context)) {
-    if (SENSITIVE_KEYS.has(k.toLowerCase())) {
-      out[k] = '[REDACTED]';
-    } else {
-      out[k] = v;
-    }
+// JSON.stringify replacer that redacts sensitive keys at any depth.
+// Top-level scrub used to leak nested context (e.g. logging an entire
+// Stripe event would expose `client_secret` because it's nested under
+// `data.object`). Replacer runs for every key/value pair so the
+// guarantee applies regardless of structure.
+function redactingReplacer(key, value) {
+  if (typeof key === 'string' && SENSITIVE_KEYS.has(key.toLowerCase())) {
+    return '[REDACTED]';
   }
-  return out;
+  return value;
 }
 
 function emit(level, msg, context) {
@@ -41,11 +40,11 @@ function emit(level, msg, context) {
     ts: new Date().toISOString(),
     level,
     msg,
-    ...(scrub(context) || {})
+    ...(context && typeof context === 'object' ? context : {})
   };
   let line;
   try {
-    line = JSON.stringify(payload);
+    line = JSON.stringify(payload, redactingReplacer);
   } catch (_err) {
     // Context contained a value JSON.stringify can't handle (cycle,
     // BigInt, etc.) — fall back to a safe minimal record.
