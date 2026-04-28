@@ -14,7 +14,14 @@
  * compared with constant-time equality.
  */
 
-const PBKDF2_ITERATIONS = 100_000;
+// 600k matches the OWASP 2025 minimum for PBKDF2-HMAC-SHA256.
+// Existing hashes stored at the previous 100k count keep verifying
+// because the iteration count is part of the stored format
+// (pbkdf2$<iter>$...). To proactively upgrade old PBKDF2 hashes
+// after a successful login, the verifier in src/index.js can be
+// extended later (lazy migration is already in place for legacy
+// btoa hashes; same pattern would apply).
+const PBKDF2_ITERATIONS = 600_000;
 const PBKDF2_SALT_BYTES = 16;
 const PBKDF2_HASH_BYTES = 32;
 const PBKDF2_PREFIX = 'pbkdf2$';
@@ -78,40 +85,49 @@ export async function hashPassword(password) {
  *   the caller should re-hash and persist.
  */
 export async function verifyPassword(password, stored) {
-  if (typeof stored !== 'string' || stored.length === 0) {
-    return { ok: false, legacy: false };
-  }
-
-  if (stored.startsWith(PBKDF2_PREFIX)) {
-    const parts = stored.slice(PBKDF2_PREFIX.length).split('$');
-    if (parts.length !== 3) return { ok: false, legacy: false };
-    const [iterStr, saltB64, hashB64] = parts;
-    const iterations = parseInt(iterStr, 10);
-    if (!Number.isFinite(iterations) || iterations <= 0) {
+  // Wrap the whole verification in a try so any unexpected runtime
+  // failure (Web Crypto importKey throwing on a weird input,
+  // base64 decoder choking on garbage, etc.) becomes "rejected"
+  // rather than a 500 in the calling handler. A 500 on /login is
+  // a small user-enumeration sidechannel.
+  try {
+    if (typeof stored !== 'string' || stored.length === 0) {
       return { ok: false, legacy: false };
     }
-    let saltBytes;
-    let expected;
+
+    if (stored.startsWith(PBKDF2_PREFIX)) {
+      const parts = stored.slice(PBKDF2_PREFIX.length).split('$');
+      if (parts.length !== 3) return { ok: false, legacy: false };
+      const [iterStr, saltB64, hashB64] = parts;
+      const iterations = parseInt(iterStr, 10);
+      if (!Number.isFinite(iterations) || iterations <= 0) {
+        return { ok: false, legacy: false };
+      }
+      let saltBytes;
+      let expected;
+      try {
+        saltBytes = base64ToBytes(saltB64);
+        expected = base64ToBytes(hashB64);
+      } catch (_err) {
+        return { ok: false, legacy: false };
+      }
+      const derived = await pbkdf2(password, saltBytes, iterations);
+      return { ok: timingSafeEqual(derived, expected), legacy: false };
+    }
+
+    // Legacy: btoa(password). btoa throws on non-Latin1 input.
+    let encodedAttempt;
     try {
-      saltBytes = base64ToBytes(saltB64);
-      expected = base64ToBytes(hashB64);
+      encodedAttempt = btoa(password);
     } catch (_err) {
       return { ok: false, legacy: false };
     }
-    const derived = await pbkdf2(password, saltBytes, iterations);
-    return { ok: timingSafeEqual(derived, expected), legacy: false };
-  }
-
-  // Legacy: btoa(password)
-  let encodedAttempt;
-  try {
-    encodedAttempt = btoa(password);
+    const a = new TextEncoder().encode(encodedAttempt);
+    const b = new TextEncoder().encode(stored);
+    return { ok: timingSafeEqual(a, b), legacy: true };
   } catch (_err) {
     return { ok: false, legacy: false };
   }
-  const a = new TextEncoder().encode(encodedAttempt);
-  const b = new TextEncoder().encode(stored);
-  return { ok: timingSafeEqual(a, b), legacy: true };
 }
 
 /**

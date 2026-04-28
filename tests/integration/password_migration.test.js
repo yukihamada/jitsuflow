@@ -30,7 +30,7 @@ describe('integration: password hashing through register / login', () => {
     expect(res.status).toBe(201);
 
     const stored = await readPasswordHash('alice@example.com');
-    expect(stored?.startsWith('pbkdf2$100000$')).toBe(true);
+    expect(stored?.startsWith('pbkdf2$600000$')).toBe(true);
   });
 
   it('lets a legacy btoa user log in and upgrades the hash', async () => {
@@ -52,7 +52,7 @@ describe('integration: password hashing through register / login', () => {
     expect(body.user.id).toBe(seeded.id);
 
     const after = await readPasswordHash('bob@example.com');
-    expect(after?.startsWith('pbkdf2$100000$')).toBe(true);
+    expect(after?.startsWith('pbkdf2$600000$')).toBe(true);
     expect(after).not.toBe(legacyHash);
   });
 

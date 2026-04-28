@@ -1,4 +1,9 @@
 /**
+ * DEPRECATED — dead code. Not imported by src/index.js. Originally
+ * used as a debugging stand-in for /api/users/*. Do not edit;
+ * do not import.
+ *
+ * --- original header ---
  * Test user routes with minimal dependencies
  */
 

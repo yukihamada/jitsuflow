@@ -4,11 +4,11 @@ import { hashPassword, verifyPassword, isLegacyHash } from '../../src/utils/pass
 describe('password.hashPassword', () => {
   it('produces a versioned PBKDF2 hash', async () => {
     const stored = await hashPassword('correct horse battery staple');
-    expect(stored.startsWith('pbkdf2$100000$')).toBe(true);
+    expect(stored.startsWith('pbkdf2$600000$')).toBe(true);
     const parts = stored.split('$');
     expect(parts).toHaveLength(4);
     expect(parts[0]).toBe('pbkdf2');
-    expect(parts[1]).toBe('100000');
+    expect(parts[1]).toBe('600000');
     expect(parts[2].length).toBeGreaterThan(0);
     expect(parts[3].length).toBeGreaterThan(0);
   });
@@ -40,6 +40,25 @@ describe('password.verifyPassword (PBKDF2 path)', () => {
 
   it('rejects an empty stored hash', async () => {
     expect(await verifyPassword('x', '')).toEqual({ ok: false, legacy: false });
+  });
+
+  it('does not throw on garbage stored values (returns ok:false)', async () => {
+    // QA M4: Web Crypto / base64 decoders can throw on weird inputs.
+    // The verifier must absorb those and return a clean rejection so
+    // /login returns 401 not 500 (sidechannel).
+    const cases = [
+      'pbkdf2$100000$$$$extra',                 // malformed delimiter shape
+      'pbkdf2$abc$saltB64$hashB64',             // non-numeric iterations
+      'pbkdf2$100000$@@@invalid_b64@@@$abc==',  // un-decodable base64
+      null,
+      undefined,
+      42,
+      {}
+    ];
+    for (const stored of cases) {
+      const result = await verifyPassword('any-pw', stored);
+      expect(result.ok).toBe(false);
+    }
   });
 });
 

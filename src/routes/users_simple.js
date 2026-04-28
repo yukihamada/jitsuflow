@@ -1,4 +1,9 @@
 /**
+ * DEPRECATED — dead code. Not imported by src/index.js. Superseded
+ * by the canonical /api/users/* handlers in src/index.js (PBKDF2
+ * path). Do not edit; do not import.
+ *
+ * --- original header ---
  * Simplified user routes for JitsuFlow API
  * Without bcrypt for Cloudflare Workers compatibility
  */

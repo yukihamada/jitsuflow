@@ -1,4 +1,10 @@
 /**
+ * DEPRECATED — dead code. Not imported by src/index.js. The
+ * canonical auth middleware lives inline in src/index.js
+ * (requireAuth) and uses generateJWT/verifyJWT from
+ * src/middleware/auth.js. Do not edit; do not import.
+ *
+ * --- original header ---
  * Simplified authentication middleware for JitsuFlow API
  * Compatible with Cloudflare Workers
  */

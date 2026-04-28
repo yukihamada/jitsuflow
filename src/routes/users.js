@@ -1,4 +1,12 @@
 /**
+ * DEPRECATED — dead code. Not imported by src/index.js (the active
+ * worker entrypoint per wrangler.toml). The canonical /api/users/*
+ * handlers live directly in src/index.js using the strong PBKDF2
+ * path in src/utils/password.js. This file relies on the weak
+ * SHA-256+fixed-salt hashPassword in src/utils/crypto.js and must
+ * not be wired up. Do not edit; do not import.
+ *
+ * --- original header ---
  * User routes for JitsuFlow API
  * Production-ready with bcrypt and JWT
  */

@@ -289,12 +289,16 @@ router.post('/api/users/login', async (request) => {
     }
 
     // Lazy migration: upgrade legacy btoa hashes on successful login.
+    // CAS on the old value so concurrent legacy logins don't both
+    // rewrite the row — only the first wins, the second's UPDATE
+    // becomes a no-op (no rows match the now-pbkdf2 hash). Either
+    // outcome leaves the row in a valid state.
     if (isLegacyHash(user.password_hash)) {
       try {
         const upgraded = await hashPassword(password);
         await request.env.DB.prepare(
-          'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?'
-        ).bind(upgraded, new Date().toISOString(), user.id).run();
+          'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ? AND password_hash = ?'
+        ).bind(upgraded, new Date().toISOString(), user.id, user.password_hash).run();
       } catch (err) {
         console.error('Password rehash failed for user', user.id, err);
       }
