@@ -4,6 +4,7 @@
  */
 
 import { Router } from 'itty-router';
+import { logError, logInfo } from '../utils/logger.js';
 
 const router = Router();
 
@@ -157,7 +158,7 @@ router.post('/api/orders/create', async (request) => {
     });
 
   } catch (error) {
-    console.error('Create order error:', error);
+    logError('order.create_failed', { kind: 'order', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to create order',
       message: error.message
@@ -260,7 +261,7 @@ router.post('/api/payments/create-intent', async (request) => {
     });
 
   } catch (error) {
-    console.error('Create payment intent error:', error);
+    logError('payment.intent_create_failed', { kind: 'payment', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to create payment intent',
       message: error.message
@@ -279,7 +280,7 @@ router.post('/api/payments/webhook', async (request) => {
     // Note: For production, implement proper webhook signature verification
     const event = JSON.parse(body);
 
-    console.log('Stripe webhook event:', event.type);
+    logInfo('webhook.received', { kind: 'webhook', type: event.type });
 
     switch (event.type) {
     case 'payment_intent.succeeded': {
@@ -300,7 +301,11 @@ router.post('/api/payments/webhook', async (request) => {
           `).bind(now, now, paymentIntent.id).run();
 
         if ((result.meta?.changes || 0) === 0) {
-          console.log('Idempotent skip: payment_intent.succeeded already processed', paymentIntent.id);
+          logInfo('webhook.idempotent_skip', {
+            kind: 'webhook',
+            type: 'payment_intent.succeeded',
+            paymentIntentId: paymentIntent.id
+          });
           break;
         }
 
@@ -327,7 +332,11 @@ router.post('/api/payments/webhook', async (request) => {
         `).bind(now, paymentIntent.id).run();
 
       if ((result.meta?.changes || 0) === 0) {
-        console.log('Idempotent skip: payment_intent.payment_failed already processed', paymentIntent.id);
+        logInfo('webhook.idempotent_skip', {
+          kind: 'webhook',
+          type: 'payment_intent.payment_failed',
+          paymentIntentId: paymentIntent.id
+        });
       }
       break;
     }
@@ -386,7 +395,11 @@ router.post('/api/payments/webhook', async (request) => {
         `).bind(now, now, subscription.id).run();
 
       if ((result.meta?.changes || 0) === 0) {
-        console.log('Idempotent skip: customer.subscription.deleted already processed', subscription.id);
+        logInfo('webhook.idempotent_skip', {
+          kind: 'webhook',
+          type: 'customer.subscription.deleted',
+          subscriptionId: subscription.id
+        });
         break;
       }
 
@@ -406,7 +419,7 @@ router.post('/api/payments/webhook', async (request) => {
     });
 
   } catch (error) {
-    console.error('Webhook error:', error);
+    logError('webhook.processing_failed', { kind: 'webhook', err: error.message });
     return new Response(JSON.stringify({
       error: 'Webhook processing failed',
       message: error.message
@@ -486,7 +499,7 @@ router.post('/api/subscriptions/create', async (request) => {
     });
 
   } catch (error) {
-    console.error('Create subscription error:', error);
+    logError('subscription.create_failed', { kind: 'subscription', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to create subscription',
       message: error.message
@@ -544,7 +557,7 @@ router.post('/api/subscriptions/cancel', async (request) => {
     });
 
   } catch (error) {
-    console.error('Cancel subscription error:', error);
+    logError('subscription.cancel_failed', { kind: 'subscription', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to cancel subscription',
       message: error.message
@@ -595,7 +608,7 @@ router.get('/api/orders', async (request) => {
     });
 
   } catch (error) {
-    console.error('Get orders error:', error);
+    logError('order.list_failed', { kind: 'order', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to get orders',
       message: error.message
@@ -650,7 +663,7 @@ router.get('/api/orders/:id', async (request) => {
     });
 
   } catch (error) {
-    console.error('Get order details error:', error);
+    logError('order.detail_failed', { kind: 'order', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to get order details',
       message: error.message
@@ -743,7 +756,7 @@ router.post('/api/payments/:id/refund', async (request) => {
     });
 
   } catch (error) {
-    console.error('Process refund error:', error);
+    logError('payment.refund_failed', { kind: 'payment', err: error.message });
     return new Response(JSON.stringify({
       error: 'Failed to process refund',
       message: error.message

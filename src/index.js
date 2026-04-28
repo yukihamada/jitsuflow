@@ -9,6 +9,8 @@ import * as adminRoutes from './routes/admin.js';
 import { instructorsAdminRoutes } from './routes/instructors-admin.js';
 import { hashPassword, verifyPassword, isLegacyHash } from './utils/password.js';
 import { generateJWT, verifyJWT } from './middleware/auth.js';
+import { pickAllowedOrigin } from './utils/cors.js';
+import { logError } from './utils/logger.js';
 
 const router = Router();
 
@@ -19,9 +21,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
   'Access-Control-Max-Age': '86400'
 };
-
-// Rate limiting store
-const rateLimitStore = new Map();
 
 // Input validation helpers
 function validateEmail(email) {
@@ -42,30 +41,50 @@ function sanitizeInput(input) {
     .replace(/on\w+\s*=/gi, '');
 }
 
-// Rate limiting middleware
+// Rate limiting middleware backed by KV (SESSIONS namespace).
+// The previous in-memory Map reset on every isolate reload and was
+// not shared across the global edge — effectively a no-op at scale.
+//
+// Limits are configurable per environment:
+//   RATE_LIMIT_MAX             default 100
+//   RATE_LIMIT_WINDOW_SECONDS  default 60
 async function rateLimitMiddleware(request) {
-  const clientIp = request.headers.get('CF-Connecting-IP') ||
-                   request.headers.get('X-Forwarded-For') ||
-                   'unknown';
-
-  const now = Date.now();
-  const windowMs = 60000; // 1 minute
-  const maxRequests = 100;
-
-  // Clean old entries
-  for (const [key, data] of rateLimitStore.entries()) {
-    if (now - data.firstRequest > windowMs) {
-      rateLimitStore.delete(key);
-    }
+  if (!request.env?.SESSIONS) {
+    // No KV bound (e.g. some tests). Skip silently.
+    return;
   }
 
-  const clientData = rateLimitStore.get(clientIp) || { count: 0, firstRequest: now };
+  // Cloudflare always sets CF-Connecting-IP for traffic that reaches
+  // a Worker (it's set by the edge before the script runs and cannot
+  // be spoofed by the caller). X-Forwarded-For, in contrast, is just
+  // a request header and can be set to anything by an attacker hitting
+  // the workers.dev URL directly — using it as a fallback would let
+  // them rotate IPs and bypass the rate limit. Don't fall back.
+  const clientIp = request.headers.get('CF-Connecting-IP') || 'unknown';
 
-  if (clientData.count >= maxRequests && now - clientData.firstRequest < windowMs) {
+  const windowSec = parseInt(request.env.RATE_LIMIT_WINDOW_SECONDS || '60', 10);
+  const maxRequests = parseInt(request.env.RATE_LIMIT_MAX || '100', 10);
+  const bucket = Math.floor(Date.now() / (windowSec * 1000));
+  const key = `rl:${clientIp}:${bucket}`;
+  const resetIso = new Date((bucket + 1) * windowSec * 1000).toISOString();
+
+  let count = 0;
+  try {
+    const raw = await request.env.SESSIONS.get(key);
+    if (raw) {
+      const parsed = parseInt(raw, 10);
+      if (!Number.isNaN(parsed)) count = parsed;
+    }
+  } catch (err) {
+    logError('rate_limit.kv_read_failed', { kind: 'rate_limit', err: err.message });
+    return; // fail open — better to serve than to wedge on KV outage
+  }
+
+  if (count >= maxRequests) {
     return new Response(JSON.stringify({
       error: 'Too Many Requests',
-      message: `Rate limit exceeded. Max ${maxRequests} requests per minute.`,
-      retryAfter: Math.ceil((clientData.firstRequest + windowMs - now) / 1000)
+      message: `Rate limit exceeded. Max ${maxRequests} requests per ${windowSec} seconds.`,
+      retryAfter: windowSec
     }), {
       status: 429,
       headers: {
@@ -73,20 +92,24 @@ async function rateLimitMiddleware(request) {
         'Content-Type': 'application/json',
         'X-RateLimit-Limit': maxRequests.toString(),
         'X-RateLimit-Remaining': '0',
-        'X-RateLimit-Reset': new Date(clientData.firstRequest + windowMs).toISOString(),
-        'Retry-After': Math.ceil((clientData.firstRequest + windowMs - now) / 1000).toString()
+        'X-RateLimit-Reset': resetIso,
+        'Retry-After': windowSec.toString()
       }
     });
   }
 
-  clientData.count++;
-  rateLimitStore.set(clientIp, clientData);
+  try {
+    await request.env.SESSIONS.put(key, (count + 1).toString(), {
+      expirationTtl: Math.max(windowSec, 60) // KV minimum TTL is 60s
+    });
+  } catch (err) {
+    logError('rate_limit.kv_write_failed', { kind: 'rate_limit', err: err.message });
+  }
 
-  // Add rate limit info to request
   request.rateLimitInfo = {
     limit: maxRequests,
-    remaining: maxRequests - clientData.count,
-    reset: new Date(clientData.firstRequest + windowMs).toISOString()
+    remaining: maxRequests - count - 1,
+    reset: resetIso
   };
 }
 
@@ -120,7 +143,7 @@ async function requireAuth(request) {
   }
 
   if (!request.env?.JWT_SECRET) {
-    console.error('JWT_SECRET binding is missing — refusing all auth');
+    logError('auth.jwt_secret_missing', { kind: 'auth' });
     return new Response(JSON.stringify({
       error: 'Server misconfiguration',
       message: 'Auth secret not configured'
@@ -259,7 +282,7 @@ router.post('/api/users/register', async (request) => {
     });
 
   } catch (error) {
-    console.error('Registration error:', error);
+    logError('auth.registration_failed', { kind: 'auth', err: error.message });
     return new Response(JSON.stringify({
       error: 'Registration failed',
       message: error.message
@@ -317,7 +340,7 @@ router.post('/api/users/login', async (request) => {
           'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ? AND password_hash = ?'
         ).bind(upgraded, new Date().toISOString(), user.id, user.password_hash).run();
       } catch (err) {
-        console.error('Password rehash failed for user', user.id, err);
+        logError('auth.password_rehash_failed', { kind: 'auth', userId: user.id, err: err.message });
       }
     }
 
@@ -342,7 +365,7 @@ router.post('/api/users/login', async (request) => {
     });
 
   } catch (error) {
-    console.error('Login error:', error);
+    logError('auth.login_failed', { kind: 'auth', err: error.message });
     return new Response(JSON.stringify({
       error: 'Login failed',
       message: error.message
@@ -1309,6 +1332,32 @@ router.all('*', () => new Response('Not Found', {
   headers: corsHeaders
 }));
 
+function applyResponseHeaders(response, request) {
+  const newHeaders = new Headers(response.headers);
+
+  // CORS allowlist (replaces the static '*' baked into corsHeaders)
+  newHeaders.delete('Access-Control-Allow-Origin');
+  newHeaders.delete('Vary');
+  const allowedOrigin = pickAllowedOrigin(request, request.env);
+  if (allowedOrigin) {
+    newHeaders.set('Access-Control-Allow-Origin', allowedOrigin);
+    if (allowedOrigin !== '*') newHeaders.set('Vary', 'Origin');
+  }
+
+  // Rate-limit headers when middleware annotated the request
+  if (request.rateLimitInfo) {
+    newHeaders.set('X-RateLimit-Limit', request.rateLimitInfo.limit.toString());
+    newHeaders.set('X-RateLimit-Remaining', request.rateLimitInfo.remaining.toString());
+    newHeaders.set('X-RateLimit-Reset', request.rateLimitInfo.reset);
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     try {
@@ -1317,35 +1366,21 @@ export default {
 
       // Apply rate limiting
       const rateLimitResponse = await rateLimitMiddleware(request);
-      if (rateLimitResponse) return rateLimitResponse;
+      if (rateLimitResponse) return applyResponseHeaders(rateLimitResponse, request);
 
       // Handle request
       const response = await router.handle(request);
-
-      // Add rate limit headers to successful responses
-      if (request.rateLimitInfo) {
-        const newHeaders = new Headers(response.headers);
-        newHeaders.set('X-RateLimit-Limit', request.rateLimitInfo.limit.toString());
-        newHeaders.set('X-RateLimit-Remaining', request.rateLimitInfo.remaining.toString());
-        newHeaders.set('X-RateLimit-Reset', request.rateLimitInfo.reset);
-
-        return new Response(response.body, {
-          status: response.status,
-          statusText: response.statusText,
-          headers: newHeaders
-        });
-      }
-
-      return response;
+      return applyResponseHeaders(response, request);
     } catch (error) {
-      console.error('Worker error:', error);
-      return new Response(JSON.stringify({
+      logError('worker.unhandled', { err: error.message, stack: error.stack });
+      const errorRes = new Response(JSON.stringify({
         error: 'Internal Server Error',
         message: error.message
       }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
+      return applyResponseHeaders(errorRes, request);
     }
   }
 };
