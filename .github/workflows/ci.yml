@@ -41,6 +41,9 @@ jobs:
     - name: Run unit tests
       run: npm run test:unit
 
+    - name: Run integration tests
+      run: npm run test:integration
+
   # Node.js API Test
   api-test:
     name: API Test
