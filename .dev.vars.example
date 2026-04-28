@@ -9,3 +9,9 @@ RESEND_API_KEY=re_replace_me
 SLACK_WEBHOOK_URL=https://hooks.slack.com/services/REPLACE/ME
 OPENAI_API_KEY=sk-replace-if-using-ai-features
 GROQ_API_KEY=gsk_replace_if_using_ai_features
+
+# R2 presigned URLs (issued in Cloudflare dashboard → R2 → Manage API tokens)
+R2_ACCOUNT_ID=46bf2542468db352a9741f14b84d2744
+R2_ACCESS_KEY_ID=replace_me
+R2_SECRET_ACCESS_KEY=replace_me
+R2_BUCKET_NAME=jitsuflow-assets
