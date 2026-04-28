@@ -125,6 +125,10 @@ Desktop.ini
 *.cert
 *.crt
 
+# App Store Connect API keys (must never be committed)
+fastlane/authkey/*.p8
+.env.appstore
+
 # Database
 *.db
 *.sqlite
