@@ -26,6 +26,7 @@
     "workers-dev": "wrangler dev"
   },
   "dependencies": {
+    "aws4fetch": "^1.0.20",
     "itty-router": "^4.0.0"
   },
   "devDependencies": {

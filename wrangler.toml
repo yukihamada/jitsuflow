@@ -13,6 +13,8 @@ ENVIRONMENT = "development"
 # set. Required keys:
 #   JWT_SECRET, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
 #   RESEND_API_KEY, SLACK_WEBHOOK_URL,
+#   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME
+#     (R2_* are required for presigned video upload/download URLs),
 #   OPENAI_API_KEY, GROQ_API_KEY (only if AI features are enabled)
 
 # Database

@@ -71,6 +71,15 @@ const DEFAULT_BINDINGS = {
  * @param {object} [options.bindings] - Override env bindings.
  * @returns {Promise<{mf: Miniflare, db: D1Database, fetch: Function, dispose: Function}>}
  */
+// Strip undefined values so a test passing `{ JWT_SECRET: undefined }`
+// effectively unsets the binding (Miniflare's zod schema rejects
+// undefined-valued bindings outright).
+function pruneUndefined(obj) {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== undefined)
+  );
+}
+
 export async function createTestEnv(options = {}) {
   const script = await getWorkerScript();
 
@@ -83,7 +92,10 @@ export async function createTestEnv(options = {}) {
     d1Databases: { DB: 'test-db' },
     kvNamespaces: ['SESSIONS'],
     r2Buckets: ['BUCKET'],
-    bindings: { ...DEFAULT_BINDINGS, ...(options.bindings || {}) }
+    bindings: pruneUndefined({
+      ...DEFAULT_BINDINGS,
+      ...(options.bindings || {})
+    })
   });
 
   const db = await mf.getD1Database('DB');

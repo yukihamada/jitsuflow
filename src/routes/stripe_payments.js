@@ -287,26 +287,29 @@ router.post('/api/payments/webhook', async (request) => {
       const orderId = paymentIntent.metadata.order_id;
 
       if (orderId) {
-        // Update payment status
-        await request.env.DB.prepare(`
-            UPDATE payments 
+        // Idempotency via atomic CAS: Stripe re-delivers webhooks
+        // and two parallel deliveries can race. Make the UPDATE only
+        // touch rows still in a non-terminal state and check
+        // changes — that way exactly one invocation wins, and only
+        // that invocation also updates the order.
+        const now = new Date().toISOString();
+        const result = await request.env.DB.prepare(`
+            UPDATE payments
             SET status = 'completed', paid_at = ?, updated_at = ?
-            WHERE stripe_payment_intent_id = ?
-          `).bind(
-          new Date().toISOString(),
-          new Date().toISOString(),
-          paymentIntent.id
-        ).run();
+            WHERE stripe_payment_intent_id = ? AND status <> 'completed'
+          `).bind(now, now, paymentIntent.id).run();
 
-        // Update order status
+        if ((result.meta?.changes || 0) === 0) {
+          console.log('Idempotent skip: payment_intent.succeeded already processed', paymentIntent.id);
+          break;
+        }
+
+        // Update order status (only the winning invocation reaches here)
         await request.env.DB.prepare(`
-            UPDATE orders 
+            UPDATE orders
             SET payment_status = 'paid', status = 'processing', updated_at = ?
             WHERE id = ?
-          `).bind(
-          new Date().toISOString(),
-          orderId
-        ).run();
+          `).bind(now, orderId).run();
 
         // TODO: Send confirmation email
       }
@@ -315,15 +318,17 @@ router.post('/api/payments/webhook', async (request) => {
 
     case 'payment_intent.payment_failed': {
       const paymentIntent = event.data.object;
+      const now = new Date().toISOString();
 
-      await request.env.DB.prepare(`
-          UPDATE payments 
+      const result = await request.env.DB.prepare(`
+          UPDATE payments
           SET status = 'failed', updated_at = ?
-          WHERE stripe_payment_intent_id = ?
-        `).bind(
-        new Date().toISOString(),
-        paymentIntent.id
-      ).run();
+          WHERE stripe_payment_intent_id = ? AND status <> 'failed'
+        `).bind(now, paymentIntent.id).run();
+
+      if ((result.meta?.changes || 0) === 0) {
+        console.log('Idempotent skip: payment_intent.payment_failed already processed', paymentIntent.id);
+      }
       break;
     }
 
@@ -369,18 +374,23 @@ router.post('/api/payments/webhook', async (request) => {
 
     case 'customer.subscription.deleted': {
       const subscription = event.data.object;
+      const now = new Date().toISOString();
 
-      await request.env.DB.prepare(`
-          UPDATE subscriptions 
+      // Idempotent cancel: only set cancelled_at on the first
+      // delivery; later re-deliveries leave the original timestamp
+      // intact. Returns 0 changes on re-delivery.
+      const result = await request.env.DB.prepare(`
+          UPDATE subscriptions
           SET status = 'cancelled', cancelled_at = ?, updated_at = ?
-          WHERE stripe_subscription_id = ?
-        `).bind(
-        new Date().toISOString(),
-        new Date().toISOString(),
-        subscription.id
-      ).run();
+          WHERE stripe_subscription_id = ? AND status <> 'cancelled'
+        `).bind(now, now, subscription.id).run();
 
-      // Update user role
+      if ((result.meta?.changes || 0) === 0) {
+        console.log('Idempotent skip: customer.subscription.deleted already processed', subscription.id);
+        break;
+      }
+
+      // Update user role (only on the first delivery — same gating)
       const userId = subscription.metadata.user_id;
       if (userId) {
         await request.env.DB.prepare(

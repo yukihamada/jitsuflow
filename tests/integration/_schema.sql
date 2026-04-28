@@ -15,3 +15,52 @@ CREATE TABLE users (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE orders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  order_number TEXT,
+  status TEXT,
+  payment_status TEXT,
+  subtotal INTEGER,
+  tax_amount INTEGER,
+  total_amount INTEGER,
+  shipping_address TEXT,
+  billing_address TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE payments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  order_id INTEGER,
+  payment_type TEXT,
+  amount INTEGER,
+  currency TEXT,
+  payment_method TEXT,
+  stripe_payment_intent_id TEXT,
+  status TEXT,
+  paid_at DATETIME,
+  refund_amount INTEGER DEFAULT 0,
+  refund_reason TEXT,
+  refunded_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE subscriptions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  stripe_subscription_id TEXT UNIQUE,
+  stripe_customer_id TEXT,
+  plan_id TEXT,
+  plan_name TEXT,
+  status TEXT,
+  current_period_start DATETIME,
+  current_period_end DATETIME,
+  cancel_at_period_end INTEGER DEFAULT 0,
+  cancelled_at DATETIME,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);

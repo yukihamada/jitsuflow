@@ -4,6 +4,7 @@
 
 import { Router } from 'itty-router';
 import { corsHeaders } from '../middleware/cors';
+import { generatePresignedPutUrl } from '../utils/r2_presigned.js';
 
 const router = Router();
 
@@ -80,8 +81,8 @@ router.post('/api/videos/upload', async (request) => {
       new Date().toISOString()
     ).run();
 
-    // Generate presigned URL for R2 upload
-    const presignedUrl = await generatePresignedUrl(request.env.BUCKET, `videos/${videoId}`);
+    // Generate presigned URL for R2 upload (SigV4)
+    const presignedUrl = await generatePresignedPutUrl(request.env, `videos/${videoId}`);
 
     return new Response(JSON.stringify({
       message: 'Video upload initialized',
@@ -585,12 +586,5 @@ router.get('/api/videos/:id', async (request) => {
     });
   }
 });
-
-// Generate presigned URL for R2 uploads
-async function generatePresignedUrl(bucket, key) {
-  // This is a placeholder - implement actual R2 presigned URL generation
-  // using @aws-sdk/client-s3 or similar
-  return `https://jitsuflow-assets.r2.cloudflarestorage.com/${key}?presigned=true`;
-}
 
 export { router as videoRoutes };

@@ -8,6 +8,7 @@ import { paymentRoutes } from './routes/stripe_payments.js';
 import * as adminRoutes from './routes/admin.js';
 import { instructorsAdminRoutes } from './routes/instructors-admin.js';
 import { hashPassword, verifyPassword, isLegacyHash } from './utils/password.js';
+import { generateJWT, verifyJWT } from './middleware/auth.js';
 
 const router = Router();
 
@@ -21,27 +22,6 @@ const corsHeaders = {
 
 // Rate limiting store
 const rateLimitStore = new Map();
-
-// Helper functions
-function createToken(payload) {
-  const data = JSON.stringify({
-    ...payload,
-    exp: Date.now() + 86400000 // 24 hours
-  });
-  return btoa(data);
-}
-
-function parseToken(token) {
-  try {
-    const data = JSON.parse(atob(token));
-    if (data.exp < Date.now()) {
-      throw new Error('Token expired');
-    }
-    return data;
-  } catch (error) {
-    throw new Error('Invalid token');
-  }
-}
 
 // Input validation helpers
 function validateEmail(email) {
@@ -110,7 +90,22 @@ async function rateLimitMiddleware(request) {
   };
 }
 
-// Auth middleware
+// Role middleware. Call AFTER requireAuth — relies on request.user.
+// Returns a 403 Response if the role does not match, undefined otherwise.
+function requireRole(request, role) {
+  if (request.user?.role !== role) {
+    return new Response(JSON.stringify({
+      error: 'Forbidden',
+      message: `Requires ${role} role`
+    }), {
+      status: 403,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
+// Auth middleware. Verifies a HS256 JWT against env.JWT_SECRET and
+// attaches the decoded payload to request.user.
 async function requireAuth(request) {
   const authHeader = request.headers.get('Authorization');
 
@@ -124,14 +119,32 @@ async function requireAuth(request) {
     });
   }
 
+  if (!request.env?.JWT_SECRET) {
+    console.error('JWT_SECRET binding is missing — refusing all auth');
+    return new Response(JSON.stringify({
+      error: 'Server misconfiguration',
+      message: 'Auth secret not configured'
+    }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+
   try {
     const token = authHeader.substring(7);
-    const payload = parseToken(token);
-    request.user = payload;
+    const payload = await verifyJWT(token, request.env.JWT_SECRET);
+    if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+      throw new Error('Token expired');
+    }
+    request.user = {
+      userId: payload.userId,
+      email: payload.email,
+      role: payload.role || 'user'
+    };
   } catch (error) {
     return new Response(JSON.stringify({
       error: 'Unauthorized',
-      message: error.message
+      message: error.message || 'Invalid token'
     }), {
       status: 401,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -225,7 +238,11 @@ router.post('/api/users/register', async (request) => {
     ).run();
 
     const userId = result.meta.last_row_id;
-    const token = createToken({ userId, email: sanitizedEmail, role: 'user' });
+    const token = await generateJWT(
+      { userId, email: sanitizedEmail, role: 'user' },
+      request.env.JWT_SECRET,
+      '24h'
+    );
 
     return new Response(JSON.stringify({
       message: 'Registration successful',
@@ -304,11 +321,11 @@ router.post('/api/users/login', async (request) => {
       }
     }
 
-    const token = createToken({
-      userId: user.id,
-      email: user.email,
-      role: user.role || 'user'
-    });
+    const token = await generateJWT(
+      { userId: user.id, email: user.email, role: user.role || 'user' },
+      request.env.JWT_SECRET,
+      '24h'
+    );
 
     return new Response(JSON.stringify({
       message: 'Login successful',
@@ -421,6 +438,8 @@ router.put('/api/users/profile', async (request) => {
 router.get('/api/users', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   const response = await adminRoutes.getAllUsers(request);
   return new Response(response.body, {
@@ -432,6 +451,8 @@ router.get('/api/users', async (request) => {
 router.delete('/api/users/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').pop() };
   const response = await adminRoutes.deleteUser(request);
@@ -508,6 +529,8 @@ router.get('/api/products/:id', async (request) => {
 router.put('/api/products/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').slice(-1)[0] };
   const response = await adminRoutes.updateProduct(request);
@@ -520,6 +543,8 @@ router.put('/api/products/:id', async (request) => {
 router.delete('/api/products/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').pop() };
   const response = await adminRoutes.deleteProduct(request);
@@ -1027,6 +1052,8 @@ router.get('/api/videos', async (request) => {
 router.delete('/api/videos/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').pop() };
   const response = await adminRoutes.deleteVideo(request);
@@ -1235,6 +1262,13 @@ router.all('/api/orders/*', async (request) => {
   return paymentRoutes.handle(request);
 });
 router.all('/api/payments/*', async (request) => {
+  // The Stripe webhook authenticates via signature (handled inside the
+  // route), not via our Bearer token. Bypass requireAuth so Stripe can
+  // actually deliver events.
+  const url = new URL(request.url);
+  if (url.pathname === '/api/payments/webhook') {
+    return paymentRoutes.handle(request);
+  }
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
   return paymentRoutes.handle(request);
@@ -1245,10 +1279,29 @@ router.all('/api/subscriptions/*', async (request) => {
   return paymentRoutes.handle(request);
 });
 
-// Instructors admin routes
-router.all('/api/instructors/*', instructorsAdminRoutes.handle);
+// Instructors routes.
+//
+// Public reads: GET list/detail/dojos
+// Admin mutations: everything else (POST/PUT/DELETE), gated by
+// requireAuth + requireRole('admin') at the mount layer so a request
+// without a token gets 401 (not 403, which is what would happen if
+// only the inner requireAdmin in instructors-admin.js ran).
 router.get('/api/instructors', instructorsAdminRoutes.handle);
-router.post('/api/instructors', instructorsAdminRoutes.handle);
+router.get('/api/instructors/:id', instructorsAdminRoutes.handle);
+router.get('/api/instructors/:id/dojos', instructorsAdminRoutes.handle);
+
+const guardedInstructors = async (request) => {
+  const authResponse = await requireAuth(request);
+  if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
+  return instructorsAdminRoutes.handle(request);
+};
+router.post('/api/instructors', guardedInstructors);
+router.put('/api/instructors/:id', guardedInstructors);
+router.delete('/api/instructors/:id', guardedInstructors);
+router.post('/api/instructors/:id/dojos', guardedInstructors);
+router.delete('/api/instructors/:id/dojos/:dojoId', guardedInstructors);
 
 // 404 handler
 router.all('*', () => new Response('Not Found', {
