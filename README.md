@@ -204,6 +204,38 @@ flutter drive --target=test_driver/app.dart
 - **日本語コメント** で可読性向上
 - **包括的なテスト** 記述
 
+## 🗂 リポジトリ構成 (Repo organization)
+
+ルート直下に大量の Markdown / 設定ファイルが歴史的経緯で積もっているため、新規メンバー向けに役割を分類します。**ファイル自体は移動していません** — 索引としての位置付けです。
+
+### 🟢 ライブ・ドキュメント (LIVE)
+今でも参照すべき最新情報。
+
+- [`README.md`](README.md) — 本ファイル
+- [`CLAUDE.md`](CLAUDE.md) — 開発方針・ガイドライン
+- [`API_DOCUMENTATION.md`](API_DOCUMENTATION.md) — API 仕様の正本
+- [`README_CICD.md`](README_CICD.md) — CI/CD パイプライン概要
+
+### 🔵 セットアップ・運用ガイド (SETUP)
+特定タスク時に参照する手順書。
+
+- インフラ: [`CLOUDFLARE_SETUP.md`](CLOUDFLARE_SETUP.md), [`CUSTOM_DOMAIN_SETUP.md`](CUSTOM_DOMAIN_SETUP.md), [`domain-setup-guide.md`](domain-setup-guide.md)
+- App Store / TestFlight: [`APP_STORE_UPLOAD_GUIDE.md`](APP_STORE_UPLOAD_GUIDE.md), [`APP_STORE_CHECKLIST.md`](APP_STORE_CHECKLIST.md), [`APP_STORE_API_KEY_GUIDE.md`](APP_STORE_API_KEY_GUIDE.md), [`fastlane/API_KEY_SETUP.md`](fastlane/API_KEY_SETUP.md)
+- App Store Connect 操作: [`app_store_connect_setup.md`](app_store_connect_setup.md), [`APP_STORE_CONNECT_CORRECT_STEPS.md`](APP_STORE_CONNECT_CORRECT_STEPS.md), [`APP_STORE_CONNECT_DIRECT_LINK.md`](APP_STORE_CONNECT_DIRECT_LINK.md)
+- TestFlight: [`MANUAL_TESTFLIGHT_UPLOAD.md`](MANUAL_TESTFLIGHT_UPLOAD.md), [`TESTFLIGHT_UPLOAD_NOW.md`](TESTFLIGHT_UPLOAD_NOW.md)
+- 計画: [`claude.roadmap`](claude.roadmap)
+
+### 📦 アーカイブ (ARCHIVED — 過去のスナップショット)
+当時の状況報告で、今は内容が古い可能性があります。トラブルシューティング時の参考情報として残しています。**新規参照を推奨しません。**
+
+- 状況報告: [`DEPLOYMENT_STATUS.md`](DEPLOYMENT_STATUS.md), [`DEPLOYMENT_FINAL_STATUS.md`](DEPLOYMENT_FINAL_STATUS.md), [`DEPLOYMENT_SUCCESS.md`](DEPLOYMENT_SUCCESS.md), [`FINAL_STATUS_REPORT.md`](FINAL_STATUS_REPORT.md), [`CI_CD_STATUS.md`](CI_CD_STATUS.md), [`APP_ICON_STATUS.md`](APP_ICON_STATUS.md)
+- 成果物確認: [`APP_STORE_SCREENSHOTS_SUCCESS.md`](APP_STORE_SCREENSHOTS_SUCCESS.md), [`APP_STORE_UPLOAD_SUCCESS.md`](APP_STORE_UPLOAD_SUCCESS.md)
+- 一時的な調査メモ: [`CHECK_TESTFLIGHT_STATUS.md`](CHECK_TESTFLIGHT_STATUS.md), [`TESTFLIGHT_ID_NEEDED.md`](TESTFLIGHT_ID_NEEDED.md), [`TESTFLIGHT_ISSUE_SOLUTION.md`](TESTFLIGHT_ISSUE_SOLUTION.md), [`API_TEST_REPORT.md`](API_TEST_REPORT.md), [`ci_test_results.md`](ci_test_results.md)
+- 補助情報: [`app_store_sku_suggestions.md`](app_store_sku_suggestions.md)
+
+### ⚙️ ツール用設定 (各ツールの仕様により命名固定)
+- [`claude.json`](claude.json), [`claude.env`](claude.env), [`claude.secrets`](claude.secrets), [`claude.tasks`](claude.tasks), [`claude.troubleshooting`](claude.troubleshooting) — 旧 Claude Code 関連設定の残骸（一部現役）
+
 ## 📄 ライセンス
 
 このプロジェクトは MIT ライセンスの下で公開されています。詳細は [LICENSE](LICENSE) ファイルをご覧ください。

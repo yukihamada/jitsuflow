@@ -1,4 +1,9 @@
 /**
+ * DEPRECATED — dead copy. The active worker entrypoint is src/index.js
+ * (see wrangler.toml: main = "src/index.js"). This file is not imported
+ * anywhere. Kept for git history; do not edit.
+ *
+ * --- original header ---
  * JitsuFlow Cloudflare Workers API - Complete Implementation
  * All routes directly implemented to avoid module import issues
  */
