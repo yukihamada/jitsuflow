@@ -21,9 +21,6 @@ const corsHeaders = {
   'Access-Control-Max-Age': '86400'
 };
 
-// Rate limiting store
-const rateLimitStore = new Map();
-
 // Input validation helpers
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,30 +40,46 @@ function sanitizeInput(input) {
     .replace(/on\w+\s*=/gi, '');
 }
 
-// Rate limiting middleware
+// Rate limiting middleware backed by KV (SESSIONS namespace).
+// The previous in-memory Map reset on every isolate reload and was
+// not shared across the global edge — effectively a no-op at scale.
+//
+// Limits are configurable per environment:
+//   RATE_LIMIT_MAX             default 100
+//   RATE_LIMIT_WINDOW_SECONDS  default 60
 async function rateLimitMiddleware(request) {
+  if (!request.env?.SESSIONS) {
+    // No KV bound (e.g. some tests). Skip silently.
+    return;
+  }
+
   const clientIp = request.headers.get('CF-Connecting-IP') ||
                    request.headers.get('X-Forwarded-For') ||
                    'unknown';
 
-  const now = Date.now();
-  const windowMs = 60000; // 1 minute
-  const maxRequests = 100;
+  const windowSec = parseInt(request.env.RATE_LIMIT_WINDOW_SECONDS || '60', 10);
+  const maxRequests = parseInt(request.env.RATE_LIMIT_MAX || '100', 10);
+  const bucket = Math.floor(Date.now() / (windowSec * 1000));
+  const key = `rl:${clientIp}:${bucket}`;
+  const resetIso = new Date((bucket + 1) * windowSec * 1000).toISOString();
 
-  // Clean old entries
-  for (const [key, data] of rateLimitStore.entries()) {
-    if (now - data.firstRequest > windowMs) {
-      rateLimitStore.delete(key);
+  let count = 0;
+  try {
+    const raw = await request.env.SESSIONS.get(key);
+    if (raw) {
+      const parsed = parseInt(raw, 10);
+      if (!Number.isNaN(parsed)) count = parsed;
     }
+  } catch (err) {
+    console.error('Rate limit KV read failed:', err);
+    return; // fail open — better to serve than to wedge on KV outage
   }
 
-  const clientData = rateLimitStore.get(clientIp) || { count: 0, firstRequest: now };
-
-  if (clientData.count >= maxRequests && now - clientData.firstRequest < windowMs) {
+  if (count >= maxRequests) {
     return new Response(JSON.stringify({
       error: 'Too Many Requests',
-      message: `Rate limit exceeded. Max ${maxRequests} requests per minute.`,
-      retryAfter: Math.ceil((clientData.firstRequest + windowMs - now) / 1000)
+      message: `Rate limit exceeded. Max ${maxRequests} requests per ${windowSec} seconds.`,
+      retryAfter: windowSec
     }), {
       status: 429,
       headers: {
@@ -74,20 +87,24 @@ async function rateLimitMiddleware(request) {
         'Content-Type': 'application/json',
         'X-RateLimit-Limit': maxRequests.toString(),
         'X-RateLimit-Remaining': '0',
-        'X-RateLimit-Reset': new Date(clientData.firstRequest + windowMs).toISOString(),
-        'Retry-After': Math.ceil((clientData.firstRequest + windowMs - now) / 1000).toString()
+        'X-RateLimit-Reset': resetIso,
+        'Retry-After': windowSec.toString()
       }
     });
   }
 
-  clientData.count++;
-  rateLimitStore.set(clientIp, clientData);
+  try {
+    await request.env.SESSIONS.put(key, (count + 1).toString(), {
+      expirationTtl: Math.max(windowSec, 60) // KV minimum TTL is 60s
+    });
+  } catch (err) {
+    console.error('Rate limit KV write failed:', err);
+  }
 
-  // Add rate limit info to request
   request.rateLimitInfo = {
     limit: maxRequests,
-    remaining: maxRequests - clientData.count,
-    reset: new Date(clientData.firstRequest + windowMs).toISOString()
+    remaining: maxRequests - count - 1,
+    reset: resetIso
   };
 }
 
