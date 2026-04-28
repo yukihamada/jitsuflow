@@ -7,6 +7,7 @@ import { Router } from 'itty-router';
 import { paymentRoutes } from './routes/stripe_payments.js';
 import * as adminRoutes from './routes/admin.js';
 import { instructorsAdminRoutes } from './routes/instructors-admin.js';
+import { hashPassword, verifyPassword, isLegacyHash } from './utils/password.js';
 
 const router = Router();
 
@@ -40,15 +41,6 @@ function parseToken(token) {
   } catch (error) {
     throw new Error('Invalid token');
   }
-}
-
-function hashPassword(password) {
-  // Simple hash for demo - replace with proper implementation in production
-  return btoa(password);
-}
-
-function verifyPassword(password, hash) {
-  return hashPassword(password) === hash;
 }
 
 // Input validation helpers
@@ -219,7 +211,7 @@ router.post('/api/users/register', async (request) => {
     }
 
     // Create user
-    const hashedPassword = hashPassword(password);
+    const hashedPassword = await hashPassword(password);
     const result = await request.env.DB.prepare(
       'INSERT INTO users (email, password_hash, name, phone, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
     ).bind(
@@ -282,7 +274,11 @@ router.post('/api/users/login', async (request) => {
       'SELECT * FROM users WHERE email = ? AND is_active = 1'
     ).bind(sanitizedEmail).first();
 
-    if (!user || !verifyPassword(password, user.password_hash)) {
+    const verification = user
+      ? await verifyPassword(password, user.password_hash)
+      : { ok: false, legacy: false };
+
+    if (!user || !verification.ok) {
       return new Response(JSON.stringify({
         error: 'Invalid credentials',
         message: 'Email or password is incorrect'
@@ -290,6 +286,18 @@ router.post('/api/users/login', async (request) => {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
+    }
+
+    // Lazy migration: upgrade legacy btoa hashes on successful login.
+    if (isLegacyHash(user.password_hash)) {
+      try {
+        const upgraded = await hashPassword(password);
+        await request.env.DB.prepare(
+          'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ?'
+        ).bind(upgraded, new Date().toISOString(), user.id).run();
+      } catch (err) {
+        console.error('Password rehash failed for user', user.id, err);
+      }
     }
 
     const token = createToken({
