@@ -9,6 +9,7 @@ import * as adminRoutes from './routes/admin.js';
 import { instructorsAdminRoutes } from './routes/instructors-admin.js';
 import { hashPassword, verifyPassword, isLegacyHash } from './utils/password.js';
 import { generateJWT, verifyJWT } from './middleware/auth.js';
+import { pickAllowedOrigin } from './utils/cors.js';
 
 const router = Router();
 
@@ -1309,6 +1310,32 @@ router.all('*', () => new Response('Not Found', {
   headers: corsHeaders
 }));
 
+function applyResponseHeaders(response, request) {
+  const newHeaders = new Headers(response.headers);
+
+  // CORS allowlist (replaces the static '*' baked into corsHeaders)
+  newHeaders.delete('Access-Control-Allow-Origin');
+  newHeaders.delete('Vary');
+  const allowedOrigin = pickAllowedOrigin(request, request.env);
+  if (allowedOrigin) {
+    newHeaders.set('Access-Control-Allow-Origin', allowedOrigin);
+    if (allowedOrigin !== '*') newHeaders.set('Vary', 'Origin');
+  }
+
+  // Rate-limit headers when middleware annotated the request
+  if (request.rateLimitInfo) {
+    newHeaders.set('X-RateLimit-Limit', request.rateLimitInfo.limit.toString());
+    newHeaders.set('X-RateLimit-Remaining', request.rateLimitInfo.remaining.toString());
+    newHeaders.set('X-RateLimit-Reset', request.rateLimitInfo.reset);
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: newHeaders
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     try {
@@ -1317,35 +1344,21 @@ export default {
 
       // Apply rate limiting
       const rateLimitResponse = await rateLimitMiddleware(request);
-      if (rateLimitResponse) return rateLimitResponse;
+      if (rateLimitResponse) return applyResponseHeaders(rateLimitResponse, request);
 
       // Handle request
       const response = await router.handle(request);
-
-      // Add rate limit headers to successful responses
-      if (request.rateLimitInfo) {
-        const newHeaders = new Headers(response.headers);
-        newHeaders.set('X-RateLimit-Limit', request.rateLimitInfo.limit.toString());
-        newHeaders.set('X-RateLimit-Remaining', request.rateLimitInfo.remaining.toString());
-        newHeaders.set('X-RateLimit-Reset', request.rateLimitInfo.reset);
-
-        return new Response(response.body, {
-          status: response.status,
-          statusText: response.statusText,
-          headers: newHeaders
-        });
-      }
-
-      return response;
+      return applyResponseHeaders(response, request);
     } catch (error) {
       console.error('Worker error:', error);
-      return new Response(JSON.stringify({
+      const errorRes = new Response(JSON.stringify({
         error: 'Internal Server Error',
         message: error.message
       }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
+      return applyResponseHeaders(errorRes, request);
     }
   }
 };
