@@ -287,9 +287,20 @@ router.post('/api/payments/webhook', async (request) => {
       const orderId = paymentIntent.metadata.order_id;
 
       if (orderId) {
+        // Idempotency: Stripe re-delivers webhooks. Skip if this payment
+        // intent has already been processed to a terminal state.
+        const existing = await request.env.DB.prepare(
+          'SELECT status FROM payments WHERE stripe_payment_intent_id = ?'
+        ).bind(paymentIntent.id).first();
+
+        if (existing?.status === 'completed') {
+          console.log('Idempotent skip: payment_intent.succeeded already processed', paymentIntent.id);
+          break;
+        }
+
         // Update payment status
         await request.env.DB.prepare(`
-            UPDATE payments 
+            UPDATE payments
             SET status = 'completed', paid_at = ?, updated_at = ?
             WHERE stripe_payment_intent_id = ?
           `).bind(
@@ -300,7 +311,7 @@ router.post('/api/payments/webhook', async (request) => {
 
         // Update order status
         await request.env.DB.prepare(`
-            UPDATE orders 
+            UPDATE orders
             SET payment_status = 'paid', status = 'processing', updated_at = ?
             WHERE id = ?
           `).bind(
@@ -316,8 +327,17 @@ router.post('/api/payments/webhook', async (request) => {
     case 'payment_intent.payment_failed': {
       const paymentIntent = event.data.object;
 
+      const existing = await request.env.DB.prepare(
+        'SELECT status FROM payments WHERE stripe_payment_intent_id = ?'
+      ).bind(paymentIntent.id).first();
+
+      if (existing?.status === 'failed') {
+        console.log('Idempotent skip: payment_intent.payment_failed already processed', paymentIntent.id);
+        break;
+      }
+
       await request.env.DB.prepare(`
-          UPDATE payments 
+          UPDATE payments
           SET status = 'failed', updated_at = ?
           WHERE stripe_payment_intent_id = ?
         `).bind(

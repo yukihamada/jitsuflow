@@ -1235,6 +1235,13 @@ router.all('/api/orders/*', async (request) => {
   return paymentRoutes.handle(request);
 });
 router.all('/api/payments/*', async (request) => {
+  // The Stripe webhook authenticates via signature (handled inside the
+  // route), not via our Bearer token. Bypass requireAuth so Stripe can
+  // actually deliver events.
+  const url = new URL(request.url);
+  if (url.pathname === '/api/payments/webhook') {
+    return paymentRoutes.handle(request);
+  }
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
   return paymentRoutes.handle(request);
