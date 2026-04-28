@@ -10,6 +10,7 @@ import { instructorsAdminRoutes } from './routes/instructors-admin.js';
 import { hashPassword, verifyPassword, isLegacyHash } from './utils/password.js';
 import { generateJWT, verifyJWT } from './middleware/auth.js';
 import { pickAllowedOrigin } from './utils/cors.js';
+import { logError, logInfo, logWarn } from './utils/logger.js';
 
 const router = Router();
 
@@ -71,7 +72,7 @@ async function rateLimitMiddleware(request) {
       if (!Number.isNaN(parsed)) count = parsed;
     }
   } catch (err) {
-    console.error('Rate limit KV read failed:', err);
+    logError('rate_limit.kv_read_failed', { kind: 'rate_limit', err: err.message });
     return; // fail open — better to serve than to wedge on KV outage
   }
 
@@ -98,7 +99,7 @@ async function rateLimitMiddleware(request) {
       expirationTtl: Math.max(windowSec, 60) // KV minimum TTL is 60s
     });
   } catch (err) {
-    console.error('Rate limit KV write failed:', err);
+    logError('rate_limit.kv_write_failed', { kind: 'rate_limit', err: err.message });
   }
 
   request.rateLimitInfo = {
@@ -138,7 +139,7 @@ async function requireAuth(request) {
   }
 
   if (!request.env?.JWT_SECRET) {
-    console.error('JWT_SECRET binding is missing — refusing all auth');
+    logError('auth.jwt_secret_missing', { kind: 'auth' });
     return new Response(JSON.stringify({
       error: 'Server misconfiguration',
       message: 'Auth secret not configured'
@@ -277,7 +278,7 @@ router.post('/api/users/register', async (request) => {
     });
 
   } catch (error) {
-    console.error('Registration error:', error);
+    logError('auth.registration_failed', { kind: 'auth', err: error.message });
     return new Response(JSON.stringify({
       error: 'Registration failed',
       message: error.message
@@ -335,7 +336,7 @@ router.post('/api/users/login', async (request) => {
           'UPDATE users SET password_hash = ?, updated_at = ? WHERE id = ? AND password_hash = ?'
         ).bind(upgraded, new Date().toISOString(), user.id, user.password_hash).run();
       } catch (err) {
-        console.error('Password rehash failed for user', user.id, err);
+        logError('auth.password_rehash_failed', { kind: 'auth', userId: user.id, err: err.message });
       }
     }
 
@@ -360,7 +361,7 @@ router.post('/api/users/login', async (request) => {
     });
 
   } catch (error) {
-    console.error('Login error:', error);
+    logError('auth.login_failed', { kind: 'auth', err: error.message });
     return new Response(JSON.stringify({
       error: 'Login failed',
       message: error.message
@@ -1367,7 +1368,7 @@ export default {
       const response = await router.handle(request);
       return applyResponseHeaders(response, request);
     } catch (error) {
-      console.error('Worker error:', error);
+      logError('worker.unhandled', { err: error.message, stack: error.stack });
       const errorRes = new Response(JSON.stringify({
         error: 'Internal Server Error',
         message: error.message
