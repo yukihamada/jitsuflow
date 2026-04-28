@@ -4,6 +4,7 @@
  */
 
 import { Router } from 'itty-router';
+import { verifyStripeSignature } from '../utils/stripe_webhook.js';
 
 const router = Router();
 
@@ -273,12 +274,26 @@ router.post('/api/payments/create-intent', async (request) => {
 
 // Confirm payment (webhook handler)
 router.post('/api/payments/webhook', async (request) => {
+  let event;
   try {
     const body = await request.text();
+    const signature = request.headers.get('stripe-signature');
+    event = await verifyStripeSignature(
+      body,
+      signature,
+      request.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (error) {
+    console.error('Stripe webhook signature verification failed:', error.message);
+    return new Response(JSON.stringify({
+      error: 'Webhook signature verification failed'
+    }), {
+      status: 400,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
 
-    // Note: For production, implement proper webhook signature verification
-    const event = JSON.parse(body);
-
+  try {
     console.log('Stripe webhook event:', event.type);
 
     switch (event.type) {
