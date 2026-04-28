@@ -110,6 +110,20 @@ async function rateLimitMiddleware(request) {
   };
 }
 
+// Role middleware. Call AFTER requireAuth — relies on request.user.
+// Returns a 403 Response if the role does not match, undefined otherwise.
+function requireRole(request, role) {
+  if (request.user?.role !== role) {
+    return new Response(JSON.stringify({
+      error: 'Forbidden',
+      message: `Requires ${role} role`
+    }), {
+      status: 403,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
+  }
+}
+
 // Auth middleware
 async function requireAuth(request) {
   const authHeader = request.headers.get('Authorization');
@@ -421,6 +435,8 @@ router.put('/api/users/profile', async (request) => {
 router.get('/api/users', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   const response = await adminRoutes.getAllUsers(request);
   return new Response(response.body, {
@@ -432,6 +448,8 @@ router.get('/api/users', async (request) => {
 router.delete('/api/users/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').pop() };
   const response = await adminRoutes.deleteUser(request);
@@ -508,6 +526,8 @@ router.get('/api/products/:id', async (request) => {
 router.put('/api/products/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').slice(-1)[0] };
   const response = await adminRoutes.updateProduct(request);
@@ -520,6 +540,8 @@ router.put('/api/products/:id', async (request) => {
 router.delete('/api/products/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').pop() };
   const response = await adminRoutes.deleteProduct(request);
@@ -1027,6 +1049,8 @@ router.get('/api/videos', async (request) => {
 router.delete('/api/videos/:id', async (request) => {
   const authResponse = await requireAuth(request);
   if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
 
   request.params = { id: request.url.split('/').pop() };
   const response = await adminRoutes.deleteVideo(request);
