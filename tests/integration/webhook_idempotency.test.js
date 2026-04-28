@@ -108,6 +108,44 @@ describe('integration: Stripe webhook idempotency', () => {
     expect(afterSecond.updated_at).toBe(firstUpdatedAt);
   });
 
+  it('processes customer.subscription.deleted once and skips a duplicate', async () => {
+    const subId = 'sub_test_dup_001';
+    const now = new Date().toISOString();
+    await env.db.prepare(`
+      INSERT INTO subscriptions
+        (user_id, stripe_subscription_id, status, current_period_start, current_period_end, created_at, updated_at)
+      VALUES (1, ?, 'active', ?, ?, ?, ?)
+    `).bind(subId, now, now, now, now).run();
+
+    const event = {
+      id: 'evt_sub_deleted',
+      type: 'customer.subscription.deleted',
+      data: { object: { id: subId, metadata: {} } }
+    };
+
+    const first = await deliverWebhook(env, event);
+    expect(first.status).toBe(200);
+
+    const afterFirst = await env.db.prepare(
+      'SELECT status, cancelled_at FROM subscriptions WHERE stripe_subscription_id = ?'
+    ).bind(subId).first();
+    expect(afterFirst.status).toBe('cancelled');
+    const firstCancelledAt = afterFirst.cancelled_at;
+    expect(firstCancelledAt).toBeTruthy();
+
+    await new Promise(r => setTimeout(r, 20));
+
+    const second = await deliverWebhook(env, event);
+    expect(second.status).toBe(200);
+
+    const afterSecond = await env.db.prepare(
+      'SELECT status, cancelled_at FROM subscriptions WHERE stripe_subscription_id = ?'
+    ).bind(subId).first();
+    expect(afterSecond.status).toBe('cancelled');
+    // Original cancel timestamp must survive the duplicate delivery.
+    expect(afterSecond.cancelled_at).toBe(firstCancelledAt);
+  });
+
   it('still processes a fresh payment intent when an unrelated one is already completed', async () => {
     await seedPayment(env, { paymentIntentId: 'pi_old', status: 'completed', orderId: 1 });
     await seedPayment(env, { paymentIntentId: 'pi_new', status: 'pending', orderId: 2 });

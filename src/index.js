@@ -1279,10 +1279,29 @@ router.all('/api/subscriptions/*', async (request) => {
   return paymentRoutes.handle(request);
 });
 
-// Instructors admin routes
-router.all('/api/instructors/*', instructorsAdminRoutes.handle);
+// Instructors routes.
+//
+// Public reads: GET list/detail/dojos
+// Admin mutations: everything else (POST/PUT/DELETE), gated by
+// requireAuth + requireRole('admin') at the mount layer so a request
+// without a token gets 401 (not 403, which is what would happen if
+// only the inner requireAdmin in instructors-admin.js ran).
 router.get('/api/instructors', instructorsAdminRoutes.handle);
-router.post('/api/instructors', instructorsAdminRoutes.handle);
+router.get('/api/instructors/:id', instructorsAdminRoutes.handle);
+router.get('/api/instructors/:id/dojos', instructorsAdminRoutes.handle);
+
+const guardedInstructors = async (request) => {
+  const authResponse = await requireAuth(request);
+  if (authResponse) return authResponse;
+  const roleResponse = requireRole(request, 'admin');
+  if (roleResponse) return roleResponse;
+  return instructorsAdminRoutes.handle(request);
+};
+router.post('/api/instructors', guardedInstructors);
+router.put('/api/instructors/:id', guardedInstructors);
+router.delete('/api/instructors/:id', guardedInstructors);
+router.post('/api/instructors/:id/dojos', guardedInstructors);
+router.delete('/api/instructors/:id/dojos/:dojoId', guardedInstructors);
 
 // 404 handler
 router.all('*', () => new Response('Not Found', {

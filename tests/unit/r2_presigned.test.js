@@ -54,6 +54,27 @@ describe('generatePresignedPutUrl', () => {
     await expect(generatePresignedPutUrl(incomplete, 'videos/x'))
       .rejects.toThrow(/R2_SECRET_ACCESS_KEY/);
   });
+
+  it('rejects expiry values outside [1, 604800]', async () => {
+    // Aligns with AWS SigV4 + R2's hard upper bound (7 days).
+    await expect(generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: 0 }))
+      .rejects.toThrow(/expiresInSeconds/);
+    await expect(generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: -10 }))
+      .rejects.toThrow(/expiresInSeconds/);
+    await expect(generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: 604801 }))
+      .rejects.toThrow(/expiresInSeconds/);
+    await expect(generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: 1.5 }))
+      .rejects.toThrow(/expiresInSeconds/);
+    await expect(generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: '3600' }))
+      .rejects.toThrow(/expiresInSeconds/);
+  });
+
+  it('accepts expiry values at the boundaries', async () => {
+    const min = await generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: 1 });
+    const max = await generatePresignedPutUrl(TEST_ENV, 'k', { expiresInSeconds: 604800 });
+    expect(new URL(min).searchParams.get('X-Amz-Expires')).toBe('1');
+    expect(new URL(max).searchParams.get('X-Amz-Expires')).toBe('604800');
+  });
 });
 
 describe('generatePresignedGetUrl', () => {

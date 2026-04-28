@@ -90,28 +90,46 @@ export async function generateJWT(payload, secret, expiresIn = '7d') {
   return `${encodedHeader}.${encodedPayload}.${signature}`;
 }
 
-// Verify JWT token
+// Verify JWT token using Web Crypto's constant-time HMAC verify.
+// The previous implementation re-computed the signature and compared
+// strings with !==, which is a textbook timing-attack source.
 export async function verifyJWT(token, secret) {
   const parts = token.split('.');
   if (parts.length !== 3) {
     throw new Error('Invalid token format');
   }
 
-  const [encodedHeader, encodedPayload, signature] = parts;
+  const [encodedHeader, encodedPayload, encodedSignature] = parts;
+  const data = `${encodedHeader}.${encodedPayload}`;
 
-  // Verify signature
-  const expectedSignature = await createSignature(
-    `${encodedHeader}.${encodedPayload}`,
-    secret
-  );
-
-  if (signature !== expectedSignature) {
+  let signatureBytes;
+  try {
+    signatureBytes = base64urlDecodeBytes(encodedSignature);
+  } catch (_err) {
     throw new Error('Invalid signature');
   }
 
-  // Decode payload
-  const payload = JSON.parse(base64urlDecode(encodedPayload));
-  return payload;
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['verify']
+  );
+
+  const valid = await crypto.subtle.verify(
+    'HMAC',
+    key,
+    signatureBytes,
+    encoder.encode(data)
+  );
+
+  if (!valid) {
+    throw new Error('Invalid signature');
+  }
+
+  return JSON.parse(base64urlDecode(encodedPayload));
 }
 
 // Create HMAC SHA256 signature
@@ -163,6 +181,15 @@ function base64urlDecode(data) {
     + padding;
 
   return atob(base64);
+}
+
+// Decode a base64url string into raw bytes — needed by verifyJWT to
+// pass the original signature into crypto.subtle.verify.
+function base64urlDecodeBytes(data) {
+  const bin = base64urlDecode(data);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
 }
 
 // Parse expiresIn string to seconds

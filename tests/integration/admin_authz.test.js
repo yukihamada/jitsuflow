@@ -12,7 +12,23 @@ const ADMIN_ENDPOINTS = [
   { method: 'DELETE', path: '/api/users/2' },
   { method: 'PUT',    path: '/api/products/1', body: { name: 'x', price: 100 } },
   { method: 'DELETE', path: '/api/products/1' },
-  { method: 'DELETE', path: '/api/videos/1' }
+  { method: 'DELETE', path: '/api/videos/1' },
+  // QA Q3: instructor mutations were previously mounted with no
+  // requireAuth at the index.js layer, so an unauthenticated caller
+  // got 403 (from the inner requireAdmin) instead of 401. They now
+  // pass through requireAuth + requireRole('admin') here.
+  { method: 'POST',   path: '/api/instructors', body: { name: 'X', belt_rank: 'black' } },
+  { method: 'PUT',    path: '/api/instructors/1', body: { name: 'X' } },
+  { method: 'DELETE', path: '/api/instructors/1' },
+  { method: 'POST',   path: '/api/instructors/1/dojos', body: { dojo_id: 1 } },
+  { method: 'DELETE', path: '/api/instructors/1/dojos/1' }
+];
+
+const NO_AUTH_401_ENDPOINTS = [
+  { method: 'GET',    path: '/api/users' },
+  { method: 'DELETE', path: '/api/users/2' },
+  { method: 'POST',   path: '/api/instructors', body: { name: 'X' } },
+  { method: 'DELETE', path: '/api/instructors/1' }
 ];
 
 const TEST_JWT_SECRET = 'test-jwt-secret';
@@ -45,10 +61,17 @@ describe('integration: admin endpoints reject non-admin tokens (403)', () => {
     });
   }
 
-  it('GET /api/users with no token returns 401 (auth still runs first)', async () => {
-    const res = await env.fetch('/api/users');
-    expect(res.status).toBe(401);
-  });
+  for (const ep of NO_AUTH_401_ENDPOINTS) {
+    it(`${ep.method} ${ep.path} with no token returns 401 (not 403)`, async () => {
+      const init = { method: ep.method };
+      if (ep.body !== undefined) {
+        init.headers = { 'Content-Type': 'application/json' };
+        init.body = JSON.stringify(ep.body);
+      }
+      const res = await env.fetch(ep.path, init);
+      expect(res.status).toBe(401);
+    });
+  }
 
   it('GET /api/users with an admin token does NOT return 403 (passes the role gate)', async () => {
     const token = await tokenFor({ userId: 1, email: 'admin@example.com', role: 'admin' });

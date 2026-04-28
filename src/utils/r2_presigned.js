@@ -16,6 +16,11 @@
 import { AwsClient } from 'aws4fetch';
 
 const DEFAULT_EXPIRY_SECONDS = 3600;
+// AWS SigV4 hard limit on the X-Amz-Expires query param (7 days).
+// R2 honours the same upper bound; values above 604800 cause R2 to
+// reject the URL at request time with 403 — fail fast at sign time
+// so the caller gets a useful error instead.
+const MAX_EXPIRY_SECONDS = 604800;
 
 function r2Endpoint({ accountId, bucketName, key }) {
   return `https://${bucketName}.${accountId}.r2.cloudflarestorage.com/${encodeURI(key)}`;
@@ -35,7 +40,22 @@ function readEnv(env) {
   };
 }
 
+function resolveExpiry(expiresInSeconds) {
+  if (expiresInSeconds === undefined) return DEFAULT_EXPIRY_SECONDS;
+  if (
+    !Number.isInteger(expiresInSeconds) ||
+    expiresInSeconds < 1 ||
+    expiresInSeconds > MAX_EXPIRY_SECONDS
+  ) {
+    throw new Error(
+      `expiresInSeconds must be an integer in [1, ${MAX_EXPIRY_SECONDS}], got ${expiresInSeconds}`
+    );
+  }
+  return expiresInSeconds;
+}
+
 async function presignR2(env, { key, method, expiresInSeconds }) {
+  const expiry = resolveExpiry(expiresInSeconds);
   const { accountId, accessKeyId, secretAccessKey, bucketName } = readEnv(env);
   const client = new AwsClient({
     accessKeyId,
@@ -44,7 +64,7 @@ async function presignR2(env, { key, method, expiresInSeconds }) {
     region: 'auto'
   });
   const url = new URL(r2Endpoint({ accountId, bucketName, key }));
-  url.searchParams.set('X-Amz-Expires', String(expiresInSeconds ?? DEFAULT_EXPIRY_SECONDS));
+  url.searchParams.set('X-Amz-Expires', String(expiry));
   const signed = await client.sign(
     new Request(url, { method }),
     { aws: { signQuery: true } }

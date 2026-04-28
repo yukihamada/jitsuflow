@@ -110,3 +110,29 @@ describe('integration: JWT auth on /api/users/profile (replaces self-rolled btoa
     expect(res.status).toBe(401);
   });
 });
+
+describe('integration: JWT_SECRET binding missing → 500', () => {
+  // QA M11: requireAuth fails closed when JWT_SECRET is unbound
+  // (introduced in PR #3). Without this dedicated env we never
+  // exercise that branch because DEFAULT_BINDINGS always sets one.
+  let env;
+
+  beforeEach(async () => {
+    env = await createTestEnv({ bindings: { JWT_SECRET: undefined } });
+  });
+
+  afterEach(async () => {
+    await env.dispose();
+  });
+
+  it('returns 500 (server misconfiguration), not 401, when secret is unbound', async () => {
+    // Token is irrelevant — the secret check happens before verify.
+    const res = await authedRequest(env.fetch, 'PUT', '/api/users/profile', {
+      token: 'irrelevant.token.here',
+      body: { name: 'Renamed' }
+    });
+    expect(res.status).toBe(500);
+    const body = await res.json();
+    expect(body.error).toBe('Server misconfiguration');
+  });
+});
