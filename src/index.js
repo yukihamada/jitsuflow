@@ -10,7 +10,7 @@ import { instructorsAdminRoutes } from './routes/instructors-admin.js';
 import { hashPassword, verifyPassword, isLegacyHash } from './utils/password.js';
 import { generateJWT, verifyJWT } from './middleware/auth.js';
 import { pickAllowedOrigin } from './utils/cors.js';
-import { logError, logInfo, logWarn } from './utils/logger.js';
+import { logError } from './utils/logger.js';
 
 const router = Router();
 
