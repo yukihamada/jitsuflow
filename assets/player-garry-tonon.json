@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "name": "ギャリー・トノン スタイル",
+    "description": "体操レベルの柔軟性でスクランブルを制し、シングルレッグXとヒールフックで仕留める。EBI5連覇・ADCC銅メダリスト。足関節とバック攻撃を常にリンクさせる現代ノーギの先駆者。",
+    "principles": [
+      "スクランブルを恐れない。柔軟性と体の意識が全ての土台",
+      "シットアップスイープからシングルレッグ、そしてアシガラミへ。これが基本の流れ",
+      "足関節防御でロールした相手を逃さずバックへ追う",
+      "ギロチンは足関節と組み合わせる。相手が頭を引いたら足関節、足を引いたらギロチン",
+      "EBIオーバータイムのオーバーアンダーポジションは誰にも勝てない自信がある",
+      "ポジションより動き。動き続ける者がスクランブルを制する"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "引き込みかシットアップスイープからシングルレッグへ" },
+    { "id": "open-guard", "name": "オープンガード", "type": "position", "_type": "", "description": "柔軟性を活かして動き続ける。スクランブルを意図的に作る" },
+    { "id": "butterfly", "name": "バタフライガード", "type": "position", "_type": "", "description": "ヒールフックエントリーと足フックスイープへの入口" },
+    { "id": "single-leg-x", "name": "シングルレッグX（アシガラミ）", "type": "position", "_type": "*", "description": "レッグロックシステムの核心。ここから全てのエントリーが始まる" },
+    { "id": "saddle", "name": "サドル（インサイドサンカ）", "type": "position", "_type": "*", "description": "インサイドヒールフックの最強ポジション" },
+    { "id": "outside-ashi", "name": "アウトサイドアシガラミ", "type": "position", "_type": "", "description": "アウトサイドヒールフックのポジション" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "足関節防御でロールした相手を追って取るポジション。RNCで仕留める" },
+    { "id": "guillotine-pos", "name": "ギロチン体勢", "type": "position", "_type": "", "description": "スクランブルで頭が下に入った相手に首を絡める" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "single-leg-x", "action": "シットアップスイープ → シングルレッグX", "description": "シットアップで相手の片足に絡みついてシングルレッグXへ直接エントリー" },
+    { "id": "t1", "from": "open-guard", "to": "single-leg-x", "action": "スクランブルからシングルレッグX", "description": "オープンガードの動きの中で相手の足を捕まえてシングルレッグXへ" },
+    { "id": "t2", "from": "butterfly", "to": "single-leg-x", "action": "バタフライからレッグロックエントリー", "description": "バタフライの足フックからシングルレッグXに移行" },
+    { "id": "t3", "from": "single-leg-x", "to": "saddle", "action": "サドルへ移行", "description": "外足を外してインサイドに入りサドルを確立" },
+    { "id": "t4", "from": "single-leg-x", "to": "outside-ashi", "action": "アウトサイドアシガラミへ", "description": "インサイドを防がれたらアウトサイドへ切り替え" },
+    { "id": "t5", "from": "saddle", "to": "back-control", "action": "相手がロールしたらバック", "description": "ヒール防御でロールしてきたら追ってバックテイク" },
+    { "id": "t6", "from": "outside-ashi", "to": "back-control", "action": "アウトサイドから相手の後方へ", "description": "アウトサイドアシガラミから相手の後ろに回り込む" },
+    { "id": "t7", "from": "open-guard", "to": "guillotine-pos", "action": "スクランブルからギロチン", "description": "スクランブルで相手の頭が下に入った瞬間にギロチンを巻く" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "インサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle"], "description": "膝を外に向けてつま先を脇に当て、腰を引きながら膝を回転させる。44勝中18勝がインサイドヒール" },
+    { "id": "s1", "name": "アウトサイドヒールフック", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["outside-ashi", "single-leg-x"], "description": "インサイドを守られたらアウトサイドへ。8勝の実績あり" },
+    { "id": "s2", "name": "リアネイキッドチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "足関節防御でバックに回った後の最終フィニッシュ。初期キャリアの主力技" },
+    { "id": "s3", "name": "ギロチンチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["guillotine-pos", "open-guard"], "description": "スクランブルで頭が入った相手に首を絡める。足関節とのコンボで相手を詰める。ONE MMAでスンジョン・リーをギロチンで仕留めた" },
+    { "id": "s4", "name": "キムラ", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["single-leg-x", "open-guard"], "description": "DDS（ダナハーデススクワッド）系の上半身攻撃。足関節とのコンボ" }
+  ],
+  "defenseNotes": [
+    { "position": "single-leg-x", "principle": "相手が足を引いてシングルレッグXを外そうとしたらサドルかアウトサイドへ素早く移行" },
+    { "position": "saddle", "principle": "相手がロールして逃げようとした瞬間がバックテイクのチャンス。方向に追う" },
+    { "position": "back-control", "principle": "シートベルトが外れそうになったらRNCのグリップを優先" }
+  ],
+  "notUsed": [
+    { "technique": "プレッシャーパス（トップポジション主体）", "reason": "トノンはスクランブルとガードゲームが中心。組み立てたパスシステムは持たない" },
+    { "technique": "クローズドガード（攻撃的なガードとして）", "reason": "オープンガードとシングルレッグXのスクランブルシステムに特化" },
+    { "technique": "ギ競技", "reason": "ノーギスペシャリスト。ギでの主要タイトル実績はない" }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "name": "りょうぞうシステム",
+    "description": "世界チャンピオン村田良蔵監修。クローズドガードをメインに三角絞め・腕十字・スイープを狙う。「やられない → コントロール → アタック」の原則でボトムゲームを支配する。",
+    "principles": [
+      "やられない → コントロール → アタックの順番を崩さない",
+      "クローズドガードは聖域。立たせない・開かれない・パスされないが最優先",
+      "頭を下げさせるか腕をコントロールするか。どちらかを常に確立する",
+      "三角ファースト。腕コントロールが取れたら即三角を狙う",
+      "スイープできたらマウント。これが最も望ましい展開",
+      "ズボンを掴ませない。掴まれた瞬間に状況が互角になる。即切る",
+      "ハーフで勝負しない。技術が使えなくなる。即脱出してオープンガードへ",
+      "お尻を中に入れられたら即斜めにする。まっすぐは絶対NG"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "前足側の手を前に、足が触られないよう低く構える。素早く引き込む" },
+    { "id": "guard-pull", "name": "引き込み", "type": "position", "_type": "", "description": "襟を取って座る。袖より襟グリップが安定する" },
+    { "id": "open-guard", "name": "オープンガード（座り）", "type": "position", "_type": "*", "description": "パンツグリップで足を内側に。クローズドガードへの入口。ズボンを掴ませない" },
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "*", "description": "メインポジション。頭を下げさせる・腕をコントロールするのが最優先" },
+    { "id": "cross-grip-system", "name": "クロスグリップシステム", "type": "position", "_type": "", "description": "上級者で硬い相手に有効。対角で持ってお尻を上げて展開" },
+    { "id": "cross-grip-standing", "name": "クロスグリップ（相手立ち）", "type": "position", "_type": "", "description": "クロスグリップのまま相手が立った状態。テレホンスイープ一択" },
+    { "id": "mermaid-guard", "name": "マーメイドガード", "type": "position", "_type": "", "description": "予想外のタイミングで立たれた場合の緊急ガード" },
+    { "id": "combat-base", "name": "コンバットベース（相手）", "type": "position", "_type": "!", "description": "相手が片膝立ちベース。左足のグリップを即切ること" },
+    { "id": "de-la-riva", "name": "デラヒーバ", "type": "position", "_type": "", "description": "つなぎポジション。前に動かすか巴投げかクローズドへ戻す" },
+    { "id": "half-guard", "name": "ハーフガード", "type": "position", "_type": "!", "description": "緊急事態。ここで勝負しない。即脱出してオープンガードへ" },
+    { "id": "mount", "name": "マウント", "type": "position", "_type": "*", "description": "スイープ後の最優先目標。重さをかけてサブミッションを狙う" },
+    { "id": "side-control", "name": "サイドコントロール", "type": "position", "_type": "", "description": "スイープ後のトップポジション。マウントへ移行する" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "standing", "to": "guard-pull", "action": "引き込み", "description": "襟を取って素早く座る。内側に入る形" },
+    { "id": "t2", "from": "guard-pull", "to": "open-guard", "action": "ガード構築", "description": "左足で床を蹴り、右足を使ってオープンガードをセット" },
+    { "id": "t3", "from": "open-guard", "to": "closed-guard", "action": "クローズドへ", "description": "デラヒーバや巴投げでクローズドに引き込む" },
+    { "id": "t4", "from": "open-guard", "to": "open-guard", "action": "グリップ切り", "description": "相手のパスガード対応。袖掴んでチェンジヒップで切る" },
+    { "id": "t5", "from": "closed-guard", "to": "cross-grip-system", "action": "クロスグリップ移行", "description": "上級者で硬い相手。対角で持ってお尻を上げる" },
+    { "id": "t6", "from": "cross-grip-system", "to": "cross-grip-standing", "action": "相手が立つ", "description": "立つ前に煽ることもあり。立ったらテレホンスイープ一択" },
+    { "id": "t7", "from": "cross-grip-standing", "to": "mermaid-guard", "action": "予想外に立たれる", "description": "予想外のタイミングで立たれた場合のガード移行" },
+    { "id": "t8", "from": "open-guard", "to": "combat-base", "action": "相手がコンバットベース", "description": "引き込み後すぐに相手が片膝立ちになる" },
+    { "id": "t9", "from": "combat-base", "to": "open-guard", "action": "グリップ切り→ベースずらし", "description": "左足のグリップを切り、ジントシンの形でベースをずらす" },
+    { "id": "t10", "from": "half-guard", "to": "open-guard", "action": "緊急脱出", "description": "足を伸ばしてオープンガードへ。ハーフで勝負しない" },
+    { "id": "t11", "from": "de-la-riva", "to": "closed-guard", "action": "クローズドへ戻す", "description": "デラヒーバからクローズドに引き込む" },
+    { "id": "t12", "from": "closed-guard", "to": "mount", "action": "スイープ → マウント", "description": "スイープ成功後は必ずマウントを取る" }
+  ],
+  "submissions": [
+    { "id": "sweep-to-mount", "name": "スイープ → マウント", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["open-guard", "closed-guard", "cross-grip-system"], "description": "スイープできたら即マウント。最もやりたい展開。マウントから腕十字・エゼキールへ" },
+    { "id": "triangle", "name": "三角絞め", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["closed-guard", "combat-base"], "description": "三角ファースト。腕コントロールが取れたら最初に狙う。三角ロックから腕十字への移行も強力" },
+    { "id": "telephone-sweep", "name": "テレホンスイープ", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["cross-grip-standing"], "description": "相手が立った場合の一択。クロスグリップ + 反対が空いていることが条件" },
+    { "id": "armbar", "name": "腕十字", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["closed-guard", "cross-grip-system", "mount"], "description": "三角ロックした状態からの腕十字が特に強力。中優先だが三角とセット" },
+    { "id": "back-armbar-triangle", "name": "後ろ腕十字/三角", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["cross-grip-system"], "description": "相手が嫌がって前に来た場合。クロスグリップから背後への腕十字" },
+    { "id": "kimura", "name": "木村ロック", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard"], "description": "木村グリップでベースを壊す。スイープへの入口としても使う" },
+    { "id": "choke", "name": "クロスカラー絞め", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard"], "description": "相手に対してルーティンを入れるためのアクション。レフリー対策にもなる" },
+    { "id": "kusagari", "name": "草刈りスイープ", "type": "sweep", "priority": "低", "priorityLevel": 4, "from": ["open-guard"], "description": "相手がどこも掴んでいない状態で狙える。袖グリップが取れるまでキープ" }
+  ],
+  "defenseNotes": [
+    { "position": "open-guard", "principle": "ズボンを掴ませない。掴まれた時点で状況が互角になる。掴まれたら即切る" },
+    { "position": "closed-guard", "principle": "立たせないことが最優先。頭を下げさせるか腕をコントロールする" },
+    { "position": "closed-guard", "principle": "お尻を中に入れられたら即斜めにする。まっすぐの状態は絶対NG" },
+    { "position": "combat-base", "principle": "左足のグリップを即切る。掴まれたままにしない" },
+    { "position": "half-guard", "principle": "ハーフで勝負しない。ベースで相手が優位になる。即脱出してオープンガードへ" }
+  ],
+  "notUsed": [
+    { "technique": "ラッソーガード", "reason": "このシステムでは使わない" },
+    { "technique": "シングルレッグX", "reason": "このシステムでは使わない" },
+    { "technique": "ハーフガードでの攻め", "reason": "ハーフで勝負しない。脱出のみ" },
+    { "technique": "ベリンボロ（下から）", "reason": "首のダメージリスク。ダブルガード・サイドからのみ" },
+    { "technique": "ベインコール（下から）", "reason": "潰された時の首へのダメージリスク。上からやサイドからのみ" }
+  ]
+}

@@ -1,0 +1,1709 @@
+{
+  "id": "bjj-root",
+  "label": "BJJテクニックツリー",
+  "emoji": "🥋",
+  "prob": 0,
+  "priority": 0,
+  "desc": "ブラジリアン柔術の全テクニック体系。ガード・パス・トップ・テイクダウン・足関節の5系統。",
+  "recommended": false,
+  "warning": false,
+  "children": [
+    {
+      "id": "bottom-game",
+      "label": "ボトムゲーム（ガード）",
+      "emoji": "🛡️",
+      "prob": 0,
+      "priority": 1,
+      "desc": "下からのガードシステム。クローズド・ハーフ・オープンガードの各種攻撃・スイープ・サブミッション。",
+      "recommended": true,
+      "warning": false,
+      "children": [
+        {
+          "id": "closed-guard",
+          "label": "クローズドガード（閉じたガード）",
+          "emoji": "🔒",
+          "prob": 85,
+          "priority": 1,
+          "desc": "足を相手の腰に巻き付けて閉じる最も基本的なガード。三角絞め・腕十字・スイープへの入口。英: Closed Guard / 柔道: 胴絞（どうじめ）",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "cg-sweeps",
+              "label": "クローズドガード スイープ",
+              "emoji": "🔄",
+              "prob": 0,
+              "priority": 1,
+              "desc": "相手をひっくり返してトップポジションを取る技群。",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "scissor-sweep",
+                  "label": "シザースイープ（はさみ投げ）",
+                  "emoji": "✂️",
+                  "prob": 70,
+                  "priority": 1,
+                  "desc": "一方の足で相手の腰を押し、もう一方の足で膝を刈る。英: Scissor Sweep / 柔道: 巴投げ系。初心者向け・最頻出スイープ。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "hip-bump-sweep",
+                  "label": "ヒップバンプスイープ",
+                  "emoji": "💥",
+                  "prob": 65,
+                  "priority": 1,
+                  "desc": "相手が前のめりになった瞬間に腰を上げて斜めに崩す。英: Hip Bump Sweep。初心者向け。キムラ・ギロチンへの移行も有効。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "flower-sweep",
+                  "label": "フラワースイープ（花スイープ）",
+                  "emoji": "🌸",
+                  "prob": 60,
+                  "priority": 2,
+                  "desc": "相手の袖と足を同時にコントロールして前方に投げる。英: Flower Sweep / Pendulum Sweep。白帯で習得すべき基本技。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "kimura-sweep",
+                  "label": "キムラスイープ（木村グリップからのスイープ）",
+                  "emoji": "🤼",
+                  "prob": 55,
+                  "priority": 2,
+                  "desc": "木村グリップを取って相手のバランスを崩しながらスイープ。英: Kimura Sweep。サブミッションとのコンビネーション。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "sit-up-sweep",
+                  "label": "シットアップスイープ（テレホンスイープ）",
+                  "emoji": "📞",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "相手が立った際にクロスグリップから体を起こしてスイープ。英: Sit-Up Sweep / Telephone Sweep。村田良蔵システムの核心技。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "cg-submissions",
+              "label": "クローズドガード サブミッション",
+              "emoji": "⚡",
+              "prob": 0,
+              "priority": 2,
+              "desc": "クローズドガードからの一本技群。",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "triangle-choke",
+                  "label": "三角絞め（トライアングルチョーク）",
+                  "emoji": "🔺",
+                  "prob": 80,
+                  "priority": 1,
+                  "desc": "足で三角形を作り相手の首と片腕を絞める。英: Triangle Choke / 柔道: 三角絞め（さんかくじめ / sankaku jime）。最重要サブミッション。白帯から習得必須。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "armbar-guard",
+                  "label": "腕十字（アームバー）",
+                  "emoji": "💪",
+                  "prob": 75,
+                  "priority": 1,
+                  "desc": "相手の腕を伸ばして肘関節を極める。英: Armbar / 柔道: 腕挫十字固め（うでひしぎじゅうじがため / juji gatame）。最基本サブミッション。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "omoplata",
+                  "label": "オモプラッタ（肩固め変形）",
+                  "emoji": "🌀",
+                  "prob": 55,
+                  "priority": 2,
+                  "desc": "足で相手の肩を固めるサブミッション。英: Omoplata / ポルトガル語: Omo Plata（肩甲骨）。スイープへも移行可能。中級者向け。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "kimura",
+                  "label": "キムラ（木村ロック）",
+                  "emoji": "🔑",
+                  "prob": 70,
+                  "priority": 2,
+                  "desc": "相手の腕を背後に極める逆肘関節技。英: Kimura / 柔道: 逆腕緘め（ gyaku ude garami）。伝説の柔道家木村政彦から命名。スイープとの複合が強力。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "guillotine",
+                  "label": "ギロチンチョーク",
+                  "emoji": "🗡️",
+                  "prob": 65,
+                  "priority": 2,
+                  "desc": "相手の頭を脇に抱えて首を絞める。英: Guillotine Choke / 柔道: 裸絞め変形。アームイン・ハイエルボーバリエーションあり。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "cross-collar-choke",
+                  "label": "クロスカラー絞め",
+                  "emoji": "✝️",
+                  "prob": 60,
+                  "priority": 2,
+                  "desc": "両手で相手の道着の襟を交差してつかんで絞める。英: Cross Collar Choke / 柔道: 十字絞め（じゅうじじめ / juji jime）。道着専用。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "loop-choke",
+                  "label": "ループチョーク",
+                  "emoji": "➰",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "相手の頭を片方の腕でループして絞める奇襲的な技。英: Loop Choke / 柔道: 送り襟絞め変形。中級者以上向け。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "gogoplata",
+                  "label": "ゴゴプラッタ",
+                  "emoji": "🦶",
+                  "prob": 20,
+                  "priority": 4,
+                  "desc": "足の脛で相手の喉を押し込む高度なサブミッション。英: Gogoplata。ラバーガードシステムのEddie Bravo技。高い柔軟性が必要。上級者向け。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "ezekiel-guard",
+                  "label": "エゼキエルチョーク（袖車絞め）",
+                  "emoji": "👕",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "自分の袖を掴んで相手の顎に当てて絞める。英: Ezekiel Choke / 柔道: 袖車絞め（そでぐるまじめ / sode guruma jime）。道着でマウントからも有効。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "half-guard",
+          "label": "ハーフガード",
+          "emoji": "⚔️",
+          "prob": 75,
+          "priority": 2,
+          "desc": "片方の足だけ相手の足に絡んだ状態。アンダーフックシステム・ニーシールド・ディープハーフが重要。英: Half Guard。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "knee-shield-half",
+              "label": "ニーシールド（Z-ガード）",
+              "emoji": "🛡️",
+              "prob": 70,
+              "priority": 1,
+              "desc": "膝を相手の体に当てて距離とフレームを作る。英: Knee Shield / Z-Guard。アンダーフック争いの前段階。中級者向け。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "underhook-half",
+              "label": "アンダーフックシステム",
+              "emoji": "🤜",
+              "prob": 65,
+              "priority": 1,
+              "desc": "相手の脇の下に腕を通してコントロールするハーフガードの核心。英: Underhook Half Guard。オールドスクールスイープへの入口。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "lockdown",
+              "label": "ロックダウン",
+              "emoji": "🔐",
+              "prob": 50,
+              "priority": 3,
+              "desc": "相手の足を完全に固定して動きを制限する足絡み。英: Lockdown。10thPlanetシステムの重要技。エレクトリックチェアへの入口。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "deep-half",
+              "label": "ディープハーフガード",
+              "emoji": "🕳️",
+              "prob": 55,
+              "priority": 2,
+              "desc": "相手の両足の間に深く潜り込むハーフガード変形。英: Deep Half Guard。ウエイタースイープ・バックテイクへの高確率入口。中級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "waiter-sweep",
+                  "label": "ウエイタースイープ",
+                  "emoji": "🍽️",
+                  "prob": 60,
+                  "priority": 1,
+                  "desc": "ウェイターがトレイを持つように腕を使って相手を投げるスイープ。英: Waiter Sweep。ディープハーフの代表技。",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "homer-simpson-sweep",
+                  "label": "ホーマーシンプソンスイープ",
+                  "emoji": "🍩",
+                  "prob": 50,
+                  "priority": 2,
+                  "desc": "ローリングで相手を倒すシンプルなスイープ。Jeff Gloverが普及。英: Homer Simpson Sweep。名前の由来はアニメの動きに似ているから。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "deep-half-back-take",
+                  "label": "ディープハーフからのバックテイク",
+                  "emoji": "🔙",
+                  "prob": 55,
+                  "priority": 1,
+                  "desc": "ディープハーフから相手の後ろに回り込む。英: Deep Half Back Take。スイープをカウンターされた際の逃げ道。",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "electric-chair",
+              "label": "エレクトリックチェア",
+              "emoji": "⚡",
+              "prob": 40,
+              "priority": 3,
+              "desc": "ロックダウンから相手の内側の足を極める足関節技・スイープ。英: Electric Chair。10thPlanetシステム。上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "dogfight",
+              "label": "ドッグファイト",
+              "emoji": "🐕",
+              "prob": 55,
+              "priority": 2,
+              "desc": "両者が四つん這い状態になる中間ポジション。英: Dogfight Position。バックテイクかスイープへの分岐点。アンダーフック争いが鍵。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "butterfly-guard",
+          "label": "バタフライガード",
+          "emoji": "🦋",
+          "prob": 70,
+          "priority": 2,
+          "desc": "両足のフックを相手の内腿に掛けて持ち上げる動的なガード。英: Butterfly Guard / 柔道: 双手刈り系。マルセロ・ガルシア得意。",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "butterfly-sweep",
+              "label": "バタフライスイープ（エレベータースイープ）",
+              "emoji": "🛗",
+              "prob": 65,
+              "priority": 1,
+              "desc": "フックを使って相手を持ち上げて横に倒す基本スイープ。英: Butterfly Sweep / Elevator Sweep。相手の体重を問わず有効。初中級者向け。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "arm-drag-butterfly",
+              "label": "アームドラッグ → バックテイク",
+              "emoji": "🎣",
+              "prob": 60,
+              "priority": 1,
+              "desc": "相手の腕を引き付けながら背後に回り込む。英: Arm Drag to Back Take。バタフライガードの最も強力な攻撃。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "butterfly-to-slx",
+              "label": "シングルレッグXへの移行",
+              "emoji": "➡️",
+              "prob": 55,
+              "priority": 2,
+              "desc": "バタフライガードからシングルレッグXに移行して足関節を狙う。英: Butterfly to Single Leg X Entry。ダナハーシステムとの連結点。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "sumi-gaeshi",
+              "label": "隅返し（スミガエシスイープ）",
+              "emoji": "🔄",
+              "prob": 45,
+              "priority": 2,
+              "desc": "相手の体重が前にかかった瞬間に後方に転がりながら投げる。英: Sumi Gaeshi / 柔道: 隅返（すみがえし）。柔道技のBJJ応用。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "de-la-riva",
+          "label": "デラヒーバガード（DLR）",
+          "emoji": "🌊",
+          "prob": 65,
+          "priority": 2,
+          "desc": "外からフックして相手の足をコントロールするオープンガード。英: De La Riva Guard（DLR）。Ricardo De La Rivaが体系化。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "dlr-sweep",
+              "label": "DLRスイープ",
+              "emoji": "🔄",
+              "prob": 60,
+              "priority": 1,
+              "desc": "デラヒーバフックを使って相手を前方または横に倒す基本スイープ。英: De La Riva Sweep。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "berimbolo",
+              "label": "ベリンボロ",
+              "emoji": "🌀",
+              "prob": 45,
+              "priority": 3,
+              "desc": "インバーティング（体を逆さにする）してバックテイクする高度な技。英: Berimbolo。Mendes兄弟が普及。首への負担あり。上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "kiss-of-dragon",
+              "label": "キス・オブ・ドラゴン",
+              "emoji": "🐉",
+              "prob": 35,
+              "priority": 4,
+              "desc": "リバースDLRからインバーティングでバックテイクする変形ベリンボロ。英: Kiss of Dragon。ベリンボロと対になる技。上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "dlr-back-take",
+              "label": "DLRバックテイク",
+              "emoji": "🔙",
+              "prob": 55,
+              "priority": 2,
+              "desc": "デラヒーバガードから相手の背後に回り込む。英: DLR Back Take。ベリンボロに比べシンプル。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "reverse-dlr",
+          "label": "リバースデラヒーバ（RDLR）",
+          "emoji": "🔃",
+          "prob": 55,
+          "priority": 3,
+          "desc": "デラヒーバのフックを反対向きにしたガード。英: Reverse De La Riva（RDLR）。キス・オブ・ドラゴンの起点。Caio TerraとRafa Mendesが普及。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "rdlr-back-take",
+              "label": "RDLRバックテイク",
+              "emoji": "🔙",
+              "prob": 50,
+              "priority": 1,
+              "desc": "リバースDLRからキス・オブ・ドラゴンでバックへ回る。英: RDLR Back Take。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "rdlr-sweep",
+              "label": "RDLRスイープ",
+              "emoji": "🔄",
+              "prob": 45,
+              "priority": 2,
+              "desc": "リバースDLRから相手を横に倒すスイープ。英: RDLR Sweep。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "spider-guard",
+          "label": "スパイダーガード",
+          "emoji": "🕷️",
+          "prob": 60,
+          "priority": 2,
+          "desc": "両手で相手の袖を持ちながら両足を相手の腕に乗せる道着専用ガード。英: Spider Guard。リバースDLRと組み合わせが強力。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "spider-triangle",
+              "label": "スパイダーガード三角絞め",
+              "emoji": "🔺",
+              "prob": 55,
+              "priority": 1,
+              "desc": "足を使って三角絞めに移行する。英: Spider Guard Triangle。足の位置から三角へ移行しやすい。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-sweep",
+              "label": "スパイダースイープ（カイトスイープ）",
+              "emoji": "🪁",
+              "prob": 50,
+              "priority": 1,
+              "desc": "シザー動作で相手を横に倒すスイープ。英: Spider Sweep / Kite Sweep。道着の袖グリップが必須。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "lasso-guard",
+              "label": "ラッソーガード",
+              "emoji": "🪢",
+              "prob": 50,
+              "priority": 2,
+              "desc": "一方の足を相手の腕に巻き付けるスパイダーガードの変形。英: Lasso Guard。強力なコントロール力。三角・オモプラッタへの入口。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "x-guard",
+          "label": "Xガード",
+          "emoji": "✖️",
+          "prob": 55,
+          "priority": 3,
+          "desc": "相手の片脚をXの字に絡んで制御するオープンガード。英: X-Guard。Marcelo Garciaが体系化。スタンドアップと組み合わせが強力。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "x-guard-sweep",
+              "label": "Xガードスイープ",
+              "emoji": "🔄",
+              "prob": 65,
+              "priority": 1,
+              "desc": "X字の絡みを使って前後・横に倒すスイープ群。英: X-Guard Sweep。体重差を克服できる。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-standup",
+              "label": "Xガード スタンドアップ",
+              "emoji": "⬆️",
+              "prob": 55,
+              "priority": 2,
+              "desc": "Xガードから相手を立たせてシングルレッグへ移行。英: X-Guard Stand-Up.",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "single-leg-x",
+          "label": "シングルレッグX（アシガラミ）",
+          "emoji": "🦵",
+          "prob": 65,
+          "priority": 2,
+          "desc": "片足を絡んで制御するレッグロックシステムの入口。英: Single Leg X / Ashi Garami（足絡み）。ダナハーシステムの核心。サドルへの移行ポイント。",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "slx-sweep",
+              "label": "シングルレッグXスイープ",
+              "emoji": "🔄",
+              "prob": 65,
+              "priority": 1,
+              "desc": "腰を上げて相手を後ろに崩すスイープ。英: SLX Sweep。最頻出のスイープでテクニカルスタンドアップにつながる。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "slx-to-saddle",
+              "label": "サドル（インサイドサンカ）への移行",
+              "emoji": "🐴",
+              "prob": 55,
+              "priority": 1,
+              "desc": "シングルレッグXからサドルポジションへ移行してインサイドヒールを狙う。英: SLX to Saddle / Honey Hole Entry。ダナハーシステムの最重要連結。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "slx-heel-hook",
+              "label": "アウトサイドヒールフック",
+              "emoji": "⚓",
+              "prob": 50,
+              "priority": 2,
+              "desc": "シングルレッグXからアウトサイドヒールを狙う。英: Outside Heel Hook from SLX。サドルへの移行が困難な際の選択肢。上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "50-50",
+          "label": "フィフティフィフティ（50/50）",
+          "emoji": "⚖️",
+          "prob": 55,
+          "priority": 3,
+          "desc": "互いに相手の足を絡んだ対称的なポジション。英: 50/50 Guard。アウトサイドヒールフックの主要ポジション。スイープ合戦になることも。",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "50-50-outside-heel",
+              "label": "50/50アウトサイドヒールフック",
+              "emoji": "🦶",
+              "prob": 55,
+              "priority": 1,
+              "desc": "50/50から外ヒールを取って膝靱帯を狙う。英: Outside Heel Hook from 50/50。競技ルールによって使用制限あり。上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "50-50-sweep",
+              "label": "50/50スイープ",
+              "emoji": "🔄",
+              "prob": 50,
+              "priority": 2,
+              "desc": "50/50から相手を倒してトップに移行。英: 50/50 Sweep。相手も同じ攻撃ができる互角のポジション。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "saddle-411",
+          "label": "サドル（411 / インサイドサンカ / ハニーホール）",
+          "emoji": "🐴",
+          "prob": 60,
+          "priority": 2,
+          "desc": "相手の足を股の間で絡んで制御する足関節の最強ポジション。英: Saddle / 411 / Inside Sankaku / Honey Hole。ダナハーが「究極の制御ポジション」と称する。",
+          "recommended": true,
+          "warning": true,
+          "children": [
+            {
+              "id": "inside-heel-hook",
+              "label": "インサイドヒールフック",
+              "emoji": "💀",
+              "prob": 75,
+              "priority": 1,
+              "desc": "サドルからかかとを外向きに回転させてACL・PCLを狙う最強の足関節。英: Inside Heel Hook / 柔道: 踵絞め（かかとしめ）。IBJJF黒帯のみ許可。非常に危険。上級者専用。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "outside-heel-from-saddle",
+              "label": "アウトサイドヒールフック（サドルから）",
+              "emoji": "⚓",
+              "prob": 55,
+              "priority": 2,
+              "desc": "サドルからアウトサイドヒールへ切り替え。英: Outside Heel from Saddle。相手がインサイドを防御した際の移行先。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "worm-guard",
+          "label": "ワームガード（ラペルガード）",
+          "emoji": "🪱",
+          "prob": 40,
+          "priority": 4,
+          "desc": "道着の裾を相手の体に通して絡める道着専用の高度なガード。英: Worm Guard。Keenan Corneliusが体系化。スクイッドガードとの連携。道着専用、上級者向け。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "worm-sweep",
+              "label": "ワームスイープ",
+              "emoji": "🔄",
+              "prob": 55,
+              "priority": 1,
+              "desc": "ラペルコントロールを使って相手を倒すスイープ。英: Worm Guard Sweep。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "squid-guard",
+              "label": "スクイッドガードへの移行",
+              "emoji": "🦑",
+              "prob": 40,
+              "priority": 2,
+              "desc": "ワームガードからスクイッドガード（別のラペルガード変形）へ移行。英: Worm to Squid Guard。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "rubber-guard",
+          "label": "ラバーガード（10thPlanet）",
+          "emoji": "🪢",
+          "prob": 35,
+          "priority": 4,
+          "desc": "足を肩まで上げて相手の姿勢をコントロールする超高柔軟性ガード。英: Rubber Guard。Eddie Bravoのシステム。高い柔軟性が必要。上級者向け。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "rubber-gogoplata",
+              "label": "ゴゴプラッタ（ラバーガードから）",
+              "emoji": "🦶",
+              "prob": 25,
+              "priority": 2,
+              "desc": "ラバーガードのポジションから脛を相手の喉に当てて絞める。英: Gogoplata from Rubber Guard。非常に高度。上級者専用。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "rubber-omoplata",
+              "label": "オモプラッタ（ラバーガードから）",
+              "emoji": "🌀",
+              "prob": 40,
+              "priority": 1,
+              "desc": "ラバーガードシステムからオモプラッタへの移行。英: Omoplata from Rubber Guard。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "guard-passing",
+      "label": "ガードパス（トップ）",
+      "emoji": "⚔️",
+      "prob": 0,
+      "priority": 2,
+      "desc": "相手のガードを突破してトップポジションを確立するための技群。スピード系・プレッシャー系に分類される。",
+      "recommended": false,
+      "warning": false,
+      "children": [
+        {
+          "id": "speed-passes",
+          "label": "スピード系パス",
+          "emoji": "⚡",
+          "prob": 0,
+          "priority": 1,
+          "desc": "素早い動きでガードを突破するパス群。スピードと機動力を活かす。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "toreando",
+              "label": "トレアンドパス（闘牛士パス）",
+              "emoji": "🐂",
+              "prob": 75,
+              "priority": 1,
+              "desc": "両足を持って横に押しながら反対側に回り込む基本的なオープンガードパス。英: Toreando Pass / Bullfighter Pass。全レベル向け。最頻出パス技の一つ。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "leg-drag",
+              "label": "レッグドラッグパス",
+              "emoji": "🦵",
+              "prob": 65,
+              "priority": 1,
+              "desc": "相手の片足を引きずって脇に通過するパス。英: Leg Drag Pass。腰のコントロールが鍵。サイドコントロールへの高確率パス。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-pass",
+              "label": "Xパス",
+              "emoji": "✖️",
+              "prob": 60,
+              "priority": 2,
+              "desc": "相手の膝を制御しながら素早く横に回り込むパス。英: X-Pass。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "long-step-pass",
+              "label": "ロングステップパス",
+              "emoji": "👣",
+              "prob": 55,
+              "priority": 2,
+              "desc": "大きな一歩を踏み出して脚の外側から回り込むパス。英: Long Step Pass。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "pressure-passes",
+          "label": "プレッシャー系パス",
+          "emoji": "🏋️",
+          "prob": 0,
+          "priority": 2,
+          "desc": "体重と圧力を使ってガードを潰していくパス群。重い相手やパワー系に有効。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "knee-slice",
+              "label": "ニーカットパス（膝割りパス）",
+              "emoji": "🦵",
+              "prob": 80,
+              "priority": 1,
+              "desc": "膝を相手の太腿に滑らせながらクロスフェイスと反対側のアンダーフックを使ってサイドコントロールへ。英: Knee Cut Pass / Knee Slice Pass。白帯から黒帯まで最頻出パス技。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "over-under",
+              "label": "オーバーアンダーパス",
+              "emoji": "🌉",
+              "prob": 65,
+              "priority": 2,
+              "desc": "一方の腕を相手の足の上に、もう一方を下に通してコントロールするプレッシャーパス。英: Over-Under Pass。腰の力を使う。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "smash-pass",
+              "label": "スマッシュパス（圧力パス）",
+              "emoji": "💥",
+              "prob": 60,
+              "priority": 2,
+              "desc": "ハーフガードで相手の足を潰しながら前進するプレッシャーパス。英: Smash Pass。ハーフガード専用。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "stack-pass",
+              "label": "スタックパス（ダブルアンダーパス）",
+              "emoji": "📚",
+              "prob": 55,
+              "priority": 2,
+              "desc": "両腕を相手の足の下に通して持ち上げてスタックする。英: Stack Pass / Double Under Pass。首への圧力に注意。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "body-lock-pass",
+              "label": "ボディロックパス",
+              "emoji": "🤗",
+              "prob": 60,
+              "priority": 2,
+              "desc": "相手の腰を抱え込んで前進するプレッシャーパス。英: Body Lock Pass。Gordon Ryanが10巻のシリーズを作成。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "headquarters-pos",
+              "label": "ヘッドクォーターズポジション",
+              "emoji": "🏛️",
+              "prob": 65,
+              "priority": 2,
+              "desc": "ニーカットとトレアンドの中間の立ち位置で、複数のパスオプションを持つ指揮官ポジション。英: Headquarters Position。Gordon Ryanのシステムの核心。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "half-guard-passing",
+          "label": "ハーフガードパス",
+          "emoji": "⚔️",
+          "prob": 0,
+          "priority": 3,
+          "desc": "ハーフガードを突破するための専用パス群。フラットニング（相手を平らにする）が鍵。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "underhook-pass",
+              "label": "アンダーフックパス（ハーフから）",
+              "emoji": "🤜",
+              "prob": 65,
+              "priority": 1,
+              "desc": "アンダーフックを確保してから頭を外に出してハーフを通過する。英: Underhook Pass from Half Guard。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "crossface-flatten",
+              "label": "クロスフェイス・フラットニング",
+              "emoji": "😤",
+              "prob": 60,
+              "priority": 1,
+              "desc": "クロスフェイスで相手の頭を遠ざけて体を平らにしてからパスする。英: Crossface Flatten。ハーフガードパスの基本原則。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "top-positions",
+      "label": "トップポジション＆アタック",
+      "emoji": "👑",
+      "prob": 0,
+      "priority": 3,
+      "desc": "支配的なトップポジションからのアタック。マウント・サイドコントロール・バック・ニーオンベリーの各技群。",
+      "recommended": false,
+      "warning": false,
+      "children": [
+        {
+          "id": "mount",
+          "label": "マウント（騎乗位）",
+          "emoji": "🏇",
+          "prob": 0,
+          "priority": 1,
+          "desc": "相手の上に馬乗りになる支配的なポジション。英: Mount / 柔道: 縦四方固め（たてしほうがため）。多数のサブミッションの起点。",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "mount-cross-choke",
+              "label": "マウントからクロスカラー絞め",
+              "emoji": "✝️",
+              "prob": 65,
+              "priority": 1,
+              "desc": "マウントで相手の道着の両襟を交差して絞める。英: Cross Collar Choke from Mount / 柔道: 十字絞め。最初に学ぶマウントサブミッション。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "mount-armbar",
+              "label": "マウントから腕十字",
+              "emoji": "💪",
+              "prob": 70,
+              "priority": 1,
+              "desc": "Sマウントへ移行して肘を極める。英: Armbar from Mount / 柔道: 腕挫十字固め。最頻出のマウントサブミッション。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ezekiel-mount",
+              "label": "エゼキエルチョーク（マウントから）",
+              "emoji": "👕",
+              "prob": 55,
+              "priority": 2,
+              "desc": "マウントで袖を掴んで絞めるシンプルかつ強力なサブミッション。英: Ezekiel Choke from Mount / 柔道: 袖車絞め。道着専用。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "s-mount-armbar",
+              "label": "Sマウント腕十字",
+              "emoji": "🅂",
+              "prob": 70,
+              "priority": 1,
+              "desc": "S字型のマウントポジションから腕を分離して腕十字。英: S-Mount Armbar。腕十字への最も確実な経路。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "mount-triangle",
+              "label": "マウント三角絞め",
+              "emoji": "🔺",
+              "prob": 45,
+              "priority": 3,
+              "desc": "マウントから足を相手の首に回して三角絞め。英: Mounted Triangle。マウントからの三角は珍しいが効果的。上級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "rnc-from-mount",
+              "label": "マウントからバックへの移行→RNC",
+              "emoji": "🔙",
+              "prob": 50,
+              "priority": 2,
+              "desc": "マウントから相手が動いた際にバックへ移行してRNC（裸絞め）を狙う。英: Back Take from Mount → RNC。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "side-control",
+          "label": "サイドコントロール（横四方）",
+          "emoji": "📐",
+          "prob": 0,
+          "priority": 2,
+          "desc": "相手の横から上半身を制圧するポジション。英: Side Control / 柔道: 横四方固め（よこしほうがため）。多様なサブミッションへの中継地点。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "americana",
+              "label": "アメリカーナ（腕緘め）",
+              "emoji": "🇺🇸",
+              "prob": 65,
+              "priority": 1,
+              "desc": "サイドから相手の腕をL字に固定して肩を極める。英: Americana / 柔道: 腕緘め（うでがため / ude garami）。最も基本的なサイドコントロール技。初心者向け。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "kimura-side",
+              "label": "キムラ（サイドから）",
+              "emoji": "🔑",
+              "prob": 60,
+              "priority": 2,
+              "desc": "サイドコントロールから木村ロック（逆腕緘め）をかける。英: Kimura from Side Control / 柔道: 逆腕緘め。アメリカーナと表裏一体。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "armbar-side",
+              "label": "腕十字（サイドから）",
+              "emoji": "💪",
+              "prob": 55,
+              "priority": 2,
+              "desc": "サイドコントロールから腕を分離して腕十字へ移行。英: Armbar from Side Control。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "north-south-choke",
+              "label": "ノースサウスチョーク",
+              "emoji": "🧭",
+              "prob": 50,
+              "priority": 2,
+              "desc": "ノースサウスポジションで相手の首を腕と肩で絞める。英: North-South Choke。柔術特有の危険なチョーク。中上級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "baseball-bat-choke",
+              "label": "野球バットチョーク",
+              "emoji": "⚾",
+              "prob": 45,
+              "priority": 3,
+              "desc": "野球のバットを握るように両手で相手の首を締める道着専用チョーク。英: Baseball Bat Choke。ニーオンベリーからも有効。中級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "kata-gatame",
+              "label": "片羽絞め（アームトライアングル）",
+              "emoji": "🦅",
+              "prob": 60,
+              "priority": 2,
+              "desc": "相手の腕と首を自分の腕と肩で絞める。英: Arm Triangle / Head-and-Arm Choke / 柔道: 片羽絞め（かたはじめ / kata gatame）。サイドとマウントから有効。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "back-control",
+          "label": "バックコントロール（背後制圧）",
+          "emoji": "🔙",
+          "prob": 0,
+          "priority": 1,
+          "desc": "相手の背後から両フックまたはボディトライアングルで制圧する最強のポジション。英: Back Control / Mount / 柔道: 後ろ袈裟固め。最も高いサブミッション成功率。",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "rnc",
+              "label": "RNC（裸絞め）リアネイキッドチョーク",
+              "emoji": "😴",
+              "prob": 85,
+              "priority": 1,
+              "desc": "バックから腕を首に回して両腕で絞める最強のチョーク。英: Rear Naked Choke（RNC）/ 柔道: 裸絞め（はだかじめ / hadaka jime）。全BJJで最高のサブミッション成功率。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "bow-arrow",
+              "label": "弓矢絞め（ボウアンドアロー）",
+              "emoji": "🏹",
+              "prob": 70,
+              "priority": 1,
+              "desc": "相手の道着の襟を引っ張り、足で背骨を伸ばして絞める道着専用の強力なチョーク。英: Bow and Arrow Choke / 柔道: 送り襟絞め（おくりえりじめ / okuri eri jime）。競技での最高成功率チョークの一つ。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "armbar-back",
+              "label": "腕十字（バックから）",
+              "emoji": "💪",
+              "prob": 50,
+              "priority": 2,
+              "desc": "バックコントロールから相手が防御で腕を出した際に腕十字へ移行。英: Armbar from Back Control。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "collar-choke-back",
+              "label": "カラーチョーク（バックから）",
+              "emoji": "👔",
+              "prob": 60,
+              "priority": 2,
+              "desc": "バックから道着の襟を使った様々なチョーク変形。英: Collar Chokes from Back。道着専用。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "knee-on-belly",
+          "label": "ニーオンベリー（膝腹乗せ）",
+          "emoji": "🦵",
+          "prob": 0,
+          "priority": 3,
+          "desc": "相手の腹に片膝を乗せる移行ポジション。英: Knee on Belly / 柔道: 膝固め。攻めながら相手の反応を利用して技をかける。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "kob-baseball",
+              "label": "野球バットチョーク（KOBから）",
+              "emoji": "⚾",
+              "prob": 50,
+              "priority": 1,
+              "desc": "ニーオンベリーから野球バットチョークへ移行。英: Baseball Bat Choke from KOB。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "kob-armbar",
+              "label": "腕十字（KOBから）",
+              "emoji": "💪",
+              "prob": 55,
+              "priority": 1,
+              "desc": "ニーオンベリーから相手が腕を差してきた際に腕十字。英: Armbar from KOB。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "kob-kimura",
+              "label": "キムラ（KOBから）",
+              "emoji": "🔑",
+              "prob": 50,
+              "priority": 2,
+              "desc": "ニーオンベリーから木村ロックへ移行。英: Kimura from KOB。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "north-south",
+          "label": "ノースサウス（頭と足が逆）",
+          "emoji": "🧭",
+          "prob": 0,
+          "priority": 3,
+          "desc": "サイドコントロールから相手の頭側に移動した支配ポジション。英: North-South Position / 柔道: 上四方固め（かみしほうがため）。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "ns-choke",
+              "label": "ノースサウスチョーク",
+              "emoji": "🧭",
+              "prob": 50,
+              "priority": 1,
+              "desc": "ノースサウスポジションから首を腕と肩で挟んで絞める。英: North-South Choke。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ns-kimura",
+              "label": "キムラ（ノースサウスから）",
+              "emoji": "🔑",
+              "prob": 55,
+              "priority": 1,
+              "desc": "ノースサウスポジションから木村ロック。英: Kimura from North-South。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "anaconda",
+              "label": "アナコンダチョーク",
+              "emoji": "🐍",
+              "prob": 40,
+              "priority": 2,
+              "desc": "相手の腕と首を同時に絞めるアームトライアングル変形。タートルポジションから有効。英: Anaconda Choke。中上級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "takedowns",
+      "label": "テイクダウン（倒し技）",
+      "emoji": "🤸",
+      "prob": 0,
+      "priority": 4,
+      "desc": "スタンディングポジションから相手を地面に倒す技群。レスリング・柔道・BJJ引き込み系に分類。",
+      "recommended": false,
+      "warning": false,
+      "children": [
+        {
+          "id": "wrestling-takedowns",
+          "label": "レスリング系テイクダウン",
+          "emoji": "🤼",
+          "prob": 0,
+          "priority": 1,
+          "desc": "アメリカンフォークスタイルレスリング由来の倒し技。BJJ競技で頻用。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "double-leg",
+              "label": "ダブルレッグテイクダウン",
+              "emoji": "🦿",
+              "prob": 70,
+              "priority": 1,
+              "desc": "相手の両足を抱えて倒す最も一般的なテイクダウン。英: Double Leg Takedown / 柔道: 双手刈り（もろてがり / morote gari）。BJJで最頻出のテイクダウン。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "single-leg",
+              "label": "シングルレッグテイクダウン",
+              "emoji": "🦵",
+              "prob": 65,
+              "priority": 1,
+              "desc": "相手の片足を抱えて倒す。英: Single Leg Takedown / 柔道: 足取り（あしとり）。Xガードへの移行にもなる。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ankle-pick",
+              "label": "アンクルピック",
+              "emoji": "👟",
+              "prob": 55,
+              "priority": 2,
+              "desc": "相手の足首を掴んで持ち上げて倒す。英: Ankle Pick / 柔道: 足緡（あしがらみ）系。引き込みの代わりに使われることも。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "snap-down",
+              "label": "スナップダウン→首相撲（クリンチ）",
+              "emoji": "👇",
+              "prob": 55,
+              "priority": 2,
+              "desc": "相手の頭を下に引き込んで亀にさせてバックを狙う。英: Snap Down to Turtle. クリンチワークの基本。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "arm-drag-back",
+              "label": "アームドラッグ → バックテイク（スタンド）",
+              "emoji": "🎣",
+              "prob": 60,
+              "priority": 1,
+              "desc": "スタンディングで相手の腕を引いて背後に回り込む。英: Arm Drag to Back（Standing）。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "fireman-carry",
+              "label": "ファイヤーマンズキャリー",
+              "emoji": "🚒",
+              "prob": 45,
+              "priority": 3,
+              "desc": "相手の腕と足を同時に制御して肩越しに投げる。英: Fireman's Carry / 柔道: 担ぎ技系。中級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "judo-throws",
+          "label": "柔道技（投げ技）",
+          "emoji": "🥋",
+          "prob": 0,
+          "priority": 2,
+          "desc": "柔道由来の投げ技。BJJでも足を掴んだ後に続くセットアップとして使われる。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "seoi-nage",
+              "label": "背負い投げ（セオイナゲ）",
+              "emoji": "🎒",
+              "prob": 55,
+              "priority": 1,
+              "desc": "相手を肩越しに投げる代表的な柔道技。英: Seoi Nage（Shoulder Throw）/ 柔道: 背負投（せおいなげ）。ダブルラペルグリップから有効。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "uchi-mata",
+              "label": "内股（ウチマタ）",
+              "emoji": "🦵",
+              "prob": 50,
+              "priority": 2,
+              "desc": "相手の内腿を足で刈って投げる。英: Uchi Mata（Inner Thigh Throw）/ 柔道: 内股。柔道で最も使われる技の一つ。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "osoto-gari",
+              "label": "大外刈り（オソトガリ）",
+              "emoji": "🌾",
+              "prob": 55,
+              "priority": 1,
+              "desc": "相手の外側の足を大きく刈って後方に投げる。英: Osoto Gari（Major Outer Reap）/ 柔道: 大外刈り。最も基本的な柔道技。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "harai-goshi",
+              "label": "払い腰（ハライゴシ）",
+              "emoji": "💃",
+              "prob": 45,
+              "priority": 3,
+              "desc": "腰で相手を払うように投げる。英: Harai Goshi（Sweeping Hip Throw）/ 柔道: 払腰。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "o-goshi",
+              "label": "大腰（オゴシ）",
+              "emoji": "🌀",
+              "prob": 50,
+              "priority": 2,
+              "desc": "腰を入れて相手を持ち上げ投げる基本的な腰投げ。英: O-Goshi（Major Hip Throw）/ 柔道: 大腰。BJJ初心者にも教えやすい。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "sumi-gaeshi-throw",
+              "label": "隅返し（スミガエシ）",
+              "emoji": "🔄",
+              "prob": 40,
+              "priority": 3,
+              "desc": "後方に倒れながら相手を前に投げる捨て技。英: Sumi Gaeshi（Corner Throw）/ 柔道: 隅返。レスラーのタックルへのカウンターとして有効。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ouchi-gari",
+              "label": "大内刈り（オウチガリ）",
+              "emoji": "🌾",
+              "prob": 55,
+              "priority": 2,
+              "desc": "相手の内側の足を刈って崩す。英: Ouchi Gari（Major Inner Reap）/ 柔道: 大内刈。コンビネーションに多用。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "guard-pull",
+          "label": "引き込み（ガードプル）",
+          "emoji": "⬇️",
+          "prob": 70,
+          "priority": 1,
+          "desc": "意図的に引き込んでガードを取る。テイクダウンより得点が低いが安全。英: Guard Pull。BJJ競技では一般的な戦略。",
+          "recommended": true,
+          "warning": false,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "leg-lock-system",
+      "label": "レッグロックシステム（足関節）",
+      "emoji": "🦴",
+      "prob": 0,
+      "priority": 2,
+      "desc": "足・膝・股関節を狙ったサブミッションの体系。ダナハーシステムを基盤とする。IBJJFルールでは帯別で制限あり。",
+      "recommended": false,
+      "warning": true,
+      "children": [
+        {
+          "id": "ashi-garami-family",
+          "label": "足絡みポジション群",
+          "emoji": "🦵",
+          "prob": 0,
+          "priority": 1,
+          "desc": "レッグロックの制御ポジション群。英: Ashi Garami Family（足絡み）。ダナハーの8段階フレームワークに基づく。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "standard-ashi",
+              "label": "スタンダードアシガラミ",
+              "emoji": "🦵",
+              "prob": 60,
+              "priority": 1,
+              "desc": "基本的な足絡みポジション。英: Standard Ashi Garami / Single Leg X。レッグロックシステムの入口。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "outside-ashi",
+              "label": "アウトサイドアシガラミ",
+              "emoji": "🔄",
+              "prob": 55,
+              "priority": 2,
+              "desc": "外側から足を絡むポジション。英: Outside Ashi Garami。アウトサイドヒールフックの主要ポジション。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "cross-ashi",
+              "label": "クロスアシガラミ（ハニーホール）",
+              "emoji": "✖️",
+              "prob": 55,
+              "priority": 2,
+              "desc": "交差した足絡みポジション。英: Cross Ashi Garami / Honey Hole。サドルと同義で使われることも。インサイドヒールの入口。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "straight-locks",
+          "label": "ストレート系足関節（安全）",
+          "emoji": "📏",
+          "prob": 0,
+          "priority": 2,
+          "desc": "直線的に圧力をかける比較的安全な足関節。IBJJF全帯で許可。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "ankle-lock",
+              "label": "アンクルロック（足首固め）",
+              "emoji": "🦶",
+              "prob": 65,
+              "priority": 1,
+              "desc": "足首を伸ばして関節を極める基本的な足関節技。英: Ankle Lock / 柔道: 足首固め。IBJJF全帯で許可。初中級者から習得可能。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "kneebar",
+              "label": "ニーバー（膝十字）",
+              "emoji": "🦴",
+              "prob": 50,
+              "priority": 2,
+              "desc": "膝を伸ばして関節を極める腕十字の膝バージョン。英: Kneebar / 柔道: 膝十字固め（ひざじゅうじがため）。IBJJFでは紫帯以上。中上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "calf-slicer",
+              "label": "カーフスライサー（ふくらはぎ締め）",
+              "emoji": "💢",
+              "prob": 40,
+              "priority": 3,
+              "desc": "ふくらはぎに腕や膝を入れて圧力をかける圧迫技。英: Calf Slicer。IBJJFでは紫帯以上。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "rotational-locks",
+          "label": "回転系足関節（上級）",
+          "emoji": "🌀",
+          "prob": 0,
+          "priority": 3,
+          "desc": "膝を回転させる危険な足関節。靱帯損傷リスクが高い。IBJJFでは黒帯のみ（インサイドヒール）または上位帯（アウトサイドヒール）。",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "inside-heel",
+              "label": "インサイドヒールフック（内ヒール）",
+              "emoji": "💀",
+              "prob": 70,
+              "priority": 1,
+              "desc": "かかとを内側に向けて回転させACL・PCLを狙う最も危険なサブミッション。英: Inside Heel Hook / 柔道: 内踵絞め。IBJJFでは黒帯のみ。サドル・ハニーホールから。上級者専用。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "outside-heel",
+              "label": "アウトサイドヒールフック（外ヒール）",
+              "emoji": "⚓",
+              "prob": 60,
+              "priority": 1,
+              "desc": "かかとを外側に回転させてLCLを狙うヒールフック。英: Outside Heel Hook / Reverse Heel Hook。IBJJFでは茶帯・黒帯。50/50・アウトサイドアシガラミから。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "toehold",
+              "label": "トーホールド（足指固め）",
+              "emoji": "👣",
+              "prob": 50,
+              "priority": 2,
+              "desc": "足の指を固定して足首を回転させる。英: Toehold / 柔道: 足指固め。50/50やアウトサイドアシガラミから。IBJJFでは青帯以上。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "reaping-rules",
+          "label": "リーピング規定（ルール解説）",
+          "emoji": "📋",
+          "prob": 0,
+          "priority": 0,
+          "desc": "脚の絡み方に関するルール。IBJJFでは相手の膝の外側に自分の足が入る「リーピング」は禁止（黒帯を除く）。サブミッションレスリングでは一般的に許可。競技ルールを確認すること。",
+          "recommended": false,
+          "warning": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "transitions-and-flows",
+      "label": "トランジション＆フロー",
+      "emoji": "🔀",
+      "prob": 0,
+      "priority": 5,
+      "desc": "ポジション間の連結・移行パターン。エスケープ・カウンター・スクランブルの対応。",
+      "recommended": false,
+      "warning": false,
+      "children": [
+        {
+          "id": "escapes",
+          "label": "エスケープ（脱出技）",
+          "emoji": "🚪",
+          "prob": 0,
+          "priority": 1,
+          "desc": "不利なポジションから脱出するための技群。防御の基礎。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "bridge-roll",
+              "label": "ブリッジ＆ロール（マウント脱出）",
+              "emoji": "🌉",
+              "prob": 70,
+              "priority": 1,
+              "desc": "マウントで橋を作って横に転がして脱出。英: Bridge and Roll / Upa Escape。最も基本的なマウントエスケープ。白帯必須。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "elbow-knee-escape",
+              "label": "エルボーニーエスケープ（マウント脱出）",
+              "emoji": "🦵",
+              "prob": 65,
+              "priority": 1,
+              "desc": "肘と膝でスペースを作ってガードに戻る。英: Elbow-Knee Escape / Shrimp Escape。基本エスケープ。白帯必須。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "knees-to-elbow",
+              "label": "ニーズウェイ（サイドコントロール脱出）",
+              "emoji": "🦾",
+              "prob": 65,
+              "priority": 1,
+              "desc": "膝を肘方向に入れてスペースを作りガードに戻る。英: Knees to Elbow / Side Control Escape。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "back-escape",
+              "label": "バックエスケープ",
+              "emoji": "🔓",
+              "prob": 45,
+              "priority": 2,
+              "desc": "バックコントロールから脱出してサイドコントロール下に移行する。英: Back Escape。難易度が高い。中級者向け。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "heel-hook-escape",
+              "label": "ヒールフック脱出",
+              "emoji": "🚨",
+              "prob": 30,
+              "priority": 1,
+              "desc": "ヒールフックがかかった際の緊急脱出。膝を内側に向けてヒールを隠す。英: Heel Hook Escape。早期タップが最重要。上級者向け。",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "common-transitions",
+          "label": "主要トランジション（位置移動）",
+          "emoji": "➡️",
+          "prob": 0,
+          "priority": 2,
+          "desc": "よく使われるポジション間の移行パターン。",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "guard-to-back",
+              "label": "ガードからバックテイク",
+              "emoji": "🔙",
+              "prob": 55,
+              "priority": 1,
+              "desc": "各種ガードポジションから相手の背後に回り込む移行。英: Guard to Back Take。最高価値の移行の一つ。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "side-to-mount",
+              "label": "サイドコントロールからマウント移行",
+              "emoji": "⬆️",
+              "prob": 65,
+              "priority": 1,
+              "desc": "サイドコントロールからニーオンベリーを経由してマウントへ。英: Side to Mount Transition。トップゲームの基本的な進め方。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "turtle-to-back",
+              "label": "タートルからバックテイク",
+              "emoji": "🐢",
+              "prob": 70,
+              "priority": 1,
+              "desc": "相手が亀になった際にバックを取る。英: Turtle to Back Take。最も高確率のバックテイク経路の一つ。",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "scramble-principles",
+              "label": "スクランブル原則",
+              "emoji": "🌪️",
+              "prob": 0,
+              "priority": 2,
+              "desc": "両者が絡み合う不定形な状態での対処原則。英: Scramble Principles。常にバック・レッグロック・チョークの三択を意識する。",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

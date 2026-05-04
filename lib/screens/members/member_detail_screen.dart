@@ -161,7 +161,7 @@ class MemberDetailScreen extends StatelessWidget {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: _getRoleColor(member.role).withOpacity(0.1),
+                                    color: _getRoleColor(member.role).withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
@@ -180,7 +180,7 @@ class MemberDetailScreen extends StatelessWidget {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: _getStatusColor(member.status).withOpacity(0.1),
+                                    color: _getStatusColor(member.status).withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../services/api_service.dart';
@@ -22,18 +23,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     
     try {
-      print('🔐 Attempting login for: ${event.email}');
+      debugPrint('[Auth] login attempt: ${event.email}');
       final response = await ApiService.login(
         email: event.email,
         password: event.password,
       );
-      
-      print('📝 Login response: $response');
+
       final user = User.fromJson(response['user']);
-      print('👤 User created: ${user.name}');
       emit(AuthSuccess(user: user, token: response['token']));
     } catch (e) {
-      print('❌ Login error: $e');
+      debugPrint('[Auth] login error: $e');
       emit(AuthFailure(message: e.toString()));
     }
   }

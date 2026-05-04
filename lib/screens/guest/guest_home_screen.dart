@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../themes/colorful_theme.dart';
 import '../../utils/demo_auth.dart';
 
 class GuestHomeScreen extends StatelessWidget {
@@ -32,7 +31,7 @@ class GuestHomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'JitsuFlow',
+                          'JiuFlow',
                           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -59,7 +58,7 @@ class GuestHomeScreen extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
+                  color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Column(
@@ -71,7 +70,7 @@ class GuestHomeScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'ようこそ、JitsuFlowへ！',
+                      'ようこそ、JiuFlowへ！',
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -188,8 +187,8 @@ class GuestHomeScreen extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                color.withOpacity(0.8),
-                color.withOpacity(0.6),
+                color.withValues(alpha: 0.8),
+                color.withValues(alpha: 0.6),
               ],
             ),
           ),

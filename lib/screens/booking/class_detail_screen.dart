@@ -55,7 +55,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
           _isVideoInitialized = true;
         });
       } catch (e) {
-        print('Video initialization error: $e');
+        debugPrint('Video initialization error: $e');
       }
     }
   }
@@ -136,7 +136,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
             leading: Container(
               margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withValues(alpha: 0.5),
                 shape: BoxShape.circle,
               ),
               child: IconButton(
@@ -148,7 +148,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
               Container(
                 margin: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
+                  color: Colors.black.withValues(alpha: 0.5),
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -234,7 +234,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: ColorfulTheme.accentAmber.withOpacity(0.2),
+                                color: ColorfulTheme.accentAmber.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
@@ -419,7 +419,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: ColorfulTheme.getChipColor(index).withOpacity(0.2),
+                                  color: ColorfulTheme.getChipColor(index).withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(
                                     color: ColorfulTheme.getChipColor(index),
@@ -456,7 +456,7 @@ class _ClassDetailScreenState extends State<ClassDetailScreen> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withValues(alpha: 0.1),
               blurRadius: 10,
               offset: const Offset(0, -2),
             ),

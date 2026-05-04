@@ -107,7 +107,7 @@ class _SparringRecordingScreenState extends State<SparringRecordingScreen> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<int>(
-                      value: _participant1Id,
+                      initialValue: _participant1Id,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: '参加者を選択',
@@ -154,7 +154,7 @@ class _SparringRecordingScreenState extends State<SparringRecordingScreen> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<int>(
-                      value: _participant2Id,
+                      initialValue: _participant2Id,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: '参加者を選択',
@@ -201,7 +201,7 @@ class _SparringRecordingScreenState extends State<SparringRecordingScreen> {
                     ),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
-                      value: _selectedRuleSet,
+                      initialValue: _selectedRuleSet,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),

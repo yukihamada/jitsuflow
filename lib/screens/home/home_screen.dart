@@ -66,7 +66,7 @@ class HomeTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('JitsuFlow'),
+        title: const Text('JiuFlow'),
         backgroundColor: const Color(0xFF1B5E20),
         foregroundColor: Colors.white,
         actions: [
@@ -125,7 +125,7 @@ class HomeTab extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'おかえりなさい、${userName}さん！',
+                                      'おかえりなさい、$userNameさん！',
                                       style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,

@@ -241,10 +241,10 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
     String? remainingText;
     if (rental['status'] == 'active' && !isOverdue) {
       final remaining = endDate.difference(DateTime.now()).inDays;
-      remainingText = '残り${remaining}日';
+      remainingText = '残り$remaining日';
     } else if (isOverdue) {
       final overdueDays = DateTime.now().difference(endDate).inDays;
-      remainingText = '${overdueDays}日延滞';
+      remainingText = '$overdueDays日延滞';
     }
 
     return Card(
@@ -269,7 +269,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: _getCategoryColor(rental['category']).withOpacity(0.15),
+                    color: _getCategoryColor(rental['category']).withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -314,10 +314,10 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: statusColor.withOpacity(0.1),
+                        color: statusColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: statusColor.withOpacity(0.5),
+                          color: statusColor.withValues(alpha: 0.5),
                         ),
                       ),
                       child: Text(
@@ -377,9 +377,9 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
+                  color: Colors.red.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.red.withOpacity(0.3)),
+                  border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                 ),
                 child: const Row(
                   children: [
@@ -409,7 +409,7 @@ class _MyRentalsScreenState extends State<MyRentalsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
+        color: Colors.grey.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(

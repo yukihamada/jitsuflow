@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "name": "トップゲームシステム",
+    "description": "テイクダウンまたはスイープでトップを取り、プレッシャーパス→サイドコントロール→マウント→RNCの流れで試合を支配するシステム。",
+    "principles": [
+      "トップを取ったら絶対に離さない。ガードに戻らせない",
+      "プレッシャーと体重が最大の武器。力でなく重さで潰す",
+      "サイド → ニーオン → マウント → バックの順序を守る",
+      "ニーオンベリーで相手の反応を引き出してフィニッシュに繋げる",
+      "マウントで急がない。重さで相手を消耗させてからサブミッションを狙う",
+      "相手が横を向いたら必ずバックのチャンス。見逃さない",
+      "クローズドガードを割る時は立ち上がるか肘を膝に押しつける"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "テイクダウンが最優先。相手の腰を低くさせてからダブルレッグへ" },
+    { "id": "top-half", "name": "トップハーフガード", "type": "position", "_type": "", "description": "プレッシャーパスでサイドコントロールへ。ディープハーフに潜られないよう頭を低く" },
+    { "id": "side-control", "name": "サイドコントロール", "type": "position", "_type": "", "description": "メイン通過点。体重をかけながらマウントorニーオンを狙う" },
+    { "id": "knee-on-belly", "name": "ニーオンベリー", "type": "position", "_type": "", "description": "圧力で相手のリアクションを引き出す。アームロック・マウントへの踏み台" },
+    { "id": "mount", "name": "マウント", "type": "position", "_type": "*", "description": "最優先ゴール。高マウントでチョーク・腕十字を狙う。急がず体重をかける" },
+    { "id": "high-mount", "name": "ハイマウント", "type": "position", "_type": "*", "description": "相手の腕が浮いて腕十字・クロスカラーが狙いやすい" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "マウントから相手が逃げた時に移行。RNCでフィニッシュ" },
+    { "id": "closed-guard-bottom", "name": "クローズドガード（相手のガード）", "type": "position", "_type": "!", "description": "早急に割って立ち上がりパスする。長居しない" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "standing", "to": "side-control", "action": "ダブルレッグ → サイドコントロール", "description": "低く潜って両足を刈り、倒してすぐにサイドに回る" },
+    { "id": "t2", "from": "standing", "to": "top-half", "action": "相手のガード前にトップハーフ", "description": "相手がガードを作る前にハーフで制圧" },
+    { "id": "t3", "from": "closed-guard-bottom", "to": "standing", "action": "スタンドアップしてパス", "description": "ガード内で立ち上がり足を開かせてパス。肘を膝に押しつけてから立つ" },
+    { "id": "t4", "from": "top-half", "to": "side-control", "action": "プレッシャーパス", "description": "体重で潰しながら膝を引き抜いてサイドへ" },
+    { "id": "t5", "from": "side-control", "to": "knee-on-belly", "action": "ニーオン移行", "description": "サイドから膝を腹に乗せて圧力をかける" },
+    { "id": "t6", "from": "knee-on-belly", "to": "mount", "action": "ニーオン → マウント", "description": "相手がニーオンを嫌がって動いた瞬間に膝を通してマウントへ" },
+    { "id": "t7", "from": "side-control", "to": "mount", "action": "ダイレクトにマウントへ", "description": "相手が固まっている場合は直接マウントへ。足を越えて乗り上がる" },
+    { "id": "t8", "from": "mount", "to": "high-mount", "action": "ハイマウントへ", "description": "相手が防御で腕を下げようとしたら膝を上げてハイマウントへ" },
+    { "id": "t9", "from": "mount", "to": "back-control", "action": "バックテイク", "description": "相手が横を向いて逃げようとした瞬間に背後へ乗り換え" }
+  ],
+  "submissions": [
+    { "id": "rnc", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "バックを取ったらまずRNC。シートベルトを確立してから顎の下に腕を通す" },
+    { "id": "cross-choke", "name": "十字絞め（クルゼタ）", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["mount", "high-mount"], "description": "同側の手で奥の襟を深く持ち、もう一方で手前の襟を持って絞める" },
+    { "id": "armbar-mount", "name": "腕十字（マウント）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["high-mount"], "description": "高マウントから相手の腕を体に引き付けて腕十字へ。十字絞めを防いで腕が伸びた瞬間がチャンス" },
+    { "id": "ezekiel", "name": "エゼキールチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["mount", "side-control"], "description": "道着の袖口を使った絞め。相手が防御できず驚く位置から締まる" },
+    { "id": "americana", "name": "アメリカーナ", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["side-control", "mount"], "description": "肘を床に押しつけてU字に肩をロック。相手が腕を伸ばしてきた瞬間に仕掛ける" },
+    { "id": "kimura-top", "name": "木村ロック（トップ）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["side-control", "top-half"], "description": "トップから肩を取る。バックテイクへの連携も強力" },
+    { "id": "north-south-choke", "name": "ノースサウスチョーク", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["side-control"], "description": "サイドから頭側に回って肩と腕で絞める。ダースチョークとセット" },
+    { "id": "armbar-knee", "name": "腕十字（ニーオン）", "type": "submission", "priority": "低", "priorityLevel": 4, "from": ["knee-on-belly"], "description": "相手が腕を伸ばして押してきた瞬間に腕十字へ切り替え" }
+  ],
+  "defenseNotes": [
+    { "position": "side-control", "principle": "相手の橋逃げに注意。腰を低くして体重をかけ続ける" },
+    { "position": "mount", "principle": "急がない。体重をかけながら相手が防御で動いた瞬間にサブミッションへ切り替える" },
+    { "position": "high-mount", "principle": "相手が腕を引いて十字絞めを防いだ瞬間が腕十字のチャンス" },
+    { "position": "top-half", "principle": "ディープハーフへの潜り込みを防ぐ。頭を低くして体重をかける" },
+    { "position": "knee-on-belly", "principle": "バランスを失わないよう対角の手で相手の腰を押える" }
+  ],
+  "notUsed": [
+    { "technique": "ボトムゲームへの移行", "reason": "トップを取ったら維持することが原則。ガードに引き込まれたら即パスを狙う" },
+    { "technique": "スタンドでの長い組み合い", "reason": "テイクダウンは素早く決める。消耗戦はしない" }
+  ]
+}

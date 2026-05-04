@@ -365,8 +365,8 @@ class _VideoCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    const Color(0xFF1B5E20).withOpacity(0.7),
-                    const Color(0xFF2E7D32).withOpacity(0.7),
+                    const Color(0xFF1B5E20).withValues(alpha: 0.7),
+                    const Color(0xFF2E7D32).withValues(alpha: 0.7),
                   ],
                 ),
               ),
@@ -472,7 +472,7 @@ class _VideoCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1B5E20).withOpacity(0.1),
+                            color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "name": "白帯スターターガイド",
+    "description": "柔術を始めたばかりの白帯向け。基本的なポジション、エスケープ、シンプルなサブミッションを学ぶ入門プラン。まずは生き残ることが最優先。",
+    "principles": [
+      "まず「タップする勇気」を持つ。怪我をしないことが最優先",
+      "ポジションを学ぶ前にエスケープを学ぶ。ガード、マウント、バックのエスケープを繰り返し練習",
+      "グリップを強く持ちすぎない。力で勝負しない",
+      "相手の動きに反応してから動く（先読みしようとしない）",
+      "基本のクローズドガードを守れるようになることが第一目標"
+    ]
+  },
+  "positions": [
+    { "id": "guard-bottom", "name": "ガード下（クローズドガード）", "type": "position", "_type": "*", "description": "まず足を閉じて守る。相手の姿勢を崩すことを学ぶ" },
+    { "id": "mount-bottom", "name": "マウント下（最悪の状況）", "type": "position", "_type": "!", "description": "焦らない。まずブリッジ＆ロールエスケープを試みる" },
+    { "id": "side-bottom", "name": "サイドコントロール下", "type": "position", "_type": "!", "description": "ニーズウェイをまず学ぶ。頭を遠ざけ肘を引き寄せる" },
+    { "id": "top-mount", "name": "マウントトップ", "type": "position", "_type": "*", "description": "最初に取れるポジション。重さをかけて維持する練習" },
+    { "id": "side-top", "name": "サイドコントロールトップ", "type": "position", "_type": "*", "description": "次のポジションへの中継地点" },
+    { "id": "turtle-escape", "name": "タートル（守りの姿勢）", "type": "position", "_type": "", "description": "サブミッションをかけられている時の一時的な回避姿勢" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "mount-bottom", "to": "guard-bottom", "action": "ブリッジ＆ロール", "description": "橋を作って相手を横に転がし、ガードに戻る" },
+    { "id": "t2", "from": "side-bottom", "to": "guard-bottom", "action": "ニーズウェイ", "description": "膝を入れてスペースを作り、ガードに戻る" },
+    { "id": "t3", "from": "guard-bottom", "to": "top-mount", "action": "ヒップバンプスイープ", "description": "相手が前のめりになったタイミングで腰を浮かせる" },
+    { "id": "t4", "from": "side-top", "to": "top-mount", "action": "ニーオンベリー→マウント", "description": "片膝を相手の腹に乗せてから足を入れる" }
+  ],
+  "submissions": [
+    { "id": "s1", "name": "ヒップバンプスイープ", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["guard-bottom"], "description": "白帯最初に学ぶスイープ。相手が前のめりになったら腰を浮かせて転がす" },
+    { "id": "s2", "name": "クロスカラー絞め（マウントから）", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["top-mount"], "description": "マウントで取れる最初のサブミッション。両手で相手の襟を取って絞める" },
+    { "id": "s3", "name": "三角絞め（入門）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["guard-bottom"], "description": "相手の腕が外れた瞬間に足で三角を作る。まずロックの仕方を覚える" },
+    { "id": "s4", "name": "腕十字（マウントから）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["top-mount"], "description": "Sマウントに移行してから腕十字。相手の肘を腰に当てて引き上げる" },
+    { "id": "s5", "name": "ブリッジ＆ロール（エスケープ）", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["mount-bottom"], "description": "マウントから逃げる基本技。タイミングよく橋を作り回転" }
+  ],
+  "defenseNotes": [
+    { "position": "general", "principle": "サブミッションがかかったらすぐタップ。力で逃げようとしない" },
+    { "position": "mount-bottom", "principle": "腕を前に出さない。脇を閉じてコンパクトに守る" },
+    { "position": "guard-bottom", "principle": "足を開かれそうになったら腰を上げて相手の姿勢を崩す" }
+  ],
+  "notUsed": [
+    { "technique": "レッグロック全般", "reason": "白帯では足関節は危険。上位のポジション技術を先に学ぶ" },
+    { "technique": "ベリンボロ・高度なガード", "reason": "基本ポジションが安定してから" }
+  ]
+}

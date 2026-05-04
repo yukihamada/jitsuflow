@@ -551,7 +551,7 @@ class _MemberCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: _getRoleColor(member.role).withOpacity(0.1),
+                            color: _getRoleColor(member.role).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -570,7 +570,7 @@ class _MemberCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: _getStatusColor(member.status).withOpacity(0.1),
+                            color: _getStatusColor(member.status).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -590,7 +590,7 @@ class _MemberCard extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: _getBeltColor(member.beltRank!).withOpacity(0.1),
+                              color: _getBeltColor(member.beltRank!).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(

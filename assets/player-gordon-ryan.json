@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "name": "ゴードン・ライアン スタイル",
+    "description": "バックテイク・インサイドヒールフック・アームインギロチンの三角形。どのポジションからでも支配を確立する現代ノーギBJJの頂点。",
+    "principles": [
+      "バックコントロールが最優先目標。全ての動きをバックへの通り道と考える",
+      "レッグロックとバック攻撃を常にリンクさせ、相手に2つの脅威を与え続ける",
+      "ギロチンはスイープ・パス・サブミッション全てに使えるポジショナルツール",
+      "ポジション → サブミッションの順番を絶対に崩さない",
+      "プレッシャーパスでハーフガードを潰しながらバックへ移行する",
+      "サドルポジションを確立したらインサイドヒールで素早くフィニッシュ",
+      "スクランブルになったらバック・レッグロック・ギロチンの三択を常に意識する"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "クリンチ→レッグドラッグ or ギロチンエントリーを狙う" },
+    { "id": "guillotine-pos", "name": "ギロチン体勢（クリンチ）", "type": "position", "_type": "*", "description": "アームインギロチンの最高の入口。スイープ・サブ・パスの全てに分岐できる" },
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "", "description": "アームドラッグでバックへ、または相手がパスしようとしたらレッグロックエントリー" },
+    { "id": "half-guard", "name": "ハーフガード", "type": "position", "_type": "", "description": "ニーシールドから攻撃的にバックかスイープを狙う" },
+    { "id": "single-leg-x", "name": "シングルレッグX", "type": "position", "_type": "", "description": "レッグロックシステムの入口。サドルへ移行する" },
+    { "id": "saddle", "name": "サドル（インサイドサンカ）", "type": "position", "_type": "*", "description": "インサイドヒールフックの最強ポジション。ここに入れたらほぼ詰み" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "最優先目標。シートベルト + 両フックで完全制圧してRNC" },
+    { "id": "turtle", "name": "タートル（相手）", "type": "position", "_type": "!", "description": "バックテイクの大チャンス。即シートベルトを差し込む" },
+    { "id": "top-half", "name": "ハーフガードトップ", "type": "position", "_type": "", "description": "ボディロックパス・プレッシャーパスでバックへ" },
+    { "id": "side-control", "name": "サイドコントロール", "type": "position", "_type": "", "description": "バックへの中継地点。相手が起きたら即バック移行" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "guillotine-pos", "action": "タックル切り → ギロチンエントリー", "description": "相手がタックルしてきた瞬間に腕を入れてアームインギロチン体勢へ" },
+    { "id": "t1", "from": "standing", "to": "single-leg-x", "action": "レッグドラッグ → シングルレッグX", "description": "相手の足を制御してシングルレッグXに入る" },
+    { "id": "t2", "from": "guillotine-pos", "to": "back-control", "action": "ギロチンからバックへ切り替え", "description": "相手がギロチンを防ごうと頭を抜こうとした瞬間にバックへ乗り換え" },
+    { "id": "t3", "from": "closed-guard", "to": "back-control", "action": "アームドラッグ → バック", "description": "アームドラッグで相手の腕を引き付けながら背後へ回る" },
+    { "id": "t4", "from": "closed-guard", "to": "single-leg-x", "action": "足を解放してレッグロックエントリー", "description": "相手がパスしようとしたらシングルレッグXに捕まえる" },
+    { "id": "t5", "from": "half-guard", "to": "back-control", "action": "アームドラッグ → バック", "description": "ニーシールドで作ったスペースでアームドラッグ" },
+    { "id": "t6", "from": "single-leg-x", "to": "saddle", "action": "サドルへ移行", "description": "外ヒールを外してインサイドに入りサドルを確立" },
+    { "id": "t7", "from": "saddle", "to": "back-control", "action": "相手がロールしたらバックへ", "description": "インサイドヒール防御でロールしてきたらバックテイクに切り替え" },
+    { "id": "t8", "from": "turtle", "to": "back-control", "action": "シートベルト → バックテイク", "description": "即シートベルトを確立して両フックを入れる" },
+    { "id": "t9", "from": "top-half", "to": "back-control", "action": "ボディロックパス → バック移行", "description": "相手が逃げようとする方向に合わせてバックへ乗り換える" },
+    { "id": "t10", "from": "side-control", "to": "back-control", "action": "相手の動きに合わせてバック", "description": "相手が体を起こした瞬間にバックテイク" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "インサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle"], "description": "膝を外に向けてつま先をわきに当て、腰を引きながら膝を回転させる。一撃必殺" },
+    { "id": "s1", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "シートベルトを確立後、顎の下に腕を通してグリップ。肘を引いて絞める" },
+    { "id": "s2", "name": "アームインギロチン", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["guillotine-pos", "standing"], "description": "相手の腕を巻き込んだまま首を締める変形ギロチン。ADCC2017決勝でコーネリアスを仕留めた必殺技" },
+    { "id": "s3", "name": "アウトサイドヒールフック", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["saddle", "single-leg-x"], "description": "相手が足を引いてインサイドを守ったらアウトサイドヒールに切り替え" },
+    { "id": "s4", "name": "トライアングル", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard", "guillotine-pos"], "description": "ギロチン体勢から足を回してトライアングルへ移行。ギロチンとセット" },
+    { "id": "s5", "name": "キムラ", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard", "saddle"], "description": "バックへの移行ツール。サドルでも肩関節を狙える" }
+  ],
+  "defenseNotes": [
+    { "position": "saddle", "principle": "相手が膝を内側に向けてヒール防御しようとしたらすぐにアウトサイドへ切り替え" },
+    { "position": "back-control", "principle": "相手がシートベルトを切ろうとしたら先にチョークグリップを深める" },
+    { "position": "guillotine-pos", "principle": "相手が頭を抜こうとした瞬間がバックテイクのチャンス。逃げる方向に追う" }
+  ],
+  "notUsed": [
+    { "technique": "スタンダードギロチン（単独フィニッシュとして）", "reason": "ギロチンはポジショナルツールとして使う。単体で仕留めるよりバック・レッグへの移行を優先" }
+  ]
+}

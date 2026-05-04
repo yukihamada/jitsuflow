@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:typed_data';
 import '../../services/api_service.dart';
-import '../../widgets/common/loading_widget.dart';
 
 class VideoUploadScreen extends StatefulWidget {
   const VideoUploadScreen({super.key});

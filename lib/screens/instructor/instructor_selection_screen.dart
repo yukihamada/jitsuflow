@@ -4,7 +4,6 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../services/api_service.dart';
 import '../../widgets/common/loading_widget.dart';
 
@@ -368,7 +367,7 @@ class _InstructorSelectionScreenState extends State<InstructorSelectionScreen> {
                         specialty,
                         style: const TextStyle(fontSize: 12),
                       ),
-                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                      backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     ),
                   ).toList(),
                 ),

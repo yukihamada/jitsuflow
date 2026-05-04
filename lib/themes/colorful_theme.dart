@@ -1,5 +1,5 @@
 /**
- * JitsuFlow カラフルテーマ
+ * JiuFlow カラフルテーマ
  * 鮮やかでエネルギッシュなデザインテーマ
  */
 
@@ -55,7 +55,7 @@ class ColorfulTheme {
         secondary: secondaryGradient[0],
         tertiary: accentLime,
         surface: Colors.white,
-        background: const Color(0xFFF8F9FA),
+        surfaceContainerHighest: const Color(0xFFF8F9FA),
       ),
 
       // AppBar テーマ
@@ -77,7 +77,7 @@ class ColorfulTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        shadowColor: Colors.black.withOpacity(0.1),
+        shadowColor: Colors.black.withValues(alpha: 0.1),
         margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       ),
 
@@ -98,7 +98,7 @@ class ColorfulTheme {
 
       // チップテーマ
       chipTheme: ChipThemeData(
-        backgroundColor: accentLime.withOpacity(0.2),
+        backgroundColor: accentLime.withValues(alpha: 0.2),
         labelStyle: const TextStyle(
           fontWeight: FontWeight.w600,
         ),
@@ -119,7 +119,7 @@ class ColorfulTheme {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide(
-            color: primaryGradient[1].withOpacity(0.3),
+            color: primaryGradient[1].withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -199,7 +199,7 @@ class ColorfulTheme {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: elevation,
             offset: const Offset(0, 4),
           ),
@@ -228,7 +228,7 @@ class ColorfulTheme {
         borderRadius: BorderRadius.circular(borderRadius),
         boxShadow: [
           BoxShadow(
-            color: (colors ?? secondaryGradient)[0].withOpacity(0.3),
+            color: (colors ?? secondaryGradient)[0].withValues(alpha: 0.3),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),

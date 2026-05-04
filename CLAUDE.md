@@ -1,8 +1,18 @@
-CLAUDE.md – 🚀 JitsuFlow 完全ガイドライン
+CLAUDE.md – JiuFlow 完全ガイドライン
 
-1. 🔥 プロジェクトのミッション
+## 重要ルール
+- **アプリ名は JiuFlow** (JitsuFlowではない)
+- **flutter run は常に物理iPhone (00008140-0005453411E0801C) にデプロイ**。シミュレーターは使わない
+  ```bash
+  flutter run -d 00008140-0005453411E0801C --device-timeout 120
+  ```
+- バックエンド: jiuflow-ssr.fly.dev (Rust/Axum/SQLite on Fly.io)
+- Bundle ID: app.jitsuflow.jitsuflow
+- 認証情報: `fastlane/authkey/api_key.json` を参照（gitignore済み）
 
-『JitsuFlow』はブラジリアン柔術の練習・道場運営を最も効率的に行える唯一無二のプラットフォームを提供し、世界中の柔術コミュニティを強化・発展させることを目的とします。
+1. プロジェクトのミッション
+
+『JiuFlow』はブラジリアン柔術の練習・道場運営を最も効率的に行える唯一無二のプラットフォームを提供し、世界中の柔術コミュニティを強化・発展させることを目的とします。
 
 2. 🌟 目標指標（North-Star Metrics）
 	•	道場予約にかかる時間を80%以上短縮
@@ -118,7 +128,41 @@ xcrun altool --upload-app \
 | "Invalid Signature" | 不正なファイルが含まれている | `flutter clean` 後に再ビルド |
 | "Authentication failed" | パスワードが違う | App-specific passwordを再生成 |
 
-### 自動化スクリプト
+### TestFlight アップロード（確実な方法）
+
+```bash
+# 1. pubspec.yaml のビルド番号をインクリメント
+#    version: 1.0.0+17 → version: 1.0.0+18
+
+# 2. クリーンビルド（キャッシュで古いビルド番号が残るため必須）
+flutter clean && flutter pub get
+
+# 3. IPA ビルド（Associated Domains を外した状態で）
+flutter build ipa --release --export-method app-store
+
+# 4. ビルド番号確認（必ず新しい番号か確認）
+unzip -p build/ios/ipa/JiuFlow.ipa Payload/Runner.app/Info.plist | plutil -p - | grep BundleVersion
+
+# 5. TestFlight アップロード（App Store Connect API Key使用）
+xcrun altool --upload-app --type ios \
+  -f build/ios/ipa/JiuFlow.ipa \
+  --apiKey 5KT46G9Y29 \
+  --apiIssuer e0d22675-afb3-45f0-a821-06b477f44da0
+
+# 6. 物理iPhoneにデバッグビルドインストール
+flutter run -d 00008140-0005453411E0801C --device-timeout 120
+```
+
+### よくあるエラーと対処
+
+| エラー | 原因 | 対処法 |
+|---|---|---|
+| "bundle version must be higher" | ビルド番号重複 | pubspec.yaml の +N をインクリメント + `flutter clean` |
+| "Associated Domains" provisioning error | entitlements問題 | Runner.entitlements から associated-domains を一時的に削除 |
+| Info.plist のビルド番号が反映されない | CFBundleVersion がハードコード | `$(FLUTTER_BUILD_NUMBER)` に変更済み |
+| ワイヤレスデバッグがタイムアウト | WiFi接続が遅い | `--device-timeout 120` を付ける、USB接続推奨 |
+
+### 旧自動化スクリプト（参考）
 ```bash
 #!/bin/bash
 # scripts/upload_testflight.sh

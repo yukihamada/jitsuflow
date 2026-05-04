@@ -109,9 +109,9 @@ class InstructorStatsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,7 +125,7 @@ class InstructorStatsCard extends StatelessWidget {
                   label,
                   style: TextStyle(
                     fontSize: 12,
-                    color: color.withOpacity(0.8),
+                    color: color.withValues(alpha: 0.8),
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -150,7 +150,7 @@ class InstructorStatsCard extends StatelessWidget {
                   unit,
                   style: TextStyle(
                     fontSize: 12,
-                    color: color.withOpacity(0.8),
+                    color: color.withValues(alpha: 0.8),
                   ),
                 ),
               ],

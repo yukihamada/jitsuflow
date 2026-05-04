@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "name": "ハーフガードシステム",
+    "description": "ハーフガードをメインとして、アンダーフック確立→ドッグファイト→スイープ→バックテイクの流れで試合を支配するシステム。ディープハーフとニーシールドで相手の攻撃を無力化する。",
+    "principles": [
+      "アンダーフックが全ての始まり。どんな状況でもアンダーフックを狙い続ける",
+      "フラット（仰向け）にならない。常に横向きを維持する",
+      "スイープの脅威があるからこそサブミッションが生まれる。まずスイープを狙う",
+      "ニーシールドで相手のプレッシャーを防ぎながら反撃の機会を作る",
+      "ディープハーフは逆転の一手。相手が圧をかけてきたら深く潜る",
+      "ドッグファイトになったら内側に転がすかバックへ。チャンスを逃さない",
+      "ハーフはスイープへの踏み台。守るだけの場所ではない。常に攻撃的に"
+    ]
+  },
+  "positions": [
+    { "id": "half-guard-bottom", "name": "ハーフガード（基本）", "type": "position", "_type": "*", "description": "相手の片足を両足でロック。ニーシールドを作りアンダーフックを狙う" },
+    { "id": "knee-shield", "name": "ニーシールド（Zガード）", "type": "position", "_type": "*", "description": "膝を縦にして相手のプレッシャーを防ぐ。オモプラッタ・腕十字への起点" },
+    { "id": "deep-half", "name": "ディープハーフ", "type": "position", "_type": "*", "description": "相手の股下に完全に潜り込んだ状態。ウォーマシン・シェエラザードスイープで逆転" },
+    { "id": "dog-fight", "name": "ドッグファイト（膝立ち）", "type": "position", "_type": "!", "description": "アンダーフック確立後に互いに膝立ちになった状態。内転がしかバックへ。どちらかを素早く選ぶ" },
+    { "id": "lockdown", "name": "ロックダウン", "type": "position", "_type": "", "description": "足をX字に絡めて相手の動きを封じる。電柱スイープの起点" },
+    { "id": "back-take-half", "name": "バックテイク体勢", "type": "position", "_type": "*", "description": "ドッグファイトかディープハーフからバックへ移行した状態" },
+    { "id": "top-after-sweep", "name": "スイープ後トップ", "type": "position", "_type": "", "description": "スイープ成功後のトップポジション。サイドコントロールかマウントへ" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "half-guard-bottom", "to": "knee-shield", "action": "ニーシールドセット", "description": "膝を縦にして相手の体重移動をブロック。フラットにならないよう横向きを維持" },
+    { "id": "t2", "from": "half-guard-bottom", "to": "deep-half", "action": "ディープハーフへ潜る", "description": "相手が圧をかけてきたら股下に頭を入れて深く潜り込む" },
+    { "id": "t3", "from": "half-guard-bottom", "to": "lockdown", "action": "ロックダウン", "description": "足をX字に絡めて電柱スイープを狙う" },
+    { "id": "t4", "from": "knee-shield", "to": "dog-fight", "action": "アンダーフック → ドッグファイト", "description": "ニーシールドで距離を作りアンダーフックを入れてドッグファイトへ立ち上がる" },
+    { "id": "t5", "from": "deep-half", "to": "top-after-sweep", "action": "ウォーマシンスイープ", "description": "相手の足を担いで前方に転がしてトップへ。ファリアスイープも同様" },
+    { "id": "t6", "from": "deep-half", "to": "back-take-half", "action": "シェエラザード → バック", "description": "ディープハーフの体勢から背後に回り込んでバックテイク" },
+    { "id": "t7", "from": "dog-fight", "to": "top-after-sweep", "action": "内転がしスイープ", "description": "内側に転がして相手を崩してトップへ" },
+    { "id": "t8", "from": "dog-fight", "to": "back-take-half", "action": "バックステップ", "description": "相手が前に来たら後ろに引きながらバックへ回り込む" },
+    { "id": "t9", "from": "lockdown", "to": "top-after-sweep", "action": "電柱スイープ", "description": "ロックダウンから相手の片足を持ち上げて前方に崩す" }
+  ],
+  "submissions": [
+    { "id": "back-rnc", "name": "RNC（バック取得後）", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-take-half"], "description": "バックを取ったらリアネイキッドチョーク一択。シートベルトを確立して顎の下に腕を通す" },
+    { "id": "omoplata-half", "name": "オモプラッタ", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["knee-shield"], "description": "ニーシールドから相手の腕の下に足を入れて肩関節を極める。スイープに移行してもよい" },
+    { "id": "armbar-half", "name": "腕十字（ニーシールドから）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["knee-shield"], "description": "相手が腕を伸ばして押してきた瞬間に腕を取って腕十字へ" },
+    { "id": "arm-triangle-half", "name": "腕三角絞め（スイープ後）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["top-after-sweep"], "description": "スイープ後のトップから相手の腕を首に沿わせて絞める" },
+    { "id": "electric-chair", "name": "電柱スイープ", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["lockdown"], "description": "ロックダウンから相手の片足を持ち上げてスイープ。カウンターで腕緘めにも移行できる" },
+    { "id": "kimura-half", "name": "木村ロック（ハーフから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["half-guard-bottom"], "description": "アンダーフック側の腕を木村グリップで取る。バックテイクへの入口にもなる" }
+  ],
+  "defenseNotes": [
+    { "position": "half-guard-bottom", "principle": "絶対にフラット（仰向け）にならない。常に横を向いてアンダーフックを狙い続ける" },
+    { "position": "deep-half", "principle": "頭を出し続けること。つぶされると腕固めのリスクがある" },
+    { "position": "knee-shield", "principle": "膝が落ちないように。膝盾が崩れたらディープハーフかロックダウンに切り替える" },
+    { "position": "dog-fight", "principle": "内転がしかバックステップを素早く選ぶ。中途半端な状態でいると相手にパスされる" },
+    { "position": "lockdown", "principle": "相手が足を引いたら電柱スイープのチャンス" }
+  ],
+  "notUsed": [
+    { "technique": "ハーフガードからのヒールフック", "reason": "足が絡まってスクランブルになりやすい。スイープとバックテイクに集中" },
+    { "technique": "ハーフでの長期防衛", "reason": "ハーフはスイープへの踏み台。守るだけの場所ではない" }
+  ]
+}

@@ -132,3 +132,11 @@ Desktop.ini
 
 # R2 CORS temp files
 r2-cors.json
+
+# Secrets
+claude.env
+claude.secrets
+*.secret
+*.secrets
+fastlane/authkey/
+api_key.json

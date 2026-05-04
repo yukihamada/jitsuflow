@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "name": "マルセロ・ガルシア スタイル",
+    "description": "バタフライガードとアームドラッグを核に、ギロチンとXガードスイープで相手を制圧。小柄でも大柄な相手に勝てる究極のテクニカルシステム。",
+    "principles": [
+      "アームドラッグは最強の技。相手の腕を引けば必ずバックへの道が開ける",
+      "バタフライガードでは常に頭をセンターラインに置き相手の体重を感じる",
+      "ギロチンは首への道がある全てのポジションで狙う",
+      "Xガードに入ったらまず相手の体重を足で感じ重心を外す",
+      "スクランブルを恐れない。常に動いて相手のリズムを崩す",
+      "バックを取ったら絶対に離さない。RNCかボウアンドアローで仕留める"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "アームドラッグでクリンチからバックを狙う" },
+    { "id": "butterfly", "name": "バタフライガード", "type": "position", "_type": "*", "description": "メインポジション。両足のフックで相手の腰を浮かせてスイープ" },
+    { "id": "x-guard", "name": "Xガード", "type": "position", "_type": "*", "description": "バタフライから作る強力なスイープポジション" },
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "", "description": "ギロチンとアームドラッグの補助ポジション" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "最終目標。シートベルトでRNCかボウアンドアロー" },
+    { "id": "half-guard-top", "name": "ハーフガードトップ", "type": "position", "_type": "", "description": "北南チョークとキムラが狙える" },
+    { "id": "north-south", "name": "ノースサウス", "type": "position", "_type": "", "description": "マルセロ得意の北南チョークを狙う" },
+    { "id": "turtle", "name": "タートル（相手）", "type": "position", "_type": "!", "description": "バックテイクのチャンス。ダースチョークも狙う" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "back-control", "action": "アームドラッグ → バック", "description": "相手の片腕を両手で引きながら素早く背後へ回り込む" },
+    { "id": "t1", "from": "standing", "to": "butterfly", "action": "引き込みからバタフライへ", "description": "相手の胴体に両腕を回して引き込み、バタフライガードをセット" },
+    { "id": "t2", "from": "butterfly", "to": "back-control", "action": "アームドラッグ → バック", "description": "相手が前傾みになった瞬間に腕を引いて背後へ" },
+    { "id": "t3", "from": "butterfly", "to": "x-guard", "action": "Xガードへ移行", "description": "相手が体重をかけてきたらXガードに切り替えてスイープ" },
+    { "id": "t4", "from": "x-guard", "to": "back-control", "action": "スイープ後バックテイク", "description": "Xガードスイープで相手をひっくり返してそのままバックへ" },
+    { "id": "t5", "from": "closed-guard", "to": "back-control", "action": "アームドラッグ → バック", "description": "ガードを開けてアームドラッグでバックへ" },
+    { "id": "t6", "from": "half-guard-top", "to": "north-south", "action": "ニーカットパス → ノースサウス", "description": "膝を切った後そのままノースサウスへ移行" },
+    { "id": "t7", "from": "turtle", "to": "back-control", "action": "シートベルト → バックテイク", "description": "タートルの相手に即シートベルトを差し込む" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "ハイエルボーギロチン", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["standing", "butterfly", "closed-guard"], "description": "腕を相手の首の下に深く差し込み、脇を締めながら肘を上げる。マルセロの必殺技" },
+    { "id": "s1", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "シートベルト確立後に素早くチョークグリップを作る" },
+    { "id": "s2", "name": "ノースサウスチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["north-south"], "description": "首の横に腕を差し込み体重をかけながら引く" },
+    { "id": "s3", "name": "バタフライスイープ", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["butterfly"], "description": "アンダーフックで相手の体重を引き付けながら足で弾き飛ばす" },
+    { "id": "s4", "name": "Xガードスイープ（前）", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["x-guard"], "description": "両足のXを伸ばして相手を前方に吹き飛ばす" },
+    { "id": "s5", "name": "弓矢絞め", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["back-control"], "description": "ギあり。下の手で奥の襟を深く持って絞める" },
+    { "id": "s6", "name": "ダースチョーク", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["turtle"], "description": "タートルの相手の頭を腕で囲んでクレードルを作る" },
+    { "id": "s7", "name": "アームバー", "type": "submission", "priority": "低", "priorityLevel": 4, "from": ["closed-guard"], "description": "ギロチンを防いで腕が伸びた瞬間に腕十字へ移行" }
+  ],
+  "defenseNotes": [
+    { "position": "butterfly", "principle": "相手に頭の位置を低くされたらギロチンエントリーのチャンス" },
+    { "position": "x-guard", "principle": "相手がXを外そうとジャンプしたらその方向にスイープ" },
+    { "position": "back-control", "principle": "相手が体を伸ばしてシートベルトを外そうとしたらギロチンかRNCで対応" }
+  ],
+  "notUsed": [
+    { "technique": "レッグロック全般", "reason": "マルセロはチョーク・腕・バック攻めに特化。足関節は使わない" },
+    { "technique": "デラヒーバ・ベリンボロ", "reason": "マルセロのスタイルはバタフライ+Xガードに集中" }
+  ]
+}

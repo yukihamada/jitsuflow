@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "name": "クレイグ・ジョーンズ スタイル",
+    "description": "Zガードから上半身（三角・キムラ）と下半身（ヒールフック）の二択で相手を詰めるノーギスペシャリスト。ADCC2017でレアンドロ・ロをヒールフックで仕留め、マルセロ・サンタナにはフライングトライアングルを決めた。",
+    "principles": [
+      "Zガードは上半身と下半身どちらにも攻撃できる最高の入口",
+      "三角の脅威があるからこそ相手はレッグロックを警戒する。二つの脅威を同時に与える",
+      "50/50に入ったら先にヒールグリップを確立した方が勝つ",
+      "ポジションより先にサブミッションを狙う。ポイントに縛られない攻撃的なスタイル",
+      "バタフライガードからもヒールフックエントリーが作れる",
+      "相手が足を守ったら三角へ。三角を防いだら足関節へ。どちらかが刺さる"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "引き込んでZガードへ" },
+    { "id": "z-guard", "name": "Zガード（ニーシールド）", "type": "position", "_type": "*", "description": "メインポジション。膝を横に立ててフレームを作り三角とレッグロックへの分岐点" },
+    { "id": "butterfly", "name": "バタフライガード", "type": "position", "_type": "", "description": "足でフックしてヒールフックエントリーを狙う" },
+    { "id": "single-leg-x", "name": "シングルレッグX（アシガラミ）", "type": "position", "_type": "", "description": "ヒールフックシステムへの入口" },
+    { "id": "saddle", "name": "サドル（インサイドサンカ）", "type": "position", "_type": "*", "description": "インサイドヒールフックのメインポジション" },
+    { "id": "fifty-fifty", "name": "50/50", "type": "position", "_type": "", "description": "先にヒールグリップを確立した方が勝つ" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "足関節防御でロールした相手を追ってバックへ" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "z-guard", "action": "引き込み → Zガード", "description": "引き込んで膝を横に立てたZガードをセット" },
+    { "id": "t1", "from": "z-guard", "to": "single-leg-x", "action": "足を絡めてシングルレッグX", "description": "Zガードから相手の片足を絡め取ってシングルレッグXへ" },
+    { "id": "t2", "from": "z-guard", "to": "fifty-fifty", "action": "50/50へ移行", "description": "Zガードから相手の動きに合わせて50/50に切り替え" },
+    { "id": "t3", "from": "single-leg-x", "to": "saddle", "action": "サドルへ", "description": "外足を外してインサイドに入りサドルを確立" },
+    { "id": "t4", "from": "saddle", "to": "back-control", "action": "相手がロールしたらバック", "description": "ヒール防御でロールしてきたら追ってバックテイク" },
+    { "id": "t5", "from": "butterfly", "to": "single-leg-x", "action": "バタフライからレッグロックエントリー", "description": "バタフライの足フックを使ってシングルレッグXへ移行" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "インサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle", "fifty-fifty"], "description": "サドルからかかとを腋に当てて膝を外回転させる。ADCC2017でレアンドロ・ロを仕留めた得意技。44勝中25勝が足関節" },
+    { "id": "s1", "name": "三角絞め", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["z-guard"], "description": "Zガードから予想外の角度で足を首にかける。「トライアングルマシン」と呼ばれる得意技。ADCC2017でマルセロ・サンタナにフライングトライアングルを決めた" },
+    { "id": "s2", "name": "アウトサイドヒールフック", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["saddle", "single-leg-x"], "description": "インサイドを守られたらアウトサイドへ切り替え" },
+    { "id": "s3", "name": "キムラ", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["z-guard"], "description": "Zガードから上半身攻撃の一環。三角とのコンボで相手を詰める" },
+    { "id": "s4", "name": "リアネイキッドチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "足関節防御でバックに回った相手を仕留める" }
+  ],
+  "defenseNotes": [
+    { "position": "z-guard", "principle": "相手がZガードを潰そうとしたら三角かレッグロックエントリーのチャンス" },
+    { "position": "saddle", "principle": "相手が膝を内側に向けてヒールを防いだらアウトサイドへ即切り替え" },
+    { "position": "fifty-fifty", "principle": "焦らない。先にヒールグリップを確立することだけに集中する" }
+  ],
+  "notUsed": [
+    { "technique": "ポジショナルゲーム（ポイント重視）", "reason": "ジョーンズはサブミッション最優先。ポジション確立よりも直接フィニッシュを狙う" },
+    { "technique": "ギ特有の技（ラペルガード・弓矢絞め等）", "reason": "ノーギスペシャリスト。ギ競技には特化していない" }
+  ]
+}

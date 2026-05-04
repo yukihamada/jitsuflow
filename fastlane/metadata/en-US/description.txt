@@ -1,4 +1,4 @@
-JitsuFlow is the ultimate app for Brazilian Jiu-Jitsu practitioners and dojo management.
+JiuFlow is the ultimate app for Brazilian Jiu-Jitsu practitioners and dojo management.
 
 Key Features:
 • Easy Class Booking - Book classes at your favorite dojos with real-time availability
@@ -8,7 +8,7 @@ Key Features:
 • Training History - Keep a record of your training sessions and monitor your growth
 • Shop Integration - Purchase gi, gear, and equipment directly from the app
 
-Whether you're a beginner white belt or an experienced practitioner, JitsuFlow helps you:
+Whether you're a beginner white belt or an experienced practitioner, JiuFlow helps you:
 - Find nearby dojos and book classes instantly
 - Learn from high-quality instructional videos
 - Track your skill development systematically
@@ -20,4 +20,4 @@ Premium Features:
 • Advanced analytics and progress tracking
 • Priority customer support
 
-Start your Brazilian Jiu-Jitsu journey with JitsuFlow today!
+Start your Brazilian Jiu-Jitsu journey with JiuFlow today!

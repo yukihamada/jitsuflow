@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "name": "茶帯 アドバンスドシステム",
+    "description": "茶帯レベルの完成形システム。ニーシールド・DLR・50/50・サドルを使ったコンプリートなレッグロックシステムと、バックテイクを組み合わせた二刀流スタイル。",
+    "principles": [
+      "レッグロックとバックテイクを常にリンクさせ、相手に2つの脅威を同時に与える",
+      "サドルポジション = 勝利確定。入れたらインサイドヒールで素早くフィニッシュ",
+      "50/50は特定の状況でのみ使う。消極的ポジションにならない",
+      "スクランブルの中でポジションを拾う能力を磨く",
+      "相手の反応を読んでスイッチする（レッグロック防御 → バック、バック防御 → レッグロック）"
+    ]
+  },
+  "positions": [
+    { "id": "knee-shield", "name": "ニーシールド（ハーフ）", "type": "position", "_type": "*", "description": "膝で距離を作りながらアンダーフックを狙う" },
+    { "id": "dlr", "name": "ディープハーフ/DLR", "type": "position", "_type": "*", "description": "相手の深くに潜り込んでスイープを狙う" },
+    { "id": "single-leg-x", "name": "シングルレッグX", "type": "position", "_type": "*", "description": "レッグロックシステムの中心。サドルへのエントリーポジション" },
+    { "id": "saddle", "name": "サドル", "type": "position", "_type": "*", "description": "最強のレッグロックポジション。インサイドヒールが狙える" },
+    { "id": "fifty-fifty", "name": "50/50", "type": "position", "_type": "", "description": "互いにレッグロックを狙える中立ポジション。先に仕掛けた方が有利" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "常に狙うべきポジション。RNCで仕留める" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "knee-shield", "to": "single-leg-x", "action": "シングルレッグXエントリー", "description": "ニーシールドから足を外側に回してSLXへ" },
+    { "id": "t2", "from": "single-leg-x", "to": "saddle", "action": "サドルへ", "description": "外ヒールを外してインサイドに入る" },
+    { "id": "t3", "from": "saddle", "to": "back-control", "action": "相手がロール→バックテイク", "description": "インサイドヒール防御でロールしてきたら背後へ" },
+    { "id": "t4", "from": "fifty-fifty", "to": "saddle", "action": "50/50からサドルへ", "description": "相手の足を外してインサイドへ入る" },
+    { "id": "t5", "from": "dlr", "to": "back-control", "action": "ディープハーフからバック", "description": "相手の体重を利用して背後に回り込む" }
+  ],
+  "submissions": [
+    { "id": "s1", "name": "インサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle"], "description": "膝を外に向けて踵に当て、腰を引きながら膝を回す。一撃必殺" },
+    { "id": "s2", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "シートベルト確立後にRNC。腕が防御に来たら腕十字へ" },
+    { "id": "s3", "name": "アウトサイドヒールフック", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["saddle", "single-leg-x", "fifty-fifty"], "description": "インサイドを防がれたらアウトサイドに切り替え" },
+    { "id": "s4", "name": "ニーバー", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["fifty-fifty", "saddle"], "description": "膝の関節を極める。相手が足を引いた時の代替技" },
+    { "id": "s5", "name": "ディープハーフスイープ", "type": "sweep", "priority": "中", "priorityLevel": 3, "from": ["dlr"], "description": "相手の体重を真下から持ち上げて転がす" },
+    { "id": "s6", "name": "腕十字（バックから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["back-control"], "description": "RNC防御で腕を出してきたら瞬時に腕十字へ切り替え" }
+  ],
+  "defenseNotes": [
+    { "position": "saddle", "principle": "相手が膝を内側に向けたらアウトサイドへ即切り替え" },
+    { "position": "fifty-fifty", "principle": "先に仕掛ける。受け身になると相手のヒールが先に決まる" }
+  ],
+  "notUsed": [
+    { "technique": "スタンドアップ系", "reason": "グラウンドで勝負するシステム" }
+  ]
+}

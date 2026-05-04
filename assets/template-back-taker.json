@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "name": "バックテイカーシステム",
+    "description": "あらゆるポジションからバックコントロールを目指し、RNCでフィニッシュするシステム。「バックは最強のポジション」を軸に据えたゲームプラン。",
+    "principles": [
+      "全てのポジションをバックテイクへの通り道と考える",
+      "シートベルトグリップを確立したら絶対に離さない",
+      "フックより先にチョークグリップを優先。フックなしでもチョークは決まる",
+      "相手が横を向いたら必ずバックのチャンス。どのポジションからでも見逃さない",
+      "ボディトライアングルで下半身を固定してからRNCを仕掛ける",
+      "タートルの相手には即シートベルトを差し込む。逃げる方向に回り込む",
+      "バックを失いそうになったらチョークを先に深める。グリップが命綱"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "アームドラッグかシングルレッグからバックテイクを狙う" },
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "", "description": "アームドラッグでバックへ。または木村グリップからバックテイク" },
+    { "id": "half-guard", "name": "ハーフガード（下）", "type": "position", "_type": "", "description": "アンダーフックからドッグファイトを経由してバックへ" },
+    { "id": "open-guard", "name": "オープンガード（下）", "type": "position", "_type": "", "description": "デラヒーバ・Xガードから相手をひっくり返してバックへ" },
+    { "id": "turtle", "name": "タートル（四つん這い）", "type": "position", "_type": "!", "description": "バックテイクの最大チャンス。即シートベルトを差し込む。逃す手はない" },
+    { "id": "back-sitting", "name": "バック（座り）", "type": "position", "_type": "*", "description": "相手が座り込んでいる状態。フックを入れながらチョーク狙い" },
+    { "id": "back-control", "name": "バックコントロール（フック）", "type": "position", "_type": "*", "description": "最終目標。両足フック + シートベルトで完全コントロール。RNCで仕留める" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "standing", "to": "turtle", "action": "シングルレッグ → タートルへ追い込む", "description": "片足タックルで崩してタートルへ。または相手がタックルしてきたら切りながらバックへ" },
+    { "id": "t2", "from": "closed-guard", "to": "back-sitting", "action": "アームドラッグ → バック", "description": "相手の腕を引き付けながら素早く背後へ。木村グリップからのバックテイクも有効" },
+    { "id": "t3", "from": "half-guard", "to": "back-sitting", "action": "アンダーフック → ドッグファイト → バック", "description": "ニーシールドでスペースを作り、アンダーフックからドッグファイトを経由してバックへ" },
+    { "id": "t4", "from": "open-guard", "to": "turtle", "action": "デラヒーバで崩してタートルへ", "description": "デラヒーバで相手の体重を外側に崩してタートルへ追い込む" },
+    { "id": "t5", "from": "turtle", "to": "back-control", "action": "バックテイク", "description": "シートベルト確立 → 相手の体に乗り → 両フックを差し込む" },
+    { "id": "t6", "from": "turtle", "to": "back-sitting", "action": "相手が起き上がろうとする", "description": "体重を前にかけて相手をマットに押しつけながらバックを維持" },
+    { "id": "t7", "from": "back-sitting", "to": "back-control", "action": "フック挿入", "description": "相手の足の間から足を差し込んで両フックをセット" }
+  ],
+  "submissions": [
+    { "id": "rnc", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control", "back-sitting"], "description": "シートベルト確立後、まず顎の下に腕を通してグリップ。相手の顎を腕に乗せてから引く。フックなしでも入れる" },
+    { "id": "body-triangle", "name": "ボディトライアングル + RNC", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "足でボディトライアングルを組んで動けなくしてからRNC。相手が逃げられなくなる" },
+    { "id": "bow-arrow", "name": "弓矢絞め（ギあり）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "下の手で奥の袖口、上の手で向こう側の襟を持って絞る。ギ競技専用" },
+    { "id": "turtle-clock-choke", "name": "クロックチョーク", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["turtle"], "description": "タートルの相手の首に腕を回して時計回りに体重をかける" },
+    { "id": "armbar-back", "name": "腕十字（バックから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["back-control"], "description": "相手がRNC防御で腕を出してきた瞬間に腕十字へ切り替え" },
+    { "id": "kimura-back", "name": "木村ロック（バックから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["back-control"], "description": "相手がチョーク防御で腕を上げた瞬間に木村グリップで肩を取る" }
+  ],
+  "defenseNotes": [
+    { "position": "back-control", "principle": "相手がシートベルトを切ろうとしたら即チョークグリップを深める。グリップが命綱" },
+    { "position": "turtle", "principle": "腕を出さない。肘を膝につけてコンパクトな姿勢を維持する" },
+    { "position": "back-sitting", "principle": "相手の顎を自分の腕に乗せることを最優先。位置が決まればRNCは時間の問題" },
+    { "position": "general", "principle": "バックを失いそうになったら別のポジションへ移行。無理に維持してエネルギーを消耗しない" }
+  ],
+  "notUsed": [
+    { "technique": "バックからのヒールフック", "reason": "足が絡まって逃げられるリスクが高い。RNCに集中する" },
+    { "technique": "バックを失ったあとのスクランブル", "reason": "バックを失いそうになったらタートルに追い込み直すか別のポジションへ移行" }
+  ]
+}

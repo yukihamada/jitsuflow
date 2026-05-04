@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user.dart';
 
 class DemoAuth {
   static const String _userKey = 'demo_user';
@@ -11,7 +10,7 @@ class DemoAuth {
     
     final userData = {
       'id': 1,
-      'email': 'user@jitsuflow.app',
+      'email': 'user@jiuflow.app',
       'name': 'デモユーザー',
       'phone': null,
       'stripeCustomerId': null,
@@ -29,7 +28,7 @@ class DemoAuth {
     
     final userData = {
       'id': 999,
-      'email': 'admin@jitsuflow.app',
+      'email': 'admin@jiuflow.app',
       'name': '管理者',
       'phone': null,
       'stripeCustomerId': null,
@@ -47,7 +46,7 @@ class DemoAuth {
     
     final userData = {
       'id': 0,
-      'email': 'guest@jitsuflow.app',
+      'email': 'guest@jiuflow.app',
       'name': 'ゲストユーザー',
       'phone': null,
       'stripeCustomerId': null,

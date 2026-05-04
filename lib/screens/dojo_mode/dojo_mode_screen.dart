@@ -63,7 +63,7 @@ class _DojoModeScreenState extends State<DojoModeScreen> {
         if (state is DojoModeLoaded) {
           return Scaffold(
             appBar: AppBar(
-              title: Text(state.isDojoMode ? '道場モード' : 'JitsuFlow'),
+              title: Text(state.isDojoMode ? '道場モード' : 'JiuFlow'),
               backgroundColor: state.isDojoMode ? Colors.orange : const Color(0xFF1B5E20),
               foregroundColor: Colors.white,
               actions: [
@@ -77,7 +77,7 @@ class _DojoModeScreenState extends State<DojoModeScreen> {
                       context.read<DojoModeBloc>().add(SwitchToUserMode());
                     }
                   },
-                  activeColor: Colors.white,
+                  activeThumbColor: Colors.white,
                 ),
                 const SizedBox(width: 16),
               ],

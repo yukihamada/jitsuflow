@@ -143,13 +143,13 @@ class InstructorPayrollCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: isPrimary 
-          ? Theme.of(context).primaryColor.withOpacity(0.05)
-          : Colors.grey.withOpacity(0.05),
+          ? Theme.of(context).primaryColor.withValues(alpha: 0.05)
+          : Colors.grey.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: isPrimary 
-            ? Theme.of(context).primaryColor.withOpacity(0.2)
-            : Colors.grey.withOpacity(0.2),
+            ? Theme.of(context).primaryColor.withValues(alpha: 0.2)
+            : Colors.grey.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -171,9 +171,9 @@ class InstructorPayrollCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
+                  color: statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: statusColor.withOpacity(0.3)),
+                  border: Border.all(color: statusColor.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -225,8 +225,8 @@ class InstructorPayrollCard extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: isPrimary 
-                ? Theme.of(context).primaryColor.withOpacity(0.1)
-                : Colors.grey.withOpacity(0.1),
+                ? Theme.of(context).primaryColor.withValues(alpha: 0.1)
+                : Colors.grey.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(6),
             ),
             child: Column(
@@ -262,7 +262,7 @@ class InstructorPayrollCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
       ),
       child: Column(
@@ -272,7 +272,7 @@ class InstructorPayrollCard extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: 10,
-              color: color.withOpacity(0.8),
+              color: color.withValues(alpha: 0.8),
             ),
           ),
           const SizedBox(height: 2),

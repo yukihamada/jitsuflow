@@ -1,6 +1,6 @@
 /**
  * 商品モデル
- * JitsuFlowの道着、帯、防具、アパレル等の商品情報
+ * JiuFlowの道着、帯、防具、アパレル等の商品情報
  */
 
 class Product {
@@ -154,11 +154,11 @@ class Product {
       final parts = <String>[];
       if (trainer != null) parts.add('指導: $trainer');
       if (sessions != null && duration != null) {
-        parts.add('$duration分 × ${sessions}回');
+        parts.add('$duration分 × $sessions回');
       } else if (duration != null) {
         parts.add('$duration分');
       }
-      if (validityDays != null) parts.add('有効期限: ${validityDays}日');
+      if (validityDays != null) parts.add('有効期限: $validityDays日');
       return parts.join(' / ');
     } else if (isRental) {
       return productType?.replaceAll('_', ' ') ?? 'レンタル商品';

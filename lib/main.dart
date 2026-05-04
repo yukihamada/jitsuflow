@@ -1,41 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:app_links/app_links.dart';
+import 'l10n/app_localizations.dart';
 import 'blocs/auth/auth_bloc.dart';
 import 'blocs/booking/booking_bloc.dart';
 import 'blocs/video/video_bloc.dart';
 import 'blocs/member/member_bloc.dart';
 import 'blocs/dojo_mode/dojo_mode_bloc.dart';
-import 'screens/auth/login_screen.dart';
-import 'screens/auth/register_screen.dart';
-// import 'screens/auth/test_login_screen.dart';
-import 'screens/auth/simple_login_screen.dart';
-import 'screens/home/home_screen.dart';
-import 'screens/home/simple_home_screen.dart';
-import 'screens/instructor/instructor_dashboard_screen.dart';
-import 'screens/shop/order_history_screen.dart';
-import 'screens/rental/my_rentals_screen.dart';
-import 'screens/teams/team_screen.dart';
-import 'utils/demo_auth.dart';
-import 'themes/colorful_theme.dart';
+import 'core/api/api_client.dart';
+import 'core/router/app_router.dart';
+import 'core/theme/app_theme.dart';
+import 'features/auth/bloc/auth_bloc.dart' as feature_auth;
+import 'features/auth/services/auth_service.dart';
 import 'services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeDateFormatting('ja_JP', null);
-  await NotificationService.initialize();
-  runApp(const JitsuFlowApp());
+
+  // Catch all Flutter framework errors
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    debugPrint('FlutterError: ${details.exceptionAsString()}');
+  };
+
+  try {
+    await initializeDateFormatting('ja_JP', null);
+  } catch (e) {
+    debugPrint('initializeDateFormatting error: $e');
+  }
+
+  try {
+    await NotificationService.initialize();
+  } catch (e) {
+    debugPrint('NotificationService error: $e');
+  }
+
+  try {
+    await AppRouter.preloadAuthState();
+  } catch (e) {
+    debugPrint('preloadAuthState error: $e');
+  }
+
+  runApp(const JiuFlowApp());
 }
 
-class JitsuFlowApp extends StatelessWidget {
-  const JitsuFlowApp({super.key});
+class JiuFlowApp extends StatefulWidget {
+  const JiuFlowApp({super.key});
+
+  @override
+  State<JiuFlowApp> createState() => _JiuFlowAppState();
+}
+
+class _JiuFlowAppState extends State<JiuFlowApp> {
+  late final AppLinks _appLinks;
+
+  @override
+  void initState() {
+    super.initState();
+    _appLinks = AppLinks();
+    _initDeepLinks();
+    ApiClient.onUnauthorized = () => AppRouter.router.go('/login-magic');
+  }
+
+  void _initDeepLinks() async {
+    // Handle app opened from a Universal Link (cold start)
+    try {
+      final initialLink = await _appLinks.getInitialLink();
+      if (initialLink != null) _handleLink(initialLink);
+    } catch (_) {}
+
+    // Handle Universal Links while app is running
+    _appLinks.uriLinkStream.listen(_handleLink, onError: (_) {});
+  }
+
+  void _handleLink(Uri uri) {
+    // Only handle magic-link verify paths
+    final path = uri.path;
+    if (path != '/auth/magic/verify' && path != '/auth/verify') return;
+    final token = uri.queryParameters['token'];
+    if (token != null && token.isNotEmpty) {
+      AppRouter.router.go('/auth/verify/$token');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final apiClient = ApiClient();
+    final authService = AuthService(apiClient);
+
     return MultiBlocProvider(
       providers: [
+        // Legacy AuthBloc (email+password flows)
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc(),
+        ),
+        // Feature AuthBloc (magic-link / token verification)
+        BlocProvider<feature_auth.FeatureAuthBloc>(
+          create: (context) => feature_auth.FeatureAuthBloc(authService),
         ),
         BlocProvider<BookingBloc>(
           create: (context) => BookingBloc(),
@@ -50,110 +113,20 @@ class JitsuFlowApp extends StatelessWidget {
           create: (context) => DojoModeBloc(),
         ),
       ],
-      child: MaterialApp(
-        title: 'JitsuFlow',
-        theme: ColorfulTheme.lightTheme,
-        darkTheme: ThemeData(
-          primarySwatch: Colors.green,
-          primaryColor: const Color(0xFF1B5E20),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF1B5E20),
-            brightness: Brightness.dark,
-          ),
-          useMaterial3: true,
-          fontFamily: 'Hiragino Sans',
-        ),
+      child: MaterialApp.router(
+        title: 'JiuFlow',
+        theme: AppTheme.darkTheme,
+        darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.dark,
-        home: const SplashScreen(),
-        routes: {
-          '/login': (context) => const SimpleLoginScreen(),
-          '/register': (context) => const RegisterScreen(),
-          '/home': (context) => const SimpleHomeScreen(),
-          '/instructor/dashboard': (context) => const InstructorDashboardScreen(),
-          '/orders': (context) => const OrderHistoryScreen(),
-          '/my-rentals': (context) => const MyRentalsScreen(),
-          '/teams': (context) => const TeamScreen(),
-        },
+        routerConfig: AppRouter.router,
         debugShowCheckedModeBanner: false,
-      ),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToLogin();
-  }
-
-  Future<void> _navigateToLogin() async {
-    await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      // Check if already logged in
-      final isLoggedIn = await DemoAuth.isLoggedIn();
-      if (isLoggedIn) {
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        Navigator.pushReplacementNamed(context, '/login');
-      }
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1B5E20),
-              Color(0xFF2E7D32),
-            ],
-          ),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.sports_martial_arts,
-                size: 120,
-                color: Colors.white,
-              ),
-              SizedBox(height: 24),
-              Text(
-                'JitsuFlow',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'ブラジリアン柔術トレーニング',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white70,
-                ),
-              ),
-              SizedBox(height: 48),
-              CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-              ),
-            ],
-          ),
-        ),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
       ),
     );
   }

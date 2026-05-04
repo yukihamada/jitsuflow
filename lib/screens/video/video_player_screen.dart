@@ -140,8 +140,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                             colors: [
-                                              const Color(0xFF1B5E20).withOpacity(0.7),
-                                              const Color(0xFF2E7D32).withOpacity(0.7),
+                                              const Color(0xFF1B5E20).withValues(alpha: 0.7),
+                                              const Color(0xFF2E7D32).withValues(alpha: 0.7),
                                             ],
                                           ),
                                           borderRadius: BorderRadius.circular(8),
@@ -178,9 +178,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                         begin: Alignment.topCenter,
                                         end: Alignment.bottomCenter,
                                         colors: [
-                                          Colors.black.withOpacity(0.3),
+                                          Colors.black.withValues(alpha: 0.3),
                                           Colors.transparent,
-                                          Colors.black.withOpacity(0.3),
+                                          Colors.black.withValues(alpha: 0.3),
                                         ],
                                       ),
                                     ),
@@ -307,7 +307,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF1B5E20).withOpacity(0.1),
+                                  color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 child: Text(

@@ -146,7 +146,7 @@ class _CalendarBookingScreenState extends State<CalendarBookingScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
+                            color: Colors.black.withValues(alpha: 0.1),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -312,7 +312,7 @@ class _CalendarBookingScreenState extends State<CalendarBookingScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                 decoration: BoxDecoration(
-                  color: ColorfulTheme.accentLime.withOpacity(0.2),
+                  color: ColorfulTheme.accentLime.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -351,13 +351,13 @@ class _CalendarBookingScreenState extends State<CalendarBookingScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            ColorfulTheme.getChipColor(index).withOpacity(0.1),
-            ColorfulTheme.getChipColor(index).withOpacity(0.05),
+            ColorfulTheme.getChipColor(index).withValues(alpha: 0.1),
+            ColorfulTheme.getChipColor(index).withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ColorfulTheme.getChipColor(index).withOpacity(0.3),
+          color: ColorfulTheme.getChipColor(index).withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -483,7 +483,7 @@ class _CalendarBookingScreenState extends State<CalendarBookingScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: ColorfulTheme.getChipColor(index).withOpacity(0.2),
+                          color: ColorfulTheme.getChipColor(index).withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(

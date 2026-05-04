@@ -1,0 +1,3527 @@
+{
+  "id": "root",
+  "label": "スタート",
+  "emoji": "🥋",
+  "prob": 100,
+  "priority": 4,
+  "desc": "BJJテクニック全体マップ。試合開始ポジションから展開する技術体系。(Complete BJJ technique map starting from match beginning)",
+  "recommended": true,
+  "warning": false,
+  "children": [
+    {
+      "id": "guard-game",
+      "label": "ガードゲーム",
+      "emoji": "🛡️",
+      "prob": 60,
+      "priority": 4,
+      "desc": "下のポジションでのテクニック群。BJJの核心。(Guard game: techniques from bottom position)",
+      "recommended": true,
+      "warning": false,
+      "children": [
+        {
+          "id": "closed-guard",
+          "label": "クローズドガード",
+          "emoji": "🔒",
+          "prob": 65,
+          "priority": 4,
+          "desc": "両足で相手の腰を挟むガード。BJJの基本。(Closed Guard: legs locked around opponent's waist)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "cg-submissions",
+              "label": "サブミッション系",
+              "emoji": "🎯",
+              "prob": 55,
+              "priority": 4,
+              "desc": "クローズドガードからの絞め・関節技 (Submissions from closed guard)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "triangle-choke",
+                  "label": "三角絞め",
+                  "emoji": "△",
+                  "prob": 45,
+                  "priority": 4,
+                  "desc": "足で相手の首と腕を三角形に絞める。BJJ最重要技。(Triangle choke: legs around neck and one arm)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "triangle-setup",
+                      "label": "三角セットアップ",
+                      "emoji": "🔧",
+                      "prob": 50,
+                      "priority": 4,
+                      "desc": "相手の腕を外に出してヒップアップ。角度が重要。(Setup: break posture, clear arm, hip up)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "triangle-to-armbar",
+                      "label": "三角→腕十字",
+                      "emoji": "🔄",
+                      "prob": 40,
+                      "priority": 3,
+                      "desc": "三角が極まらない時に腕十字に移行。(Transition to armbar when triangle is defended)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "triangle-to-omoplata",
+                      "label": "三角→オモプラッタ",
+                      "emoji": "🔄",
+                      "prob": 35,
+                      "priority": 3,
+                      "desc": "相手が腕を引いた時にオモプラッタへ。(Transition to omoplata when arm is pulled out)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "triangle-adjust",
+                      "label": "三角角度調整",
+                      "emoji": "📐",
+                      "prob": 55,
+                      "priority": 3,
+                      "desc": "90度に角度を切り直す。頭を押してタップを狙う。(Adjust to 90 degrees for finish)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "armbar-cg",
+                  "label": "腕十字（クローズドガード）",
+                  "emoji": "💪",
+                  "prob": 40,
+                  "priority": 4,
+                  "desc": "相手の腕を両足で挟んで肘関節を極める。(Armbar from closed guard)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "armbar-cg-setup",
+                      "label": "腕十字セットアップ",
+                      "emoji": "🔧",
+                      "prob": 45,
+                      "priority": 4,
+                      "desc": "片手で相手の袖を取り、反対手で押して足を肩に乗せる。(Setup: grip sleeve, push, swing leg over shoulder)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "armbar-cg-finish",
+                      "label": "腕十字フィニッシュ",
+                      "emoji": "🏁",
+                      "prob": 50,
+                      "priority": 3,
+                      "desc": "足首をロック、橋をかけて肘を伸ばす。(Finish: lock ankles, bridge, extend elbow)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "omoplata",
+                  "label": "オモプラッタ",
+                  "emoji": "🌀",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "相手の肩関節を足で極める技。スイープにも使える。(Omoplata: shoulder lock with legs)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "omoplata-setup",
+                      "label": "オモプラッタセットアップ",
+                      "emoji": "🔧",
+                      "prob": 40,
+                      "priority": 3,
+                      "desc": "相手の腕を外に出し足を肩に回す。(Setup: clear arm, swing leg over shoulder)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "omoplata-sweep",
+                      "label": "オモプラッタスイープ",
+                      "emoji": "↩️",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "相手が前転して逃げようとする時にスイープ。(Sweep when opponent tries to roll out)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "omoplata-finish",
+                      "label": "オモプラッタフィニッシュ",
+                      "emoji": "🏁",
+                      "prob": 30,
+                      "priority": 3,
+                      "desc": "足首で肩を外旋させてタップを狙う。(Finish: rotate shoulder externally)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "kimura-cg",
+                  "label": "キムラ（クローズドガード）",
+                  "emoji": "🔑",
+                  "prob": 45,
+                  "priority": 4,
+                  "desc": "相手の腕を背中に巻き上げる肩関節技。(Kimura: shoulder lock from closed guard)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "kimura-cg-setup",
+                      "label": "キムラセットアップ",
+                      "emoji": "🔧",
+                      "prob": 50,
+                      "priority": 4,
+                      "desc": "相手の手首をキャッチしてキムラグリップを作る。(Grip: figure-4 on wrist)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "kimura-to-guillotine",
+                      "label": "キムラ→ギロチン",
+                      "emoji": "🔄",
+                      "prob": 40,
+                      "priority": 3,
+                      "desc": "キムラから立ち上がりギロチンへ移行。(Transition to guillotine when opponent stands)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "kimura-sweep",
+                      "label": "キムラスイープ",
+                      "emoji": "↩️",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "キムラグリップで相手を横に倒す。(Sweep using kimura grip)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "guillotine-cg",
+                  "label": "ギロチン（クローズドガード）",
+                  "emoji": "⚔️",
+                  "prob": 50,
+                  "priority": 4,
+                  "desc": "相手の首を腕で絞める技群。最強のサブミッションの一つ。(Guillotine choke family)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "high-elbow-guillotine",
+                      "label": "ハイエルボーギロチン",
+                      "emoji": "↑",
+                      "prob": 55,
+                      "priority": 4,
+                      "desc": "肘を高く上げて首を絞める。最も有効なギロチン。(High elbow guillotine: elbow up, forearm pressure)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "arm-in-guillotine",
+                      "label": "アームインギロチン",
+                      "emoji": "💪",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "相手の腕を巻き込んだギロチン。アームインは首への圧力が強い。(Arm-in guillotine: arm trapped inside)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "guillotine-pull",
+                      "label": "ギロチンプル",
+                      "emoji": "⬇️",
+                      "prob": 50,
+                      "priority": 3,
+                      "desc": "クローズドガードに引き込みながらギロチンを極める。(Pull guard while maintaining guillotine)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "ten-finger-guillotine",
+                      "label": "10フィンガーギロチン",
+                      "emoji": "🖐️",
+                      "prob": 40,
+                      "priority": 2,
+                      "desc": "両手の指を組んでギロチン。ノーギで有効。(Ten finger guillotine: interlocked fingers)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "cross-choke-cg",
+                  "label": "クロスチョーク（クローズドガード）",
+                  "emoji": "✂️",
+                  "prob": 40,
+                  "priority": 4,
+                  "desc": "相手の襟を十字に取って絞める。道着専用。(Cross choke from closed guard, gi only)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "cross-choke-cg-setup",
+                      "label": "クロスチョークセットアップ",
+                      "emoji": "🔧",
+                      "prob": 45,
+                      "priority": 4,
+                      "desc": "相手の姿勢を崩し深い握りを取る。(Break posture, get deep grips on both collars)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "cross-choke-cg-finish",
+                      "label": "クロスチョークフィニッシュ",
+                      "emoji": "🏁",
+                      "prob": 50,
+                      "priority": 3,
+                      "desc": "肘を下げながら手首を回転させて絞める。(Finish: elbows down, rotate wrists)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "loop-choke-cg",
+                  "label": "ループチョーク",
+                  "emoji": "🔁",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "相手の動きを利用して首を絞める。(Loop choke: uses opponent's forward pressure)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "loop-choke-setup",
+                      "label": "ループチョークセットアップ",
+                      "emoji": "🔧",
+                      "prob": 40,
+                      "priority": 3,
+                      "desc": "相手が前に来る動きに合わせて首を通す。(Setup: as opponent pressures forward)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "gogoplata",
+                  "label": "ゴゴプラッタ",
+                  "emoji": "🦶",
+                  "prob": 20,
+                  "priority": 2,
+                  "desc": "足の親指で相手の首を絞める技。高難度。(Gogoplata: shin across throat, foot behind head)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": [
+                    {
+                      "id": "gogoplata-setup",
+                      "label": "ゴゴプラッタセットアップ",
+                      "emoji": "🔧",
+                      "prob": 25,
+                      "priority": 2,
+                      "desc": "ハイガードから足を首の下に潜り込ませる。(From high guard, thread shin under opponent's neck)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "ezekiel-cg",
+                  "label": "エゼキエル（クローズドガード）",
+                  "emoji": "🤜",
+                  "prob": 30,
+                  "priority": 2,
+                  "desc": "腕を相手の首に通して絞める。道着が必要。(Ezekiel choke from closed guard, gi only)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "barrylito-cg",
+                  "label": "バーリオット",
+                  "emoji": "🌪️",
+                  "prob": 25,
+                  "priority": 2,
+                  "desc": "クローズドガードからの肩固め系絞め技。(Peruvian necktie variation from closed guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "bulldog-choke",
+                  "label": "ブルドッグチョーク",
+                  "emoji": "🐕",
+                  "prob": 20,
+                  "priority": 2,
+                  "desc": "相手が亀になった時にかける絞め技。(Bulldog choke: opponent in turtle position)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "cg-sweeps",
+              "label": "スイープ系",
+              "emoji": "↩️",
+              "prob": 55,
+              "priority": 4,
+              "desc": "クローズドガードからのスイープ (Sweeps from closed guard)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "scissor-sweep",
+                  "label": "シザースイープ",
+                  "emoji": "✂️",
+                  "prob": 50,
+                  "priority": 4,
+                  "desc": "はさみ動作で相手を倒すスイープ。クローズドガードの基本。(Scissor sweep: basic closed guard sweep)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "scissor-sweep-setup",
+                      "label": "シザースイープセットアップ",
+                      "emoji": "🔧",
+                      "prob": 55,
+                      "priority": 4,
+                      "desc": "相手の袖と襟を取り、膝と足で相手を倒す。(Grip sleeve and collar, scissor legs to sweep)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "scissor-to-kimura",
+                      "label": "シザー→キムラ連携",
+                      "emoji": "🔄",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "シザースイープが止められた時にキムラへ。(Transition to kimura when sweep is blocked)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "hip-bump-sweep",
+                  "label": "ヒップバンプスイープ",
+                  "emoji": "🍑",
+                  "prob": 45,
+                  "priority": 4,
+                  "desc": "腰を跳ね上げて相手を倒す。(Hip bump sweep: sit up and bump hips)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "hip-bump-to-kimura",
+                      "label": "ヒップバンプ→キムラ",
+                      "emoji": "🔄",
+                      "prob": 50,
+                      "priority": 4,
+                      "desc": "ヒップバンプが防がれた時にキムラへ移行。(To kimura when hip bump is countered)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "hip-bump-to-guillotine",
+                      "label": "ヒップバンプ→ギロチン",
+                      "emoji": "🔄",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "相手が頭を下げた時にギロチンへ移行。(To guillotine when opponent lowers head)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "flower-sweep",
+                  "label": "フラワースイープ（花車）",
+                  "emoji": "🌸",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "相手の足を取って倒すスイープ。(Flower sweep: grab ankle and sweep)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "flower-sweep-setup",
+                      "label": "フラワースイープセットアップ",
+                      "emoji": "🔧",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "相手の足首を取り、腰を切りながら倒す。(Grip ankle, cut hip, sweep)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "cross-grip-sweep",
+                  "label": "クロスグリップスイープ",
+                  "emoji": "✖️",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "クロスグリップで相手を倒す。(Cross grip sweep: cross collar grip sweep)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "cross-grip-setup",
+                      "label": "クロスグリップセットアップ",
+                      "emoji": "🔧",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "相手の対角の襟を取り引き込む。(Cross grip on far collar, sweep to top)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "bucket-sweep",
+                  "label": "バケツスイープ",
+                  "emoji": "🪣",
+                  "prob": 35,
+                  "priority": 2,
+                  "desc": "相手が引き込んだ足を外に出した時のスイープ。(Bucket sweep: when opponent steps out)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "combat-base-response",
+                  "label": "コンバットベース対応",
+                  "emoji": "🛡️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "相手が膝立ちになった時の対応。(Response when opponent posts in combat base)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "standup-counter",
+                      "label": "スタンドアップ対応",
+                      "emoji": "⬆️",
+                      "prob": 40,
+                      "priority": 3,
+                      "desc": "相手が立ち上がった時のクローズドガード対応。(When opponent stands up in closed guard)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "half-guard",
+          "label": "ハーフガード",
+          "emoji": "⚡",
+          "prob": 60,
+          "priority": 4,
+          "desc": "片足で相手の片足を挟むガード。攻防両面で重要。(Half guard: one leg trapped between opponent's legs)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "hg-underhook",
+              "label": "アンダーフック獲得",
+              "emoji": "🤝",
+              "prob": 55,
+              "priority": 4,
+              "desc": "ハーフガードで最重要なアンダーフックの取り方。(Getting underhook is key to half guard)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "dogfight",
+                  "label": "ドッグファイト",
+                  "emoji": "🐕",
+                  "prob": 50,
+                  "priority": 4,
+                  "desc": "アンダーフックから四つん這いの攻防。バックテイクを狙う。(Dogfight position: on all fours, fighting for back)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "dogfight-back-take",
+                      "label": "ドッグファイト→バックテイク",
+                      "emoji": "🔄",
+                      "prob": 45,
+                      "priority": 4,
+                      "desc": "ドッグファイトからバックに回る。(Back take from dogfight)",
+                      "recommended": true,
+                      "warning": false,
+                      "children": []
+                    },
+                    {
+                      "id": "dogfight-sweep",
+                      "label": "ドッグファイトスイープ",
+                      "emoji": "↩️",
+                      "prob": 50,
+                      "priority": 3,
+                      "desc": "ドッグファイトからそのままスイープ。(Sweep from dogfight position)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "half-guard-back-take",
+                  "label": "ハーフガードバックテイク",
+                  "emoji": "🔙",
+                  "prob": 40,
+                  "priority": 4,
+                  "desc": "アンダーフックからバックに直接回る。(Direct back take from half guard underhook)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "waiter-sweep",
+              "label": "ウェイタースイープ",
+              "emoji": "🍽️",
+              "prob": 45,
+              "priority": 4,
+              "desc": "相手の足を支えてスイープする。ヘッドロックされた場合の対処も含む。(Waiter sweep: sweep opponent using their leg)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "waiter-sweep-setup",
+                  "label": "ウェイタースイープセットアップ",
+                  "emoji": "🔧",
+                  "prob": 50,
+                  "priority": 4,
+                  "desc": "相手の奥足を両手で持ち上げてスイープ。(Setup: grab far leg, lift and sweep)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "waiter-sweep-finish",
+                  "label": "ウェイタースイープフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "足を高く上げながら肩越しに倒す。(Finish: lift leg high, roll over shoulder)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "waiter-to-back",
+                  "label": "ウェイター→バックテイク",
+                  "emoji": "🔄",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "ウェイタースイープからバックテイクへ移行。(Transition to back take from waiter)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "electric-chair",
+              "label": "エレクトリックチェア",
+              "emoji": "⚡",
+              "prob": 35,
+              "priority": 3,
+              "desc": "ハーフガードからグロインストレッチ＋スイープ。(Electric chair: groin stretch from half guard)",
+              "recommended": false,
+              "warning": true,
+              "children": [
+                {
+                  "id": "electric-chair-setup",
+                  "label": "エレクトリックチェアセットアップ",
+                  "emoji": "🔧",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "相手の内股に足を入れてグロインストレッチポジションを作る。(Setup: thread leg inside, stretch groin)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "electric-chair-sweep",
+                  "label": "エレクトリックチェアスイープ",
+                  "emoji": "↩️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "グロインストレッチからスイープ。(Sweep from electric chair position)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "electric-chair-finish",
+                  "label": "エレクトリックチェアフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 25,
+                  "priority": 2,
+                  "desc": "グロインストレッチでタップを狙う（ノーギの一部ルールで有効）。(Finish: groin stretch tap, check rules)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "lockdown",
+              "label": "ロックダウン",
+              "emoji": "🔒",
+              "prob": 40,
+              "priority": 3,
+              "desc": "足首をロックして相手を固定する。(Lockdown: ankle lock to immobilize opponent)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "lockdown-old-school",
+                  "label": "ロックダウン→オールドスクール",
+                  "emoji": "🕰️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ロックダウンから足を引いてスイープ。(Old school: pull opponent's leg from lockdown)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "lockdown-electric-chair",
+                  "label": "ロックダウン→エレクトリックチェア",
+                  "emoji": "🔄",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ロックダウンからエレクトリックチェアへ移行。(Transition to electric chair from lockdown)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "deep-half",
+              "label": "ディープハーフ移行",
+              "emoji": "🌊",
+              "prob": 40,
+              "priority": 3,
+              "desc": "相手の股の下深く潜り込むポジション。(Deep half guard: under opponent's hips)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "homer-simpson-sweep",
+                  "label": "ホーマーシンプソンスイープ",
+                  "emoji": "🍩",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ディープハーフからのスイープ。相手の体重を利用。(Homer Simpson sweep from deep half)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "reverse-single-leg",
+                  "label": "リバースシングルレッグ",
+                  "emoji": "🦵",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "ディープハーフからシングルレッグでスイープ。(Reverse single leg from deep half)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "deep-half-back-take",
+                  "label": "ディープハーフバックテイク",
+                  "emoji": "🔙",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ディープハーフからバックに回る。(Back take from deep half guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "z-guard",
+              "label": "Zガード/ニーシールド",
+              "emoji": "🛡️",
+              "prob": 55,
+              "priority": 3,
+              "desc": "膝を盾にするハーフガードのバリエーション。(Z-guard/knee shield: knee as a frame)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "z-guard-kimura",
+                  "label": "Zガード→キムラ",
+                  "emoji": "🔑",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "ニーシールドからキムラへ移行。(Kimura from Z-guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "z-guard-loop-choke",
+                  "label": "Zガード→ループチョーク",
+                  "emoji": "🔁",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ニーシールドからループチョークへ。(Loop choke from Z-guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "z-guard-sweep",
+                  "label": "Zガードスイープ",
+                  "emoji": "↩️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ニーシールドからのスイープ各種。(Sweeps from Z-guard/knee shield)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": [
+                    {
+                      "id": "knee-shield-sweep-detail",
+                      "label": "ニーシールドスイープ詳細",
+                      "emoji": "🔧",
+                      "prob": 50,
+                      "priority": 3,
+                      "desc": "ニーシールドを使ってスペースを作りスイープ。(Create space with knee shield, execute sweep)",
+                      "recommended": false,
+                      "warning": false,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "butterfly-guard",
+          "label": "バタフライガード",
+          "emoji": "🦋",
+          "prob": 55,
+          "priority": 3,
+          "desc": "両足のフックで相手の内股に引っ掛けるガード。マルセロ・ガルシアが有名。(Butterfly guard: both feet hooked inside opponent's thighs)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "butterfly-sweep",
+              "label": "バタフライスイープ",
+              "emoji": "↩️",
+              "prob": 50,
+              "priority": 4,
+              "desc": "バタフライフックを使ったスイープ。(Butterfly sweep using hook elevation)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "butterfly-sweep-both",
+                  "label": "バタフライスイープ（両足）",
+                  "emoji": "🦶🦶",
+                  "prob": 55,
+                  "priority": 4,
+                  "desc": "両足フックで相手を持ち上げてスイープ。(Double butterfly hook sweep)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "butterfly-sweep-single",
+                  "label": "バタフライスイープ（片足）",
+                  "emoji": "🦶",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "片足フックで相手を横にスイープ。(Single hook butterfly sweep)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "arm-drag-butterfly",
+              "label": "アームドラッグ→バックテイク",
+              "emoji": "🎯",
+              "prob": 50,
+              "priority": 4,
+              "desc": "相手の腕を引いてバックに回る。マルセロガルシアの得意技。(Arm drag to back take: Marcelo Garcia specialty)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "arm-drag-setup",
+                  "label": "アームドラッグセットアップ",
+                  "emoji": "🔧",
+                  "prob": 55,
+                  "priority": 4,
+                  "desc": "相手の手首と肘の間を取り素早く引く。(Grip between wrist and elbow, pull to opposite side)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "arm-drag-back-take-detail",
+                  "label": "バックテイク詳細",
+                  "emoji": "🔙",
+                  "prob": 45,
+                  "priority": 4,
+                  "desc": "アームドラッグ後に素早くバックに回る。シートベルトグリップを取る。(Get behind opponent, establish seatbelt grip)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "x-guard-transition-bf",
+              "label": "Xガード移行",
+              "emoji": "✖️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "バタフライからXガードへの移行。(Butterfly to X-guard transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "slx-transition-bf",
+              "label": "SLX移行",
+              "emoji": "🦵",
+              "prob": 35,
+              "priority": 3,
+              "desc": "バタフライからシングルレッグXへの移行。(Butterfly to single leg X transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "double-under-response",
+              "label": "ダブルアンダーフック対応",
+              "emoji": "🤝🤝",
+              "prob": 40,
+              "priority": 3,
+              "desc": "相手がダブルアンダーフックを取った時の対処法。(Response to opponent's double underhook pass)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "double-under-counter",
+                  "label": "ダブルアンダー対抗策",
+                  "emoji": "🛡️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "バタフライフックを維持しながら腰を切る。(Hip escape to maintain butterfly hooks)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "kimura-trap-butterfly",
+              "label": "キムラトラップ",
+              "emoji": "🔑",
+              "prob": 40,
+              "priority": 3,
+              "desc": "バタフライガードからキムラグリップで相手をコントロール。(Kimura trap from butterfly guard)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "kimura-trap-setup",
+                  "label": "キムラトラップセットアップ",
+                  "emoji": "🔧",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "キムラグリップを確立してスイープやサブミッションへ。(Establish kimura grip, sweep or submit)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "kimura-trap-sweep",
+                  "label": "キムラトラップスイープ",
+                  "emoji": "↩️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "キムラグリップを使ったスイープ。(Sweep using kimura trap)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "kimura-trap-submit",
+                  "label": "キムラトラップサブミッション",
+                  "emoji": "🏁",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "キムラトラップからサブミッション。(Submission from kimura trap)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "de-la-riva",
+          "label": "デラヒーバ",
+          "emoji": "🌀",
+          "prob": 55,
+          "priority": 3,
+          "desc": "相手の外側の足にフックをかけるガード。現代BJJの中心。(De La Riva guard: hook on outside of opponent's lead leg)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "berimbolo",
+              "label": "ベリンボロ",
+              "emoji": "🔄",
+              "prob": 35,
+              "priority": 3,
+              "desc": "デラヒーバから逆さまに回転してバックを取る高度な技。(Berimbolo: rolling inversion to back take)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "berimbolo-entry",
+                  "label": "ベリンボロエントリー",
+                  "emoji": "🔧",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "デラヒーバから相手の足を取って逆さまに入る。(Entry: DLR + grip legs, invert under opponent)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "berimbolo-back-take",
+                  "label": "ベリンボロバックテイク",
+                  "emoji": "🔙",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ベリンボロから相手のバックを取る。(Back take from berimbolo)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "berimbolo-to-50-50",
+                  "label": "ベリンボロ→50/50",
+                  "emoji": "🔄",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "ベリンボロが防がれた時に50/50へ移行。(Transition to 50/50 when berimbolo is countered)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "kiss-of-dragon",
+              "label": "キスオブドラゴン",
+              "emoji": "🐉",
+              "prob": 30,
+              "priority": 2,
+              "desc": "デラヒーバから相手の足の間を通り抜けてバックテイク。(Kiss of the dragon: invert between legs to back)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "kiss-of-dragon-setup",
+                  "label": "キスオブドラゴンセットアップ",
+                  "emoji": "🔧",
+                  "prob": 35,
+                  "priority": 2,
+                  "desc": "相手の両足をコントロールして股の間を通過。(Control both legs, pass between them)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "dlr-sweeps",
+              "label": "DLRスイープ",
+              "emoji": "↩️",
+              "prob": 50,
+              "priority": 3,
+              "desc": "デラヒーバガードからのスイープ各種。(Sweeps from De La Riva guard)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "dlr-basic-sweep",
+                  "label": "DLR基本スイープ",
+                  "emoji": "↩️",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "DLRフックで相手の足を払いスイープ。(Basic DLR sweep: kick through with hook)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "dlr-tripod-sweep",
+                  "label": "DLRトライポッドスイープ",
+                  "emoji": "🦵",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "DLRと足払いを組み合わせたスイープ。(Tripod sweep from DLR)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "dlr-overhead-sweep",
+                  "label": "DLRオーバーヘッドスイープ",
+                  "emoji": "⬆️",
+                  "prob": 40,
+                  "priority": 2,
+                  "desc": "相手を頭越しに倒すスイープ。(Overhead sweep from DLR)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "dlr-back-take",
+              "label": "DLRバックテイク",
+              "emoji": "🔙",
+              "prob": 40,
+              "priority": 3,
+              "desc": "デラヒーバからバックテイクへの移行。(Back take from De La Riva)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "dlr-back-take-detail",
+                  "label": "DLRバックテイク詳細",
+                  "emoji": "🔧",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "DLRフックから相手の後ろに回り込む。(Roll behind opponent from DLR hook)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "dlr-to-x-guard",
+              "label": "DLR→Xガード移行",
+              "emoji": "✖️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "デラヒーバからXガードへの移行。(DLR to X-guard transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "dlr-to-slx",
+              "label": "DLR→SLX移行",
+              "emoji": "🦵",
+              "prob": 35,
+              "priority": 3,
+              "desc": "デラヒーバからシングルレッグXへの移行。(DLR to single leg X transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "dlr-spider-combo",
+              "label": "DLR+スパイダーコンボ",
+              "emoji": "🕷️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "デラヒーバとスパイダーガードを組み合わせる。(DLR and spider guard combination)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "reverse-dlr",
+              "label": "リバースDLR",
+              "emoji": "🔄",
+              "prob": 45,
+              "priority": 3,
+              "desc": "相手の内側にフックをかける逆デラヒーバ。(Reverse De La Riva: inside hook)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "rdlr-back-take",
+                  "label": "リバースDLRバックテイク",
+                  "emoji": "🔙",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "リバースDLRからバックテイク。(Back take from reverse DLR)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "rdlr-sweep",
+                  "label": "リバースDLRスイープ",
+                  "emoji": "↩️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "リバースDLRからのスイープ各種。(Sweeps from reverse DLR)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "rdlr-to-50-50",
+                  "label": "リバースDLR→50/50",
+                  "emoji": "🔄",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "リバースDLRから50/50移行。(RDLR to 50/50 transition)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "rdlr-ashi-garami",
+                  "label": "リバースDLR→アシガラミ",
+                  "emoji": "🦵",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "リバースDLRからアシガラミ（レッグエントリー）。(RDLR to ashi garami leg entry)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "rdlr-calf-slicer",
+                  "label": "リバースDLR→カーフスライサー",
+                  "emoji": "🦵",
+                  "prob": 30,
+                  "priority": 2,
+                  "desc": "リバースDLRからカーフスライサー。ルール確認必要。(RDLR to calf slicer, check rules)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "spider-guard",
+          "label": "スパイダーガード",
+          "emoji": "🕷️",
+          "prob": 50,
+          "priority": 3,
+          "desc": "両腕を相手の袖に、両足を相手の腕に引っ掛けるガード。道着専用。(Spider guard: feet on biceps, sleeve grips. Gi only.)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "spider-triangle",
+              "label": "スパイダー→三角絞め",
+              "emoji": "△",
+              "prob": 40,
+              "priority": 3,
+              "desc": "スパイダーガードから三角絞めへの移行。(Triangle from spider guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-omoplata",
+              "label": "スパイダー→オモプラッタ",
+              "emoji": "🌀",
+              "prob": 35,
+              "priority": 3,
+              "desc": "スパイダーガードからオモプラッタへの移行。(Omoplata from spider guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "tomoe-nage-sweep",
+              "label": "トモエ投げスイープ",
+              "emoji": "🔄",
+              "prob": 45,
+              "priority": 3,
+              "desc": "スパイダーガードからトモエ投げ。(Tomoe nage sweep from spider guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-lasso",
+              "label": "スパイダー→ラッソー移行",
+              "emoji": "🔄",
+              "prob": 40,
+              "priority": 3,
+              "desc": "スパイダーガードからラッソーガードへ移行。(Spider to lasso guard transition)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "lasso-sweep",
+                  "label": "ラッソースイープ",
+                  "emoji": "↩️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ラッソーガードからのスイープ。(Sweep from lasso guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "lasso-triangle",
+                  "label": "ラッソー→三角",
+                  "emoji": "△",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ラッソーガードから三角絞め。(Triangle from lasso guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "lasso-omoplata",
+                  "label": "ラッソー→オモプラッタ",
+                  "emoji": "🌀",
+                  "prob": 30,
+                  "priority": 3,
+                  "desc": "ラッソーガードからオモプラッタ。(Omoplata from lasso guard)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "spider-dlr-combo",
+              "label": "スパイダー+DLRコンボ",
+              "emoji": "🕷️🌀",
+              "prob": 45,
+              "priority": 3,
+              "desc": "スパイダーとDLRを組み合わせる。(Spider guard + DLR combination)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-sweep-push-pull",
+              "label": "スパイダースイープ（プッシュプル）",
+              "emoji": "↩️",
+              "prob": 50,
+              "priority": 3,
+              "desc": "片足は押し、片足は引いてスイープ。(Push one leg, pull other for sweep)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-ankle-pick",
+              "label": "スパイダーアンクルピック",
+              "emoji": "🦶",
+              "prob": 40,
+              "priority": 3,
+              "desc": "スパイダーガードから足首を取るスイープ。(Ankle pick from spider guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-cross-guard",
+              "label": "スパイダー→クロスガード",
+              "emoji": "🔄",
+              "prob": 35,
+              "priority": 3,
+              "desc": "スパイダーガードからクロスガードへの移行。(Spider to cross guard transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "spider-guard-defense",
+              "label": "スパイダーガードパス対応",
+              "emoji": "🛡️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "スパイダーガードのパスに対する対応策。(Responses to common spider guard passes)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "x-guard",
+          "label": "Xガード",
+          "emoji": "✖️",
+          "prob": 45,
+          "priority": 3,
+          "desc": "両足を相手の片足にXの字に絡める。エディ・ブラボーが普及。(X-guard: both legs wrapped in X around one leg)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "x-guard-stand-sweep",
+              "label": "Xガードスタンドスイープ",
+              "emoji": "↩️",
+              "prob": 55,
+              "priority": 3,
+              "desc": "相手が立った時にXガードに入りスイープ。(X-guard sweep when opponent stands)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-tilt-sweep",
+              "label": "Xガードチルトスイープ",
+              "emoji": "↩️",
+              "prob": 50,
+              "priority": 3,
+              "desc": "Xガードで足を持ち上げてスイープ。(Tilt sweep: lift opponent's leg)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-back-take",
+              "label": "Xガードバックテイク",
+              "emoji": "🔙",
+              "prob": 40,
+              "priority": 3,
+              "desc": "Xガードからバックテイクへ。(Back take from X-guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-to-slx",
+              "label": "Xガード→SLX移行",
+              "emoji": "🔄",
+              "prob": 40,
+              "priority": 3,
+              "desc": "XガードからシングルレッグXへ移行。(X-guard to single leg X transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-ankle-pick",
+              "label": "Xガードアンクルピック",
+              "emoji": "🦶",
+              "prob": 45,
+              "priority": 3,
+              "desc": "Xガードから足首を取るスイープ。(Ankle pick from X-guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-entry",
+              "label": "Xガードエントリー",
+              "emoji": "🔧",
+              "prob": 50,
+              "priority": 3,
+              "desc": "バタフライやDLRからXガードに入る。(Entry to X-guard from butterfly or DLR)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-sweep-variations",
+              "label": "Xガードスイープバリエーション",
+              "emoji": "↩️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "状況に応じたXガードスイープの選択。(X-guard sweep selection based on opponent's response)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-knee-bar",
+              "label": "Xガード→ニーバー",
+              "emoji": "🦵",
+              "prob": 30,
+              "priority": 2,
+              "desc": "Xガードからニーバーに移行。ルール確認が必要。(X-guard to knee bar, check rules)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "x-guard-control-detail",
+              "label": "Xガードコントロール詳細",
+              "emoji": "🔧",
+              "prob": 50,
+              "priority": 3,
+              "desc": "Xガードポジションを維持するためのグリップとポジショニング。(Grips and positioning to maintain X-guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-respond-to-pass",
+              "label": "Xガードパス対応",
+              "emoji": "🛡️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "Xガードをパスされた時の対応。(How to respond when opponent passes X-guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "x-guard-transition-bf-from-x",
+              "label": "XガードからバタフライへのリセットRef",
+              "emoji": "🔄",
+              "prob": 40,
+              "priority": 3,
+              "desc": "相手の反応次第でバタフライガードに戻す選択。(Reset to butterfly guard based on opponent's response)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "single-leg-x",
+          "label": "シングルレッグX/アシガラミ",
+          "emoji": "🦵",
+          "prob": 50,
+          "priority": 3,
+          "desc": "片足を制御してレッグロックやスイープを狙うシステム。(Single leg X / Ashi garami: leg lock and sweep system)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "inside-heel-hook-entry",
+              "label": "インサイドヒールフックエントリー",
+              "emoji": "🔧",
+              "prob": 45,
+              "priority": 3,
+              "desc": "アシガラミからインサイドヒールフックへのエントリー。(Entry to inside heel hook from ashi garami)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "inside-heel-hook",
+                  "label": "インサイドヒールフック",
+                  "emoji": "🦶",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "踵を外旋させて膝関節と足首を同時に攻める。危険な技。(Inside heel hook: rotate heel outward, attacks knee)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": [
+                    {
+                      "id": "inside-heel-finish",
+                      "label": "インサイドヒールフィニッシュ",
+                      "emoji": "🏁",
+                      "prob": 45,
+                      "priority": 3,
+                      "desc": "踵を体に引き付けながら外旋。相手の抵抗が少なくても即タップを取る。(Finish: pull heel to body, rotate. Tap immediately!)",
+                      "recommended": false,
+                      "warning": true,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "outside-heel-hook-slx",
+              "label": "アウトサイドヒールフック",
+              "emoji": "🦶",
+              "prob": 30,
+              "priority": 2,
+              "desc": "外側に向けてヒールフック。インサイドより危険。(Outside heel hook: more dangerous than inside)",
+              "recommended": false,
+              "warning": true,
+              "children": [
+                {
+                  "id": "outside-heel-finish",
+                  "label": "アウトサイドヒールフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 35,
+                  "priority": 2,
+                  "desc": "足首を腋に挟み踵を内旋。(Finish: heel in armpit, rotate inward)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "saddle-transition-slx",
+              "label": "サドル移行",
+              "emoji": "🐴",
+              "prob": 45,
+              "priority": 3,
+              "desc": "シングルレッグXからサドル/411ポジションへ。(Transition from SLX to saddle/411)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "slx-sweep",
+              "label": "SLXスイープ",
+              "emoji": "↩️",
+              "prob": 55,
+              "priority": 3,
+              "desc": "シングルレッグXからのスイープ。(Sweeps from single leg X)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "slx-basic-sweep",
+                  "label": "SLX基本スイープ",
+                  "emoji": "↩️",
+                  "prob": 60,
+                  "priority": 3,
+                  "desc": "SLXで相手の足を持ち上げてスイープ。(Basic SLX sweep: elevate and sweep)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "slx-back-take",
+                  "label": "SLXバックテイク",
+                  "emoji": "🔙",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "SLXからバックテイクへ移行。(Back take from SLX)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "knee-bar-entry",
+              "label": "ニーバーエントリー",
+              "emoji": "🔧",
+              "prob": 35,
+              "priority": 2,
+              "desc": "アシガラミからニーバーへのエントリー。(Knee bar entry from ashi garami)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "calf-slicer-slx",
+              "label": "カーフスライサー",
+              "emoji": "🦵",
+              "prob": 30,
+              "priority": 2,
+              "desc": "ふくらはぎを切るような関節技。IBJJF制限あり。(Calf slicer: IBJJF restricted in lower belts)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "fifty-fifty",
+          "label": "50/50",
+          "emoji": "⚖️",
+          "prob": 40,
+          "priority": 2,
+          "desc": "お互いに足を絡め合うポジション。ヒールフック争いになることが多い。(50/50 guard: both fighters have equal leg entanglement)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "heel-hook-battle",
+              "label": "ヒールフック争い",
+              "emoji": "⚔️",
+              "prob": 45,
+              "priority": 2,
+              "desc": "50/50でのヒールフックの争い。先に極めた方が勝つ。(Heel hook battle in 50/50: first to finish wins)",
+              "recommended": false,
+              "warning": true,
+              "children": [
+                {
+                  "id": "50-50-inside-heel",
+                  "label": "50/50インサイドヒール",
+                  "emoji": "🦶",
+                  "prob": 40,
+                  "priority": 2,
+                  "desc": "50/50からインサイドヒールフック。(Inside heel hook from 50/50)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                },
+                {
+                  "id": "50-50-outside-heel",
+                  "label": "50/50アウトサイドヒール",
+                  "emoji": "🦶",
+                  "prob": 30,
+                  "priority": 2,
+                  "desc": "50/50からアウトサイドヒールフック。より高難度。(Outside heel hook from 50/50)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "50-50-sweep",
+              "label": "50/50スイープ",
+              "emoji": "↩️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "50/50からのスイープ。(Sweeps from 50/50)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "50-50-back-roll",
+                  "label": "50/50バックロール",
+                  "emoji": "🔄",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "50/50で後ろに転がってポイントを取る。(Back roll in 50/50 for points)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "50-50-knee-slice",
+                  "label": "50/50ニースライス",
+                  "emoji": "🔄",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "膝を切ってサイドに出るスイープ。(Knee slice to exit 50/50)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "50-50-back-take",
+              "label": "50/50バックテイク",
+              "emoji": "🔙",
+              "prob": 35,
+              "priority": 2,
+              "desc": "50/50からバックテイクへの移行。(Back take from 50/50)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "50-50-ibjjf-rules",
+              "label": "IBJJF規定（50/50）",
+              "emoji": "📋",
+              "prob": 100,
+              "priority": 3,
+              "desc": "50/50でのレッグロックのIBJJF制限。青帯以下はヒールフック禁止。(IBJJF rules: heel hooks restricted in 50/50 at lower belts)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "50-50-to-saddle",
+              "label": "50/50→サドル移行",
+              "emoji": "🐴",
+              "prob": 40,
+              "priority": 2,
+              "desc": "50/50からサドル/411ポジションへの移行方法。(Transition from 50/50 to saddle/411)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "50-50-defense",
+              "label": "50/50ディフェンス",
+              "emoji": "🛡️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "50/50に入られた時の防御。つま先の向きが最重要。(50/50 defense: keep toes pointing toward opponent)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "50-50-wrestling-up",
+              "label": "50/50レスリングアップ",
+              "emoji": "⬆️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "50/50から立ち上がって優位を取る選択肢。(Wrestling up from 50/50 for top position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "saddle",
+          "label": "サドル/411",
+          "emoji": "🐴",
+          "prob": 40,
+          "priority": 2,
+          "desc": "相手の足をサドル状に抱えるポジション。ヒールフック最大の武器。(Saddle/411 position: strongest heel hook position)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "saddle-inside-heel",
+              "label": "サドル→インサイドヒールフック",
+              "emoji": "🦶",
+              "prob": 50,
+              "priority": 2,
+              "desc": "サドルポジションからのインサイドヒールフック。(Inside heel hook from saddle)",
+              "recommended": false,
+              "warning": true,
+              "children": [
+                {
+                  "id": "saddle-heel-finish-method",
+                  "label": "ヒールフックフィニッシュ方法",
+                  "emoji": "🏁",
+                  "prob": 55,
+                  "priority": 2,
+                  "desc": "腋に踵を挟み、全身の回転で極める。過大な力は不要。(Finish: heel in armpit, use body rotation. Don't need much force.)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                },
+                {
+                  "id": "saddle-heel-defense",
+                  "label": "ヒールフック防御",
+                  "emoji": "🛡️",
+                  "prob": 40,
+                  "priority": 2,
+                  "desc": "ヒールフックの防御方法。つま先を相手に向け続ける。(Defense: keep toes pointing at opponent, don't rotate)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "saddle-outside-heel",
+              "label": "サドル→アウトサイドヒールフック",
+              "emoji": "🦶",
+              "prob": 35,
+              "priority": 2,
+              "desc": "サドルポジションからのアウトサイドヒールフック。(Outside heel hook from saddle position)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "saddle-toehold",
+              "label": "サドル→トーホールド",
+              "emoji": "🦶",
+              "prob": 40,
+              "priority": 2,
+              "desc": "サドルポジションからのトーホールド。(Toehold from saddle position)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "saddle-knee-bar",
+              "label": "サドル→ニーバー",
+              "emoji": "🦵",
+              "prob": 35,
+              "priority": 2,
+              "desc": "サドルポジションからのニーバー。(Knee bar from saddle position)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "saddle-entry-ways",
+              "label": "サドルへのエントリー",
+              "emoji": "🔧",
+              "prob": 45,
+              "priority": 2,
+              "desc": "様々な状況からサドルポジションに入る方法。(Entry methods to saddle from various positions)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "saddle-ibjjf-rules",
+              "label": "サドルのIBJJFルール",
+              "emoji": "📋",
+              "prob": 100,
+              "priority": 2,
+              "desc": "サドルポジションからのレッグロックは茶・黒帯のみ。(Saddle heel hooks: brown and black belt only in IBJJF)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "saddle-to-back",
+              "label": "サドル→バックテイク",
+              "emoji": "🔙",
+              "prob": 35,
+              "priority": 2,
+              "desc": "サドルからバックテイクへ移行する選択肢。(Transition from saddle to back take)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "saddle-escape",
+              "label": "サドルエスケープ",
+              "emoji": "🚪",
+              "prob": 35,
+              "priority": 2,
+              "desc": "サドルポジションに捕まった時の脱出法。(Escaping the saddle position)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "saddle-outside-entry",
+              "label": "サドルアウトサイドエントリー",
+              "emoji": "🔧",
+              "prob": 40,
+              "priority": 2,
+              "desc": "外側からサドルに入るエントリー方法。(Outside entry to saddle/411 position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "top-game",
+      "label": "トップゲーム",
+      "emoji": "👑",
+      "prob": 55,
+      "priority": 4,
+      "desc": "上のポジションでのテクニック群。(Top game: techniques from top position)",
+      "recommended": true,
+      "warning": false,
+      "children": [
+        {
+          "id": "guard-pass",
+          "label": "ガードパス",
+          "emoji": "🚪",
+          "prob": 50,
+          "priority": 4,
+          "desc": "相手のガードを突破してトップポジションを取る。(Guard passing: breaking through guard to top control)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "torreando-pass",
+              "label": "トレアンドウパス",
+              "emoji": "🏃",
+              "prob": 55,
+              "priority": 4,
+              "desc": "相手の両足を持ちサイドにステップしてパス。闘牛士パスとも呼ばれる。(Toreando/bullfighter pass: grip legs, sidestep)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "torreando-basic",
+                  "label": "トレアンドウ基本",
+                  "emoji": "🔧",
+                  "prob": 60,
+                  "priority": 4,
+                  "desc": "相手の両足首を取り横に振る。膝を跨いでパス。(Basic: grip ankles, swing legs, step over knee)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "torreando-knee-pin",
+                  "label": "トレアンドウニーピン",
+                  "emoji": "📌",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "相手の膝を地面に押し付けてパス。(Knee pin variant: pin knee to floor)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "torreando-stack",
+                  "label": "トレアンドウ→スタック",
+                  "emoji": "📦",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "トレアンドウからスタックパスへの移行。(Toreando to stack pass transition)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "leg-drag-pass",
+              "label": "レッグドラッグパス",
+              "emoji": "🦵",
+              "prob": 50,
+              "priority": 4,
+              "desc": "相手の足を横に引いてパス。(Leg drag pass: drag opponent's leg to side)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "leg-drag-setup",
+                  "label": "レッグドラッグセットアップ",
+                  "emoji": "🔧",
+                  "prob": 55,
+                  "priority": 4,
+                  "desc": "相手の足を腋で挟み横にドラッグ。肩をマットに近づける。(Setup: trap leg in armpit, drag to side, keep shoulder low)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "leg-drag-finish",
+                  "label": "レッグドラッグフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "足をコントロールしながらサイドに抜ける。(Finish: clear legs, establish side control)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "leg-drag-back-take",
+                  "label": "レッグドラッグ→バックテイク",
+                  "emoji": "🔙",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "レッグドラッグからバックテイクへ移行。(Leg drag to back take)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "over-under-pass",
+              "label": "オーバーアンダーパス",
+              "emoji": "🤝",
+              "prob": 50,
+              "priority": 4,
+              "desc": "片方の足の上、もう一方の足の下からパス。(Over-under pass: one arm over, one arm under legs)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "over-under-setup",
+                  "label": "オーバーアンダーセットアップ",
+                  "emoji": "🔧",
+                  "prob": 55,
+                  "priority": 4,
+                  "desc": "相手の足を分けてオーバーアンダーグリップを確立。(Setup: separate legs, establish over-under grip)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "over-under-smash",
+                  "label": "オーバーアンダー→スマッシュ",
+                  "emoji": "💥",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "オーバーアンダーからスマッシュパスへ移行。(Transition to smash pass)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "knee-cut-pass",
+              "label": "ニーカットパス",
+              "emoji": "✂️",
+              "prob": 55,
+              "priority": 4,
+              "desc": "膝を相手の内股に切り込ませてパス。ハーフガードでも使える。(Knee cut/slice pass: drive knee through guard)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "knee-cut-setup",
+                  "label": "ニーカットセットアップ",
+                  "emoji": "🔧",
+                  "prob": 60,
+                  "priority": 4,
+                  "desc": "膝を相手の股間に向けて切り込み、体重をかける。(Drive knee to hip, weight forward)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "knee-cut-to-leg-drag",
+                  "label": "ニーカット→レッグドラッグ",
+                  "emoji": "🔄",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ニーカットが防がれたらレッグドラッグへ。(To leg drag when knee cut is blocked)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "knee-cut-to-back",
+                  "label": "ニーカット→バックテイク",
+                  "emoji": "🔙",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ニーカットからバックテイクへ移行。(To back take from knee cut)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "smash-pass",
+              "label": "スマッシュパス",
+              "emoji": "💥",
+              "prob": 45,
+              "priority": 3,
+              "desc": "相手の足を押しつぶしてパス。(Smash pass: crush opponent's legs to pass)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "smash-pass-double-under",
+                  "label": "ダブルアンダースマッシュ",
+                  "emoji": "💪",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "両腕を相手の足の下に入れてスマッシュ。(Double under smash: both arms under legs)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "smash-pass-combat-base",
+                  "label": "スマッシュパスコンバットベース",
+                  "emoji": "🛡️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "コンバットベースから体重をかけてパス。(Smash from combat base position)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "stack-pass",
+              "label": "スタックパス",
+              "emoji": "📦",
+              "prob": 45,
+              "priority": 3,
+              "desc": "相手を折り畳んでパス。(Stack pass: fold opponent to pass)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "stack-pass-setup",
+                  "label": "スタックパスセットアップ",
+                  "emoji": "🔧",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "相手の足を持ち上げて折り畳む。首への圧力に注意。(Setup: lift legs, fold forward. Careful of neck pressure)",
+                  "recommended": false,
+                  "warning": true,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "x-pass",
+              "label": "Xパス",
+              "emoji": "✖️",
+              "prob": 55,
+              "priority": 3,
+              "desc": "バタフライガードに対するXパス。(X-pass: effective against butterfly guard)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "x-pass-setup",
+                  "label": "Xパスセットアップ",
+                  "emoji": "🔧",
+                  "prob": 60,
+                  "priority": 3,
+                  "desc": "相手の足の間に腕を通してXパス。(Thread arm between legs for X-pass)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "long-step-pass",
+              "label": "ロングステップパス",
+              "emoji": "👣",
+              "prob": 50,
+              "priority": 3,
+              "desc": "大きくステップしてガードを回るパス。(Long step pass: large step around guard)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "long-step-to-back",
+                  "label": "ロングステップ→バックテイク",
+                  "emoji": "🔙",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "ロングステップからバックテイクへ。(Long step to back take)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "back-step-pass",
+              "label": "バックステップパス",
+              "emoji": "👣",
+              "prob": 45,
+              "priority": 3,
+              "desc": "後ろにステップして相手の足を外すパス。(Back step pass: step back to clear legs)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "back-step-50-50",
+                  "label": "バックステップ→50/50",
+                  "emoji": "⚖️",
+                  "prob": 40,
+                  "priority": 2,
+                  "desc": "バックステップが止められた時に50/50へ。(To 50/50 when back step is countered)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "hq-position",
+              "label": "HQ（本部）ポジション",
+              "emoji": "🏢",
+              "prob": 55,
+              "priority": 3,
+              "desc": "ガードパスの中間ポジション。相手の足を固定している。(HQ position: stable passing position with leg control)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "hq-to-side",
+                  "label": "HQ→サイドコントロール",
+                  "emoji": "🔄",
+                  "prob": 60,
+                  "priority": 3,
+                  "desc": "HQポジションからサイドコントロールへ移行。(HQ to side control)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "hq-to-mount",
+                  "label": "HQ→マウント",
+                  "emoji": "🔄",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "HQポジションからマウントへ移行。(HQ to mount)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "hq-submissions",
+                  "label": "HQポジションサブミッション",
+                  "emoji": "🎯",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "HQポジションからのサブミッション。(Submissions from HQ position)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "mount",
+          "label": "マウント",
+          "emoji": "🦁",
+          "prob": 65,
+          "priority": 4,
+          "desc": "相手の上に乗るポジション。最高の支配ポジションの一つ。(Mount: sitting on opponent's torso, high control position)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "cross-choke-mount",
+              "label": "クロスチョーク（マウント）",
+              "emoji": "✂️",
+              "prob": 50,
+              "priority": 4,
+              "desc": "マウントからの十字絞め。最も基本的なマウントサブミッション。(Cross choke from mount: basic mounted choke)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "cross-choke-overhook-grip",
+                  "label": "オーバーフックグリップ",
+                  "emoji": "✋",
+                  "prob": 50,
+                  "priority": 4,
+                  "desc": "両手とも上から入れるクロスチョークグリップ。(Cross choke with overhook grip: both thumbs inside)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "cross-choke-underhook-grip",
+                  "label": "アンダーフックグリップ",
+                  "emoji": "🤚",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "深い方の手を下から入れるグリップ。(Cross choke with underhook grip: deep hand from below)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "cross-choke-finish-detail",
+                  "label": "クロスチョークフィニッシュ詳細",
+                  "emoji": "🏁",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "肘を脇に引き付けながら前傾して絞める。(Finish: pull elbows to sides, lean forward)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "ezekiel-mount",
+              "label": "エゼキエル（マウント）",
+              "emoji": "🤜",
+              "prob": 40,
+              "priority": 3,
+              "desc": "マウントからのエゼキエルチョーク。道着の袖を使う。(Ezekiel choke from mount: sleeve choke)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "armbar-mount",
+              "label": "腕十字（マウント）",
+              "emoji": "💪",
+              "prob": 45,
+              "priority": 4,
+              "desc": "マウントからの腕十字。Sマウントを経由する。(Armbar from mount: transition through S-mount)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "s-mount",
+                  "label": "Sマウント",
+                  "emoji": "S",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "腕十字前のトランジションポジション。(S-mount: transitional position before armbar)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "armbar-mount-finish",
+                  "label": "マウント腕十字フィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 50,
+                  "priority": 3,
+                  "desc": "Sマウントから足を振り越して腕十字に移行。(Swing leg over to armbar from S-mount)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "triangle-mount",
+              "label": "三角絞め（マウント）",
+              "emoji": "△",
+              "prob": 35,
+              "priority": 3,
+              "desc": "マウントから三角絞めへの移行。(Triangle choke from mount)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "rnc-from-mount",
+              "label": "マウント→RNC",
+              "emoji": "🤼",
+              "prob": 40,
+              "priority": 3,
+              "desc": "マウントからバックに回りRNCを狙う。(Mount to rear naked choke transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "americana-mount",
+              "label": "アメリカーナ（マウント）",
+              "emoji": "🇺🇸",
+              "prob": 50,
+              "priority": 4,
+              "desc": "マウントからのアメリカーナ（肩固め）。初心者に最重要。(Americana from mount: shoulder lock, beginner essential)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "americana-mount-setup",
+                  "label": "アメリカーナセットアップ",
+                  "emoji": "🔧",
+                  "prob": 55,
+                  "priority": 4,
+                  "desc": "相手の腕を地面に押し付け、ナイフエッジで固定。(Pin arm down, use knife edge of hand to hold)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "americana-mount-finish",
+                  "label": "アメリカーナフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 60,
+                  "priority": 4,
+                  "desc": "肘を肩より低く保ちながら円を描くように引き上げる。(Finish: keep elbow below shoulder, draw circle upward)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "gift-wrap-mount",
+              "label": "ギフトラップ（マウント）",
+              "emoji": "🎁",
+              "prob": 40,
+              "priority": 3,
+              "desc": "相手の腕を後頭部に持っていくコントロール技術。(Gift wrap from mount: control opponent's arm behind head)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "gift-wrap-rnc",
+                  "label": "ギフトラップ→RNC",
+                  "emoji": "🔄",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "ギフトラップからバックに回りRNCを狙う。(Gift wrap to RNC)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "gift-wrap-armbar",
+                  "label": "ギフトラップ→腕十字",
+                  "emoji": "🔄",
+                  "prob": 35,
+                  "priority": 3,
+                  "desc": "ギフトラップから腕十字に移行。(Gift wrap to armbar)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "side-control",
+          "label": "サイドコントロール",
+          "emoji": "📐",
+          "prob": 60,
+          "priority": 4,
+          "desc": "相手の横に体を当てるポジション。ガードパス後のポジション。(Side control: across opponent's torso after guard pass)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "americana-side",
+              "label": "アメリカーナ（サイドコントロール）",
+              "emoji": "🇺🇸",
+              "prob": 55,
+              "priority": 4,
+              "desc": "サイドコントロールからのアメリカーナ（肩固め）。(Americana from side control)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "americana-side-setup",
+                  "label": "アメリカーナセットアップ（サイド）",
+                  "emoji": "🔧",
+                  "prob": 60,
+                  "priority": 4,
+                  "desc": "相手の腕を地面に押し付けてキーロックグリップ。(Pin arm, figure-4 grip)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "kimura-side",
+              "label": "キムラ（サイドコントロール）",
+              "emoji": "🔑",
+              "prob": 50,
+              "priority": 4,
+              "desc": "サイドコントロールからのキムラ。多くの連携がある。(Kimura from side control)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "kimura-side-setup",
+                  "label": "キムラセットアップ（サイド）",
+                  "emoji": "🔧",
+                  "prob": 55,
+                  "priority": 4,
+                  "desc": "相手の近い腕にキムラグリップを確立。(Establish kimura grip on near arm)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "kimura-side-to-back",
+                  "label": "キムラ→バックテイク",
+                  "emoji": "🔙",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "キムラグリップを維持してバックに回る。(Back take using kimura grip)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "kimura-side-finish",
+                  "label": "キムラフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "前腕を体に密着させて肘を天井に向ける。(Finish: forearm to body, elbow to ceiling)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "armbar-side",
+              "label": "腕十字（サイドコントロール）",
+              "emoji": "💪",
+              "prob": 45,
+              "priority": 3,
+              "desc": "サイドコントロールからの腕十字。(Armbar from side control)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "north-south-choke",
+              "label": "ノースサウスチョーク",
+              "emoji": "⬆️⬇️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "頭と足が逆向きのポジションからの絞め技。(North-south choke: from north-south position)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "ns-choke-setup",
+                  "label": "NSチョークセットアップ",
+                  "emoji": "🔧",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ノースサウスポジションに移行して腕を首の下に入れる。(Transition to NS, thread arm under neck)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "baseball-bat-choke",
+              "label": "ベースボールバットチョーク",
+              "emoji": "⚾",
+              "prob": 35,
+              "priority": 3,
+              "desc": "野球のバットを持つようなグリップで絞める。道着必要。(Baseball bat choke: gi choke with bat grip)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "side-to-back-take",
+              "label": "サイド→バックテイク",
+              "emoji": "🔙",
+              "prob": 45,
+              "priority": 4,
+              "desc": "サイドコントロールからバックテイク。(Back take from side control)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "knee-on-belly",
+              "label": "ニーオンベリー移行",
+              "emoji": "🦵",
+              "prob": 55,
+              "priority": 3,
+              "desc": "サイドコントロールからニーオンベリーへ移行。(Knee on belly from side control)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "knee-on-belly-submissions",
+                  "label": "ニーオンベリーサブミッション",
+                  "emoji": "🎯",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "ニーオンベリーからのサブミッション。(Submissions from knee on belly)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "side-to-mount",
+              "label": "サイド→マウント移行",
+              "emoji": "🦁",
+              "prob": 50,
+              "priority": 4,
+              "desc": "サイドコントロールからマウントへの移行。(Side control to mount transition)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "back-control",
+          "label": "バックコントロール",
+          "emoji": "🔙",
+          "prob": 70,
+          "priority": 4,
+          "desc": "相手の後ろからのコントロール。最高得点ポジション。(Back control: behind opponent, highest scoring position)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "seatbelt-grip",
+              "label": "シートベルトグリップ維持",
+              "emoji": "🪑",
+              "prob": 65,
+              "priority": 4,
+              "desc": "バックコントロールの基本グリップ。一方の腕が上、一方が下。(Seatbelt grip: one arm over, one arm under)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "seatbelt-detail",
+                  "label": "シートベルト詳細",
+                  "emoji": "🔧",
+                  "prob": 70,
+                  "priority": 4,
+                  "desc": "手を組みフックを維持。相手の動きに合わせてポジションを調整。(Interlock hands, maintain hooks, adjust to opponent's movement)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "rnc",
+              "label": "裸絞め（RNC）",
+              "emoji": "🤼",
+              "prob": 65,
+              "priority": 4,
+              "desc": "腕で相手の首を絞める。ノーギの最重要サブミッション。(Rear naked choke: arm around neck from behind)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "rnc-setup",
+                  "label": "RNCセットアップ",
+                  "emoji": "🔧",
+                  "prob": 70,
+                  "priority": 4,
+                  "desc": "チョークハンドを首の下に通し、もう一方の腕で押す。(Setup: thread choking hand under chin, other arm pushes)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "rnc-finish",
+                  "label": "RNCフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 70,
+                  "priority": 4,
+                  "desc": "肘を内側に引き、手を二の腕に乗せてスクイーズ。(Finish: elbow in, hand on bicep, squeeze)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "rnc-chin-defense",
+                  "label": "RNCアゴ防御対策",
+                  "emoji": "🛡️",
+                  "prob": 55,
+                  "priority": 3,
+                  "desc": "相手がアゴを引いた時の対処。腕を顎の下に通す。(Counter chin defense: get arm under chin)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "bow-and-arrow",
+              "label": "ボウ＆アロー",
+              "emoji": "🏹",
+              "prob": 55,
+              "priority": 4,
+              "desc": "道着の襟と足をコントロールして絞める。道着の最強絞め技。(Bow and arrow choke: gi choke using collar and leg)",
+              "recommended": true,
+              "warning": false,
+              "children": [
+                {
+                  "id": "bow-arrow-setup",
+                  "label": "ボウ＆アロー セットアップ",
+                  "emoji": "🔧",
+                  "prob": 60,
+                  "priority": 4,
+                  "desc": "深い襟グリップと相手の膝を取り、体を引き離す。(Deep collar grip + knee grip, extend away from opponent)",
+                  "recommended": true,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "bow-arrow-finish",
+                  "label": "ボウ＆アローフィニッシュ",
+                  "emoji": "🏁",
+                  "prob": 65,
+                  "priority": 3,
+                  "desc": "弓を引くように体を後方に伸ばして絞める。(Finish: extend body backward like drawing a bow)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "armbar-back",
+              "label": "腕十字（バック）",
+              "emoji": "💪",
+              "prob": 40,
+              "priority": 3,
+              "desc": "バックコントロールからの腕十字。(Armbar from back control)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "collar-chokes-back",
+              "label": "カラー系チョーク（バック）",
+              "emoji": "👔",
+              "prob": 50,
+              "priority": 3,
+              "desc": "バックコントロールからの道着襟を使った絞め技。(Collar chokes from back control)",
+              "recommended": false,
+              "warning": false,
+              "children": [
+                {
+                  "id": "cross-collar-back",
+                  "label": "クロスカラーバック",
+                  "emoji": "✂️",
+                  "prob": 45,
+                  "priority": 3,
+                  "desc": "バックからクロスカラーチョーク。(Cross collar choke from back)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                },
+                {
+                  "id": "loop-choke-back",
+                  "label": "ループチョーク（バック）",
+                  "emoji": "🔁",
+                  "prob": 40,
+                  "priority": 3,
+                  "desc": "バックからループチョーク。(Loop choke from back control)",
+                  "recommended": false,
+                  "warning": false,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "triangle-from-back",
+              "label": "バックから三角",
+              "emoji": "△",
+              "prob": 35,
+              "priority": 3,
+              "desc": "バックコントロールから三角絞めへ移行。(Triangle choke from back control)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "body-triangle",
+              "label": "ボディトライアングル",
+              "emoji": "△",
+              "prob": 55,
+              "priority": 3,
+              "desc": "足で相手の胴体を三角に固定する。(Body triangle: legs around opponent's torso)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "takedown",
+      "label": "テイクダウン",
+      "emoji": "⬇️",
+      "prob": 55,
+      "priority": 3,
+      "desc": "立った状態から相手を倒してポジションを取る。(Takedowns: bringing opponent to ground from standing)",
+      "recommended": false,
+      "warning": false,
+      "children": [
+        {
+          "id": "double-leg",
+          "label": "ダブルレッグ",
+          "emoji": "🦵🦵",
+          "prob": 50,
+          "priority": 4,
+          "desc": "両足を取るテイクダウン。レスリングの基本。(Double leg takedown: grab both legs)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "double-leg-basic",
+              "label": "ダブルレッグ基本",
+              "emoji": "🔧",
+              "prob": 55,
+              "priority": 4,
+              "desc": "相手の腰より低く入り、両足を取り肩を当てて倒す。(Level change, shoot for both legs, drive shoulder into hip)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "double-leg-finish-options",
+              "label": "ダブルレッグフィニッシュ選択",
+              "emoji": "🏁",
+              "prob": 50,
+              "priority": 3,
+              "desc": "持ち上げる・払い足・前に押し倒すなど状況に応じた選択。(Finish options: lift, trip, or drive forward)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "double-leg-blast-double",
+              "label": "ブラストダブル",
+              "emoji": "💥",
+              "prob": 45,
+              "priority": 3,
+              "desc": "肩で押し込みながらダブルレッグ。(Blast double: explosive drive with shoulder)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "single-leg",
+          "label": "シングルレッグ",
+          "emoji": "🦵",
+          "prob": 55,
+          "priority": 4,
+          "desc": "片足を取るテイクダウン。(Single leg takedown: grab one leg)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "single-leg-high-crotch",
+              "label": "ハイクロッチシングルレッグ",
+              "emoji": "🔧",
+              "prob": 55,
+              "priority": 3,
+              "desc": "高い位置でシングルレッグを取る。(High crotch single leg)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "single-leg-outside",
+              "label": "アウトサイドシングルレッグ",
+              "emoji": "🔧",
+              "prob": 50,
+              "priority": 3,
+              "desc": "外側からシングルレッグ。(Outside single leg)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "single-to-double",
+              "label": "シングル→ダブル",
+              "emoji": "🔄",
+              "prob": 50,
+              "priority": 3,
+              "desc": "シングルレッグからダブルレッグへ移行。(Single to double leg transition)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "arm-drag-td",
+          "label": "アームドラッグ→テイクダウン",
+          "emoji": "🎯",
+          "prob": 50,
+          "priority": 3,
+          "desc": "アームドラッグからバックテイクかテイクダウンへ。(Arm drag to takedown or back take)",
+          "recommended": false,
+          "warning": false,
+          "children": []
+        },
+        {
+          "id": "snap-down-fhl",
+          "label": "スナップダウン→FHL",
+          "emoji": "⬇️",
+          "prob": 45,
+          "priority": 3,
+          "desc": "相手の首を引き下げてフロントヘッドロックへ。(Snap down to front headlock)",
+          "recommended": false,
+          "warning": false,
+          "children": []
+        },
+        {
+          "id": "judo-throws",
+          "label": "柔道投げ",
+          "emoji": "🥋",
+          "prob": 45,
+          "priority": 3,
+          "desc": "柔道由来の投げ技。道着試合で有効。(Judo throws: effective in gi matches)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "osoto-gari",
+              "label": "大外刈り",
+              "emoji": "🦵",
+              "prob": 50,
+              "priority": 3,
+              "desc": "外側から相手の足を刈る。(Osoto gari: outside leg reap)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ouchi-gari",
+              "label": "大内刈り",
+              "emoji": "🦵",
+              "prob": 50,
+              "priority": 3,
+              "desc": "内側から相手の足を刈る。(Ouchi gari: inside leg reap)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "seoi-nage",
+              "label": "背負い投げ",
+              "emoji": "🔄",
+              "prob": 40,
+              "priority": 3,
+              "desc": "背中に相手を担いで投げる。(Seoi nage: shoulder throw)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ippon-seoi-nage",
+              "label": "一本背負い投げ",
+              "emoji": "🔄",
+              "prob": 35,
+              "priority": 3,
+              "desc": "片手を使った背負い投げ。(Ippon seoi nage: one-arm shoulder throw)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "kouchi-gari",
+              "label": "小内刈り",
+              "emoji": "🦵",
+              "prob": 55,
+              "priority": 3,
+              "desc": "小さな内側足刈り。スラップダウンとも組み合わせる。(Kouchi gari: small inside trip)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "tai-otoshi",
+              "label": "体落とし",
+              "emoji": "⬇️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "体を落として相手を投げる。(Tai otoshi: body drop)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "tomoe-nage-td",
+              "label": "巴投げ（テイクダウン）",
+              "emoji": "🔄",
+              "prob": 35,
+              "priority": 2,
+              "desc": "足を腹部に当てて後方に投げる。(Tomoe nage: circle throw)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leg-lock-system",
+      "label": "レッグロックシステム",
+      "emoji": "🦵",
+      "prob": 45,
+      "priority": 3,
+      "desc": "足関節技の体系。現代BJJで最も急成長している分野。(Leg lock system: fastest growing area of modern BJJ)",
+      "recommended": false,
+      "warning": false,
+      "children": [
+        {
+          "id": "ashi-garami-entries",
+          "label": "アシガラミエントリー",
+          "emoji": "🔧",
+          "prob": 50,
+          "priority": 3,
+          "desc": "様々なポジションからアシガラミへのエントリー。(Ashi garami entries from various positions)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "entry-from-guard",
+              "label": "ガードからのエントリー",
+              "emoji": "🔧",
+              "prob": 55,
+              "priority": 3,
+              "desc": "ガードポジションからアシガラミへ入る。(Entry to ashi garami from guard)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "entry-from-pass",
+              "label": "パスからのエントリー",
+              "emoji": "🔧",
+              "prob": 45,
+              "priority": 3,
+              "desc": "パスの動きの中でアシガラミへ入る。(Entry during guard pass attempt)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "entry-from-top",
+              "label": "トップからのエントリー",
+              "emoji": "🔧",
+              "prob": 40,
+              "priority": 3,
+              "desc": "トップポジションからレッグロックシステムへ。(Entry from top position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "inside-heel-system",
+          "label": "インサイドヒールフックシステム",
+          "emoji": "🦶",
+          "prob": 45,
+          "priority": 3,
+          "desc": "インサイドヒールフックの完全システム。(Complete inside heel hook system)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "ihh-mechanics",
+              "label": "IHHメカニクス",
+              "emoji": "⚙️",
+              "prob": 50,
+              "priority": 3,
+              "desc": "踵を腋に挟み、肘を体の中心線上に。全身で回転。(Mechanics: heel in armpit, elbow on centerline, rotate with whole body)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "ihh-entry-slx",
+              "label": "IHHエントリー（SLX）",
+              "emoji": "🔧",
+              "prob": 50,
+              "priority": 3,
+              "desc": "シングルレッグXからのインサイドヒールフックエントリー。(IHH entry from single leg X)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "ihh-entry-411",
+              "label": "IHHエントリー（411）",
+              "emoji": "🔧",
+              "prob": 55,
+              "priority": 3,
+              "desc": "411/サドルポジションからのエントリー。(IHH entry from 411/saddle)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "outside-heel-system",
+          "label": "アウトサイドヒールフックシステム",
+          "emoji": "🦶",
+          "prob": 35,
+          "priority": 2,
+          "desc": "アウトサイドヒールフックの完全システム。高難度。(Complete outside heel hook system. Advanced.)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "ohh-mechanics",
+              "label": "OHHメカニクス",
+              "emoji": "⚙️",
+              "prob": 40,
+              "priority": 2,
+              "desc": "外側に向けて踵を押す。膝と足首の両方を攻める。(Mechanics: push heel outward, attacks knee and ankle)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            },
+            {
+              "id": "ohh-70-30",
+              "label": "OHH 70/30ポジション",
+              "emoji": "🔧",
+              "prob": 40,
+              "priority": 2,
+              "desc": "70/30（外ヒール用のアシガラミ）ポジション。(70/30 position for outside heel hook)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "knee-bar-system",
+          "label": "ニーバーシステム",
+          "emoji": "🦵",
+          "prob": 35,
+          "priority": 2,
+          "desc": "膝関節を伸ばすことで極める技。(Knee bar: hyperextend knee joint)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "knee-bar-top",
+              "label": "トップからのニーバー",
+              "emoji": "🦵",
+              "prob": 40,
+              "priority": 2,
+              "desc": "トップポジションからニーバーへ移行。(Knee bar entry from top position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "knee-bar-guard",
+              "label": "ガードからのニーバー",
+              "emoji": "🦵",
+              "prob": 35,
+              "priority": 2,
+              "desc": "ガードからニーバーへ移行。(Knee bar from guard position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "toehold-system",
+          "label": "トーホールドシステム",
+          "emoji": "🦶",
+          "prob": 40,
+          "priority": 3,
+          "desc": "足首と膝を同時に極めるフットロック。(Toehold: foot lock attacking ankle and knee)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "toehold-mechanics",
+              "label": "トーホールドメカニクス",
+              "emoji": "⚙️",
+              "prob": 45,
+              "priority": 3,
+              "desc": "つま先を取り、手首を外旋して足首を極める。(Mechanics: grab toes, rotate wrist outward)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "toehold-from-top",
+              "label": "トップからトーホールド",
+              "emoji": "🔧",
+              "prob": 40,
+              "priority": 3,
+              "desc": "トップポジションからトーホールドへ。(Toehold from top position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "calf-slicer-system",
+          "label": "カーフスライサーシステム",
+          "emoji": "🦵",
+          "prob": 30,
+          "priority": 2,
+          "desc": "ふくらはぎを切るような圧縮関節技。(Calf slicer: compression lock on calf)",
+          "recommended": false,
+          "warning": true,
+          "children": [
+            {
+              "id": "calf-slicer-mechanics",
+              "label": "カーフスライサーメカニクス",
+              "emoji": "⚙️",
+              "prob": 35,
+              "priority": 2,
+              "desc": "ひざ裏に自分の膝を当て圧縮。(Mechanics: knee behind opponent's knee, compress)",
+              "recommended": false,
+              "warning": true,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "ibjjf-leg-lock-rules",
+          "label": "IBJJFレッグロック規定",
+          "emoji": "📋",
+          "prob": 100,
+          "priority": 4,
+          "desc": "青帯: ストレートフットロックのみ / 紫帯: ニーバー、トーホールド追加 / 茶・黒: ヒールフック追加。(IBJJF: White/Blue=straight foot lock only, Purple=knee bar+toehold, Brown/Black=heel hooks)",
+          "recommended": false,
+          "warning": true,
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "escapes",
+      "label": "エスケープ",
+      "emoji": "🚪",
+      "prob": 45,
+      "priority": 4,
+      "desc": "下のポジションからの脱出技術。サバイバルの基本。(Escapes: getting out of inferior positions. Survival basics.)",
+      "recommended": true,
+      "warning": false,
+      "children": [
+        {
+          "id": "mount-escape",
+          "label": "マウントエスケープ",
+          "emoji": "🚪",
+          "prob": 40,
+          "priority": 4,
+          "desc": "マウントから脱出する基本技術。(Mount escapes: basic escape techniques)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "bridge-roll",
+              "label": "ブリッジ＆ロール（ウンパ）",
+              "emoji": "🌉",
+              "prob": 45,
+              "priority": 4,
+              "desc": "橋をかけて相手を横に転がす。最も基本的なマウント脱出。(Bridge and roll/upa: bridge and turn opponent over)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "elbow-knee-escape",
+              "label": "エルボーニーエスケープ",
+              "emoji": "🦵",
+              "prob": 50,
+              "priority": 4,
+              "desc": "肘と膝を使ってハーフガードに逃げる。(Elbow-knee escape: escape to half guard)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "trap-and-roll",
+              "label": "トラップ＆ロール",
+              "emoji": "🔄",
+              "prob": 45,
+              "priority": 3,
+              "desc": "相手の腕と足をトラップしてロール。(Trap arm and leg, then bridge and roll)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "side-control-escape",
+          "label": "サイドコントロールエスケープ",
+          "emoji": "🚪",
+          "prob": 40,
+          "priority": 4,
+          "desc": "サイドコントロールからの脱出。(Side control escape techniques)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "side-escape-frame",
+              "label": "フレームを作る",
+              "emoji": "🖼️",
+              "prob": 45,
+              "priority": 4,
+              "desc": "肘と膝でフレームを作りスペースを確保。(Create frames with elbow and knee)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "side-escape-hip-escape",
+              "label": "ヒップエスケープ",
+              "emoji": "🦋",
+              "prob": 50,
+              "priority": 4,
+              "desc": "腰を逃がしてガードリカバリーを狙う。(Hip escape/shrimp to recover guard)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "side-escape-to-knees",
+              "label": "四つん這いへの脱出",
+              "emoji": "🐾",
+              "prob": 40,
+              "priority": 3,
+              "desc": "四つん這いに起き上がって状況をリセット。(Come to knees to reset position)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "back-escape",
+          "label": "バックエスケープ",
+          "emoji": "🚪",
+          "prob": 35,
+          "priority": 4,
+          "desc": "バックコントロールからの脱出。最も困難な脱出。(Back escape: hardest escape in BJJ)",
+          "recommended": true,
+          "warning": false,
+          "children": [
+            {
+              "id": "back-escape-shoulder-roll",
+              "label": "ショルダーロールバックエスケープ",
+              "emoji": "🔄",
+              "prob": 40,
+              "priority": 4,
+              "desc": "肩を使って相手の前に出る脱出。(Shoulder roll escape: roll to face opponent)",
+              "recommended": true,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "back-escape-seat-belt-break",
+              "label": "シートベルトグリップ崩し",
+              "emoji": "💪",
+              "prob": 45,
+              "priority": 3,
+              "desc": "シートベルトグリップを外す方法。(Break seatbelt grip to begin escape)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "back-escape-prevent-hooks",
+              "label": "フック防御",
+              "emoji": "🛡️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "バックフックを外す方法。足で相手の足を外に押し出す。(Remove back hooks: push feet outward)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "triangle-escape",
+          "label": "三角絞めエスケープ",
+          "emoji": "🚪",
+          "prob": 35,
+          "priority": 3,
+          "desc": "三角絞めからの脱出。(Triangle choke escape)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "triangle-posture-escape",
+              "label": "姿勢を立てて脱出",
+              "emoji": "⬆️",
+              "prob": 40,
+              "priority": 3,
+              "desc": "姿勢を立てて三角を外す。スタッキングと組み合わせる。(Posture up to break triangle, stack opponent)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "triangle-stack-pass",
+              "label": "スタックで三角脱出",
+              "emoji": "📦",
+              "prob": 45,
+              "priority": 3,
+              "desc": "相手を折り畳んでプレッシャーをかけて三角を外す。(Stack opponent to break triangle grip)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "armbar-escape",
+          "label": "腕十字エスケープ",
+          "emoji": "🚪",
+          "prob": 35,
+          "priority": 3,
+          "desc": "腕十字からの脱出。時間が命。(Armbar escape: time is critical)",
+          "recommended": false,
+          "warning": false,
+          "children": [
+            {
+              "id": "armbar-stack-escape",
+              "label": "スタック腕十字エスケープ",
+              "emoji": "📦",
+              "prob": 40,
+              "priority": 3,
+              "desc": "体重をかけて相手を折り畳み腕十字を外す。(Stack to escape armbar)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            },
+            {
+              "id": "armbar-hitchhiker",
+              "label": "ヒッチハイカーエスケープ",
+              "emoji": "🤙",
+              "prob": 35,
+              "priority": 3,
+              "desc": "親指を体に向け回転して腕十字から脱出。(Hitchhiker escape: turn thumb to body, rotate out)",
+              "recommended": false,
+              "warning": false,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

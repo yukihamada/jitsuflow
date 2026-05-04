@@ -71,7 +71,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               margin: const EdgeInsets.only(right: 16),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -346,9 +346,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -628,11 +628,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: _getProfitMarginColor(revenue.profitMargin)
-                    .withOpacity(0.1),
+                    .withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: _getProfitMarginColor(revenue.profitMargin)
-                      .withOpacity(0.3),
+                      .withValues(alpha: 0.3),
                 ),
               ),
               child: Row(

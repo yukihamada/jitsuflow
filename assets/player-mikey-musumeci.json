@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "name": "マイキー・ムスメシ スタイル",
+    "description": "ギ競技はベリンボロとデラヒーバで世界三冠。ノーギはサドルからインサイドヒールフックで現ONE世界王者。二つの顔を持つ現代最高の技術系グラップラー。",
+    "principles": [
+      "【ノーギ】足関節は入口が命。常にサドルポジションを目指す",
+      "【ノーギ】ヒールフックは膝を外に向けて回転させる。引っ張るだけでは取れない",
+      "【ギ】ベリンボロは背中をマットにつけてくるくる回るのではなく、腰の回転を使って相手の背後に回り込む",
+      "【ギ】デラヒーバからシングルレッグXへの移行を常に狙う",
+      "相手の膝のラインを制御する。膝が外を向けばインサイドヒール完成",
+      "レッグロックを嫌がる相手にはベリンボロとバックテイクで対応する",
+      "50/50は引き分けではない。攻め続ける意志を持った者が制する"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "引き込みでシングルレッグXかデラヒーバへ" },
+    { "id": "de-la-riva", "name": "デラヒーバ", "type": "position", "_type": "", "description": "ギ競技のメインガード。ベリンボロとシングルレッグXへの入口" },
+    { "id": "spider-guard", "name": "スパイダーガード", "type": "position", "_type": "", "description": "ギ競技。スパイダーからデラヒーバへの移行が鍵" },
+    { "id": "berimbolo", "name": "ベリンボロ体勢", "type": "position", "_type": "*", "description": "マイキーのギ競技の代名詞。デラヒーバから逆さになって相手の背後に回り込む" },
+    { "id": "half-guard", "name": "ハーフガード", "type": "position", "_type": "", "description": "ニーシールドからシングルレッグXかディープハーフへ移行" },
+    { "id": "deep-half", "name": "ディープハーフ", "type": "position", "_type": "", "description": "相手の足の下に潜り込んでスイープかサドルへ" },
+    { "id": "x-guard", "name": "Xガード", "type": "position", "_type": "", "description": "シングルレッグXへの移行とスイープの両方を狙う" },
+    { "id": "single-leg-x", "name": "シングルレッグX（アシガラミ）", "type": "position", "_type": "", "description": "サドルへの最重要入口。ここから全てが始まる" },
+    { "id": "saddle", "name": "サドル（インサイドサンカ）", "type": "position", "_type": "*", "description": "最強ポジション。インサイドヒールで確実にフィニッシュ" },
+    { "id": "fifty-fifty", "name": "50/50", "type": "position", "_type": "", "description": "インサイドヒールとスイープのどちらでも仕留められる" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "ベリンボロ後の最終目標。RNCかボウアンドアローで仕留める" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "de-la-riva", "action": "引き込み → デラヒーバ", "description": "相手の外側の足に足をかけてデラヒーバをセット" },
+    { "id": "t1", "from": "standing", "to": "single-leg-x", "action": "引き込み → シングルレッグX", "description": "相手の片足を抱えてシングルレッグXに即エントリー" },
+    { "id": "t2", "from": "de-la-riva", "to": "berimbolo", "action": "ベリンボロエントリー", "description": "デラヒーバで相手の体重を外側に崩し、腰の回転で逆さになって背後へ回り込む" },
+    { "id": "t3", "from": "de-la-riva", "to": "single-leg-x", "action": "シングルレッグXへ移行", "description": "デラヒーバの足の位置を変えてシングルレッグXに切り替え" },
+    { "id": "t4", "from": "berimbolo", "to": "back-control", "action": "バックテイク", "description": "ベリンボロで相手の背後に回り込んでシートベルトを確立" },
+    { "id": "t5", "from": "spider-guard", "to": "de-la-riva", "action": "スパイダーからデラヒーバへ", "description": "片足のスパイダーフックをデラヒーバフックに変換" },
+    { "id": "t6", "from": "half-guard", "to": "single-leg-x", "action": "シングルレッグXへ", "description": "ニーシールドで作ったスペースで足の位置を変えてシングルレッグXへ" },
+    { "id": "t7", "from": "half-guard", "to": "deep-half", "action": "ディープハーフへ潜る", "description": "相手の股下に頭を入れてディープハーフポジションへ" },
+    { "id": "t8", "from": "x-guard", "to": "single-leg-x", "action": "片足に絞ってシングルレッグX", "description": "Xガードから片足のコントロールに集中してシングルレッグXへ" },
+    { "id": "t9", "from": "single-leg-x", "to": "saddle", "action": "サドルへ移行", "description": "外足を外してインサイドに入り込みサドルを確立" },
+    { "id": "t10", "from": "saddle", "to": "fifty-fifty", "action": "相手がサドルを外したら50/50へ", "description": "サドルを嫌がって足を引いた場合に50/50で対応" },
+    { "id": "t11", "from": "deep-half", "to": "saddle", "action": "足を外してサドルへ", "description": "ディープハーフから相手の脚を絡め直してサドルに移行" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "インサイドヒールフック（マイキーロック）", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle"], "description": "かかとを脇の下ではなく首の付け根（ネックピット）に当てる独自変形。一撃必殺のマイキーロック" },
+    { "id": "s1", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "ベリンボロ後にバックを取ったらRNCで仕留める。ONE世界選手権での決め手" },
+    { "id": "s2", "name": "弓矢絞め（ボウアンドアロー）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "ギ競技。ベリンボロからバックを取った後の主要フィニッシュ" },
+    { "id": "s3", "name": "アウトサイドヒールフック", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["saddle", "fifty-fifty"], "description": "インサイドを防がれたら外ヒールへ。方向を変えて同じ動作で絞める" },
+    { "id": "s4", "name": "トーホールド", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["single-leg-x", "x-guard"], "description": "足首を捻って膝に圧をかける。ヒールへの移行ツールにもなる" },
+    { "id": "s5", "name": "Xガードスイープ", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["x-guard"], "description": "両足のXを伸ばして前方にスイープ。トップを取ってパスへ" },
+    { "id": "s6", "name": "ディープハーフスイープ", "type": "sweep", "priority": "高", "priorityLevel": 2, "from": ["deep-half"], "description": "相手の体重を外してひっくり返す。サドルへの入口にもなる" },
+    { "id": "s7", "name": "アキレス腱固め", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["single-leg-x", "saddle"], "description": "ヒールを嫌がって足を伸ばした瞬間にアキレスへ切り替え" }
+  ],
+  "defenseNotes": [
+    { "position": "saddle", "principle": "相手が膝を内向きに守り始めたらアウトサイドヒールへ即切り替え" },
+    { "position": "single-leg-x", "principle": "相手が足を引いてシングルレッグXを外そうとしたらサドルか50/50へ素早く移行" },
+    { "position": "berimbolo", "principle": "ベリンボロ中に相手が圧をかけてきたら素早くシングルレッグXかデラヒーバに戻る" },
+    { "position": "fifty-fifty", "principle": "焦らない。先にヒールグリップを確立した方が勝つ" }
+  ],
+  "notUsed": [
+    { "technique": "クローズドガードからの攻撃", "reason": "マイキーはオープンガードシステム（デラヒーバ・Xガード）に特化" },
+    { "technique": "腕十字・三角（メイン武器として）", "reason": "ノーギでは足関節システムに集中。上半身の技は補助的" }
+  ]
+}

@@ -70,7 +70,7 @@ class InstructorRatingCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -82,10 +82,10 @@ class InstructorRatingCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: _getRatingColor(overallRating).withOpacity(0.1),
+                color: _getRatingColor(overallRating).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                  color: _getRatingColor(overallRating).withOpacity(0.3),
+                  color: _getRatingColor(overallRating).withValues(alpha: 0.3),
                 ),
               ),
               child: Row(

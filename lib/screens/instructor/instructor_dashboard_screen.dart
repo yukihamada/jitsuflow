@@ -6,7 +6,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../models/user.dart';
 import '../../widgets/common/loading_widget.dart';
 import '../../widgets/instructor/instructor_stats_card.dart';
 import '../../widgets/instructor/instructor_schedule_card.dart';

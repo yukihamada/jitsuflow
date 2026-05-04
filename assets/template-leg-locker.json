@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "name": "レッグロッカーシステム（ノーギ）",
+    "description": "シングルレッグX・Kガード・Xガードからサドルポジションを確立し、インサイド/アウトサイドヒールフックでフィニッシュするノーギ特化システム。",
+    "principles": [
+      "足への入り口を常に意識する。立ち技でも座っても常にレッグエントリーを狙う",
+      "シングルレッグX（アシガラミ）がサドルへの最重要入口",
+      "サドルに入ったらインサイドヒール最優先。守られたらアウトサイドへ即切り替え",
+      "相手の膝のラインを制御する。膝が外を向けばヒール完成",
+      "プロネート（外旋）してからヒールを差す順番を必ず守る",
+      "50/50は引き分けではない。先にグリップを確立した方が勝つ",
+      "相手が足を引いてサドルを外そうとしたら50/50か逆方向のヒールへ素早く移行"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "引き込みかレッグドラッグから即シングルレッグXへ" },
+    { "id": "butterfly", "name": "バタフライガード", "type": "position", "_type": "", "description": "足フックからシングルレッグXへの入口。スイープとレッグエントリーの二択" },
+    { "id": "k-guard", "name": "Kガード", "type": "position", "_type": "*", "description": "外側から片足を抱えて内モモに脛を当てる。サドルへの最短ルート" },
+    { "id": "x-guard", "name": "Xガード", "type": "position", "_type": "", "description": "両足でX字に絡む。スイープとサドル移行の二択" },
+    { "id": "single-leg-x", "name": "シングルレッグX（アシガラミ）", "type": "position", "_type": "*", "description": "レッグロックシステムの中核。サドルへの最重要入口" },
+    { "id": "saddle", "name": "サドル（インサイドサンカ/411）", "type": "position", "_type": "*", "description": "最強ポジション。インサイドヒールで仕留める。守られたらアウトサイドへ" },
+    { "id": "fifty-fifty", "name": "50/50", "type": "position", "_type": "", "description": "サドルを外された時の移行先。先にヒールグリップを確立した方が勝つ" },
+    { "id": "top-position", "name": "トップポジション", "type": "position", "_type": "", "description": "スイープで上に乗った状態。次のレッグエントリーを探す" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "standing", "to": "single-leg-x", "action": "引き込み → シングルレッグX", "description": "引き込みながら相手の片足に絡みついてシングルレッグXへ直接エントリー" },
+    { "id": "t2", "from": "butterfly", "to": "single-leg-x", "action": "バタフライからシングルレッグXへ", "description": "バタフライの足フックを外してシングルレッグXに切り替え" },
+    { "id": "t3", "from": "butterfly", "to": "x-guard", "action": "Xガードへ移行", "description": "相手が体重をかけてきたらXガードに切り替え" },
+    { "id": "t4", "from": "x-guard", "to": "single-leg-x", "action": "片足に絞ってシングルレッグX", "description": "Xガードから片足のコントロールに集中してシングルレッグXへ" },
+    { "id": "t5", "from": "x-guard", "to": "top-position", "action": "Xガードスイープ", "description": "両足のXを伸ばして前方に崩してトップへ" },
+    { "id": "t6", "from": "k-guard", "to": "saddle", "action": "Kガード → サドル", "description": "内モモの脛を維持しながら体を回転させてサドルを確立" },
+    { "id": "t7", "from": "single-leg-x", "to": "saddle", "action": "サドルへ移行", "description": "外足を外してインサイドに入り込みサドルを確立" },
+    { "id": "t8", "from": "saddle", "to": "fifty-fifty", "action": "相手が外したら50/50へ", "description": "サドルを嫌がって足を引いた場合に50/50で対応" }
+  ],
+  "submissions": [
+    { "id": "inside-heel-hook", "name": "インサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle", "fifty-fifty"], "description": "膝を外に向けてかかとを脇に当て、腰を引きながら膝を外回転させる。タップが遅れがちなので注意" },
+    { "id": "outside-heel-hook", "name": "アウトサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle", "fifty-fifty", "single-leg-x"], "description": "インサイドを守られたら即アウトサイドへ。外側からかかとを取り脛を内側に締めながら回す。絶対にゆっくり" },
+    { "id": "kneebar", "name": "ニーバー", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["top-position", "k-guard"], "description": "膝関節を伸ばす方向に圧力。腕を膝に当てながら体重をかける" },
+    { "id": "toe-hold", "name": "トーホールド", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["single-leg-x", "x-guard"], "description": "足首を捻って膝に圧をかける。ヒールへの移行ツールとしても使える" },
+    { "id": "ankle-lock", "name": "ストレートフットロック（アキレス）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["single-leg-x", "fifty-fifty"], "description": "相手が足を伸ばした瞬間にアキレス腱へ切り替え。基本技" },
+    { "id": "sweep-to-top", "name": "スイープ → トップ", "type": "sweep", "priority": "中", "priorityLevel": 3, "from": ["x-guard", "butterfly"], "description": "上を取って次のレッグエントリーを探す" }
+  ],
+  "defenseNotes": [
+    { "position": "saddle", "principle": "相手が膝を内側に向けてインサイドを守り始めたらアウトサイドへ即切り替え" },
+    { "position": "single-leg-x", "principle": "相手が足を引いてシングルレッグXを外そうとしたらサドルか50/50へ素早く移行" },
+    { "position": "fifty-fifty", "principle": "焦らない。先にヒールグリップを確立することだけに集中する" },
+    { "position": "general", "principle": "足を絡めた状態で回転合戦になったら膝のラインを常に意識。膝が外を向いたら危険" }
+  ],
+  "notUsed": [
+    { "technique": "クローズドガードからの上半身攻撃", "reason": "このシステムは足関節特化。クローズドガードはレッグエントリーへの踏み台に過ぎない" },
+    { "technique": "プレッシャーパス", "reason": "スイープでトップを取った後は再度レッグエントリーを探す。長いトップゲームはしない" }
+  ]
+}

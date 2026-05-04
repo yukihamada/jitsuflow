@@ -282,7 +282,7 @@ class _TeamScreenState extends State<TeamScreen> {
                     width: 56,
                     height: 56,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1B5E20).withOpacity(0.1),
+                      color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: const Icon(
@@ -337,9 +337,9 @@ class _TeamScreenState extends State<TeamScreen> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: roleColor.withOpacity(0.1),
+                      color: roleColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: roleColor.withOpacity(0.5)),
+                      border: Border.all(color: roleColor.withValues(alpha: 0.5)),
                     ),
                     child: Text(
                       _getRoleLabel(team['role']),
@@ -507,7 +507,7 @@ class _TeamDetailViewState extends State<_TeamDetailView> {
                           width: 64,
                           height: 64,
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1B5E20).withOpacity(0.1),
+                            color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: const Icon(
@@ -642,7 +642,7 @@ class _TeamDetailViewState extends State<_TeamDetailView> {
                             ),
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: beltColor.withOpacity(0.2),
+                                backgroundColor: beltColor.withValues(alpha: 0.2),
                                 child: Text(
                                   (member['name'] ?? '?')[0],
                                   style: TextStyle(
@@ -673,8 +673,8 @@ class _TeamDetailViewState extends State<_TeamDetailView> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: member['role'] == 'admin'
-                                      ? Colors.orange.withOpacity(0.1)
-                                      : Colors.green.withOpacity(0.1),
+                                      ? Colors.orange.withValues(alpha: 0.1)
+                                      : Colors.green.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(

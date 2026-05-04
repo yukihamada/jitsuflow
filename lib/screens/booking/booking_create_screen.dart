@@ -89,7 +89,7 @@ class _BookingCreateScreenState extends State<BookingCreateScreen> {
                           ),
                           const SizedBox(height: 12),
                           DropdownButtonFormField<int>(
-                            value: _selectedDojoId,
+                            initialValue: _selectedDojoId,
                             decoration: const InputDecoration(
                               labelText: '道場を選択',
                               prefixIcon: Icon(Icons.location_on),
@@ -156,7 +156,7 @@ class _BookingCreateScreenState extends State<BookingCreateScreen> {
                           ),
                           const SizedBox(height: 12),
                           DropdownButtonFormField<String>(
-                            value: _selectedClassType,
+                            initialValue: _selectedClassType,
                             decoration: const InputDecoration(
                               labelText: 'クラスタイプを選択',
                               prefixIcon: Icon(Icons.sports_martial_arts),

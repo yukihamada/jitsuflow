@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "name": "紫帯 ガードシステム拡張",
+    "description": "紫帯レベルのマルチガードシステム。クローズドガードをベースに、スパイダー・ラッソー・Xガードを使い分けて相手に対応するアダプティブなスタイル。",
+    "principles": [
+      "相手のスタイルに合わせてガードを変える（アダプティブガード）",
+      "スイープとサブミッションをセットで狙う。片方だけでは抑制できない",
+      "ラッソーガードで相手の腕を封じながら攻撃の準備をする",
+      "Xガードでバランスを完全に崩してからスイープへ",
+      "バックテイクへのルートを常に意識する"
+    ]
+  },
+  "positions": [
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "*", "description": "ベースポジション。硬い相手にはクロスグリップシステムを使う" },
+    { "id": "spider-guard", "name": "スパイダーガード", "type": "position", "_type": "*", "description": "袖を取って両足で押し込む。腕をコントロールしながら攻撃" },
+    { "id": "lasso-guard", "name": "ラッソーガード", "type": "position", "_type": "*", "description": "片足を相手の腕に絡める。コントロール力が高い" },
+    { "id": "x-guard", "name": "Xガード", "type": "position", "_type": "*", "description": "相手の両足をコントロール。バランスを完全に崩せる" },
+    { "id": "de-la-riva", "name": "デラヒーバ", "type": "position", "_type": "", "description": "スタンディング相手への対応ガード" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "スイープ後の最優先目標" },
+    { "id": "mount-top", "name": "マウントトップ", "type": "position", "_type": "*", "description": "スイープ成功後のトップポジション" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "closed-guard", "to": "spider-guard", "action": "袖グリップへ切り替え", "description": "相手が開こうとしたら袖を取ってスパイダーへ" },
+    { "id": "t2", "from": "spider-guard", "to": "lasso-guard", "action": "片足をラッソーへ", "description": "スパイダーの片足を相手の腕に絡める" },
+    { "id": "t3", "from": "lasso-guard", "to": "x-guard", "action": "Xガードエントリー", "description": "相手を前に引き込みながらXガードへ" },
+    { "id": "t4", "from": "x-guard", "to": "back-control", "action": "バックテイク", "description": "Xガードで崩してから背後へ回り込む" },
+    { "id": "t5", "from": "de-la-riva", "to": "back-control", "action": "DLRバックテイク", "description": "デラヒーバから相手の後ろへ回る" }
+  ],
+  "submissions": [
+    { "id": "s1", "name": "スパイダーガードスイープ", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["spider-guard"], "description": "両足で押し込みながら相手のバランスを崩してスイープ" },
+    { "id": "s2", "name": "Xガードスイープ", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["x-guard"], "description": "完全に崩してから前か後ろに転がす" },
+    { "id": "s3", "name": "三角絞め", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["closed-guard", "spider-guard"], "description": "腕コントロール後に即三角。スパイダーからの三角は強力" },
+    { "id": "s4", "name": "オモプラッタ", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["spider-guard", "closed-guard"], "description": "三角を防がれたらオモプラッタへ。肩を極める" },
+    { "id": "s5", "name": "リアネイキッドチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "バックを取れたらRNCで仕留める" },
+    { "id": "s6", "name": "腕十字（スパイダーから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["spider-guard"], "description": "スパイダーで腕をコントロールしてから腕十字" },
+    { "id": "s7", "name": "インサイドヒールフック（入門）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["x-guard"], "description": "Xガードからレッグロックシステムへ入門" }
+  ],
+  "defenseNotes": [
+    { "position": "x-guard", "principle": "バランスを崩したらすぐスイープへ。待ちすぎると相手が回復する" },
+    { "position": "spider-guard", "principle": "腕を完全に制御してから攻撃する。中途半端なグリップは逆効果" }
+  ],
+  "notUsed": [
+    { "technique": "スクランブルでの足関節", "reason": "コントロールポジションを確立してからが基本" }
+  ]
+}

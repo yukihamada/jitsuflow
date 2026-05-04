@@ -5,9 +5,9 @@ default_platform(:ios)
 
 # App Store Connect API Key configuration
 def app_store_connect_api_key
-  key_id = "TYAN6W54AG"
-  issuer_id = "408133"
-  key_filepath = "./fastlane/authkey/AuthKey_TYAN6W54AG.p8"
+  key_id = "5KT46G9Y29"
+  issuer_id = "e0d22675-afb3-45f0-a821-06b477f44da0"
+  key_filepath = "./fastlane/authkey/AuthKey_5KT46G9Y29.p8"
   
   if File.exist?(key_filepath)
     return {
@@ -30,7 +30,7 @@ platform :ios do
       api_key: api_key,
       username: api_key ? nil : "mail@yukihamada.jp",
       app_identifier: "app.jitsuflow.jitsuflow",
-      app_name: "JitsuFlow",
+      app_name: "JiuFlow",
       language: "ja",
       sku: "JITSUFLOW_IOS",
       team_name: "Yuki Hamada"
@@ -92,7 +92,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         provisioningProfiles: {
-          "app.jitsuflow.jitsuflow" => "JitsuFlow Distribution"
+          "app.jitsuflow.jitsuflow" => "JiuFlow Distribution"
         }
       }
     )

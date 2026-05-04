@@ -85,7 +85,7 @@ class InstructorScheduleCard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -150,9 +150,9 @@ class InstructorScheduleCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: utilizationColor.withOpacity(0.1),
+                    color: utilizationColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: utilizationColor.withOpacity(0.3)),
+                    border: Border.all(color: utilizationColor.withValues(alpha: 0.3)),
                   ),
                   child: Text(
                     '$currentBookings/$maxCapacity人',

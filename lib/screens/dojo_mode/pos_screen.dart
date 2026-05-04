@@ -425,7 +425,7 @@ class _POSScreenState extends State<POSScreen> {
                     )
                   : null,
               value: _isMemberDiscount,
-              activeColor: _primaryGreen,
+              activeThumbColor: _primaryGreen,
               dense: true,
               onChanged: (value) {
                 setState(() {
@@ -439,7 +439,7 @@ class _POSScreenState extends State<POSScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             child: DropdownButtonFormField<int?>(
-              value: _selectedCustomerId,
+              initialValue: _selectedCustomerId,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: '顧客選択',
@@ -633,7 +633,7 @@ class _POSScreenState extends State<POSScreen> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withValues(alpha: 0.15),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),

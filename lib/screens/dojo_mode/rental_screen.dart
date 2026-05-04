@@ -162,7 +162,7 @@ class _RentalScreenState extends State<RentalScreen> {
           _selectedCategory = value;
         });
       },
-      selectedColor: Colors.blue.withOpacity(0.3),
+      selectedColor: Colors.blue.withValues(alpha: 0.3),
     );
   }
 

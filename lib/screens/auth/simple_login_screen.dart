@@ -66,7 +66,7 @@ class _SimpleLoginScreenState extends State<SimpleLoginScreen> {
                       ),
                       const SizedBox(height: 16),
                       const Text(
-                        'JitsuFlow',
+                        'JiuFlow',
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,

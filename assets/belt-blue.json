@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "name": "青帯 引き込みシステム",
+    "description": "青帯レベルの引き込みガードシステム。クローズドガードを主軸に、オープンガード・デラヒーバへ展開してスイープとサブミッションを狙う。良蔵システムの入門版。",
+    "principles": [
+      "引き込みは素早く。立ち試合は避けてすぐに座る",
+      "クローズドガードが第一防衛ライン。立たせないことが最優先",
+      "スイープ → マウントの流れを体に染み込ませる",
+      "三角絞めの入り方を複数ルートで覚える",
+      "パスガードされたらすぐにエスケープを試みる。ハーフガードで止まらない"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "すぐに引き込む。立ち技で消耗しない" },
+    { "id": "guard-pull", "name": "引き込み", "type": "position", "_type": "", "description": "襟を取って素早く座る" },
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "*", "description": "メインポジション。頭を下げさせることが最優先" },
+    { "id": "open-guard", "name": "オープンガード", "type": "position", "_type": "", "description": "クローズドへの戻りを狙いながらスイープも伺う" },
+    { "id": "de-la-riva", "name": "デラヒーバ", "type": "position", "_type": "", "description": "相手が立ったときのガード。スイープを狙う" },
+    { "id": "mount-top", "name": "マウントトップ", "type": "position", "_type": "*", "description": "スイープ成功後の目標ポジション" },
+    { "id": "half-guard", "name": "ハーフガード", "type": "position", "_type": "!", "description": "緊急脱出。ここで攻めるより早くオープンガードに戻す" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "standing", "to": "guard-pull", "action": "引き込み", "description": "組んだら即座に座って引き込む" },
+    { "id": "t2", "from": "guard-pull", "to": "closed-guard", "action": "クローズドへ", "description": "足を相手の腰に回してクローズドガードを確立" },
+    { "id": "t3", "from": "closed-guard", "to": "open-guard", "action": "相手が立つ", "description": "相手が立ったらオープンガードへ移行" },
+    { "id": "t4", "from": "open-guard", "to": "de-la-riva", "action": "デラヒーバエントリー", "description": "外側の足にフックしてデラヒーバへ" },
+    { "id": "t5", "from": "closed-guard", "to": "mount-top", "action": "スイープ成功", "description": "ヒップバンプまたはシザースイープでマウントへ" }
+  ],
+  "submissions": [
+    { "id": "s1", "name": "シザースイープ", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["closed-guard"], "description": "足を鋏のように使って相手を転がす。青帯の必修スイープ" },
+    { "id": "s2", "name": "ヒップバンプスイープ", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["closed-guard"], "description": "相手が前のめりになったら腰を浮かせる" },
+    { "id": "s3", "name": "三角絞め", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["closed-guard", "open-guard"], "description": "相手の腕が外に出た瞬間を狙う。青帯で最も身に付けたいサブ" },
+    { "id": "s4", "name": "腕十字", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["closed-guard", "mount-top"], "description": "三角から腕十字へのコンビが強力" },
+    { "id": "s5", "name": "木村ロック", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard"], "description": "相手の腕を取って肩を極める。スイープの布石にもなる" },
+    { "id": "s6", "name": "デラヒーバスイープ", "type": "sweep", "priority": "中", "priorityLevel": 3, "from": ["de-la-riva"], "description": "内側の足を蹴り上げながら外側の足を引っ掛けて転がす" }
+  ],
+  "defenseNotes": [
+    { "position": "closed-guard", "principle": "相手に前傾姿勢を取らせ続ける。後ろに座られたら攻撃できない" },
+    { "position": "half-guard", "principle": "アンダーフックを取って早くオープンガードに戻す" }
+  ],
+  "notUsed": [
+    { "technique": "ベリンボロ", "reason": "青帯では基本スイープを完成させることが優先" },
+    { "technique": "レッグロック", "reason": "紫帯以降で学ぶ" }
+  ]
+}

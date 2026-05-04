@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'dart:ui' as ui;
-import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../utils/demo_auth.dart';
 import '../../services/api_service.dart';
@@ -109,7 +107,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
         preferredSize: const Size.fromHeight(80),
         child: ColorfulTheme.gradientBackground(
           child: AppBar(
-            title: const Text('JitsuFlow'),
+            title: const Text('JiuFlow'),
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
@@ -319,7 +317,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1B5E20).withOpacity(0.1),
+                        color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -366,18 +364,18 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            ColorfulTheme.getChipColor(index).withOpacity(0.15),
-            ColorfulTheme.getChipColor(index).withOpacity(0.05),
+            ColorfulTheme.getChipColor(index).withValues(alpha: 0.15),
+            ColorfulTheme.getChipColor(index).withValues(alpha: 0.05),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: ColorfulTheme.getChipColor(index).withOpacity(0.3),
+          color: ColorfulTheme.getChipColor(index).withValues(alpha: 0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: ColorfulTheme.getChipColor(index).withOpacity(0.2),
+            color: ColorfulTheme.getChipColor(index).withValues(alpha: 0.2),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),
@@ -395,7 +393,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: ColorfulTheme.getChipColor(index).withOpacity(0.2),
+                    color: ColorfulTheme.getChipColor(index).withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -591,7 +589,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                             final isSelected = selectedSchedules.contains(schedule['id'] as int);
                             return Card(
                               margin: const EdgeInsets.only(bottom: 8),
-                              color: isSelected ? Colors.green.withOpacity(0.1) : null,
+                              color: isSelected ? Colors.green.withValues(alpha: 0.1) : null,
                               child: ListTile(
                                 leading: isSelectionMode 
                                   ? Checkbox(
@@ -610,7 +608,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                                       width: 60,
                                       height: 60,
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFF1B5E20).withOpacity(0.1),
+                                        color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Column(
@@ -1010,7 +1008,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1B5E20).withOpacity(0.1),
+                          color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: video.thumbnailUrl != null
@@ -1221,7 +1219,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1B5E20).withOpacity(0.1),
+                        color: const Color(0xFF1B5E20).withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -1379,20 +1377,20 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                       subtitle: '全メンバーの管理・編集',
                       onTap: () {
                         try {
-                          print('Navigating to MembersScreen...');
+                          debugPrint('Navigating to MembersScreen...');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const MembersScreen(),
                             ),
                           ).catchError((error) {
-                            print('Navigation error: $error');
+                            debugPrint('Navigation error: $error');
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('エラー: $error')),
                             );
                           });
                         } catch (e) {
-                          print('MembersScreen navigation error: $e');
+                          debugPrint('MembersScreen navigation error: $e');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('メンバー画面を開けません: $e')),
                           );
@@ -1406,20 +1404,20 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                       subtitle: 'POS・レンタル・録画・経営分析',
                       onTap: () {
                         try {
-                          print('Navigating to DojoModeScreen...');
+                          debugPrint('Navigating to DojoModeScreen...');
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const DojoModeScreen(dojoId: 1),
                             ),
                           ).catchError((error) {
-                            print('Navigation error: $error');
+                            debugPrint('Navigation error: $error');
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('エラー: $error')),
                             );
                           });
                         } catch (e) {
-                          print('DojoModeScreen navigation error: $e');
+                          debugPrint('DojoModeScreen navigation error: $e');
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('道場モードを開けません: $e')),
                           );
@@ -1578,9 +1576,9 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.green.withOpacity(0.1),
+                      color: Colors.green.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.green.withOpacity(0.3)),
+                      border: Border.all(color: Colors.green.withValues(alpha: 0.3)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1602,9 +1600,9 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
+                      color: Colors.blue.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                      border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -1665,7 +1663,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    value: selectedCategory,
+                    initialValue: selectedCategory,
                     decoration: const InputDecoration(
                       labelText: 'カテゴリ (AI提案済み)',
                       border: OutlineInputBorder(),
@@ -1794,7 +1792,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    value: selectedDay,
+                    initialValue: selectedDay,
                     decoration: const InputDecoration(
                       labelText: '曜日',
                       border: OutlineInputBorder(),
@@ -1816,7 +1814,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    value: selectedTime,
+                    initialValue: selectedTime,
                     decoration: const InputDecoration(
                       labelText: '時間',
                       border: OutlineInputBorder(),
@@ -1843,7 +1841,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
-                    value: selectedLevel,
+                    initialValue: selectedLevel,
                     decoration: const InputDecoration(
                       labelText: 'レベル',
                       border: OutlineInputBorder(),
@@ -2170,9 +2168,9 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.orange.withOpacity(0.1),
+                    color: Colors.orange.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.orange.withOpacity(0.5)),
+                    border: Border.all(color: Colors.orange.withValues(alpha: 0.5)),
                   ),
                   child: const Row(
                     children: [
@@ -2190,7 +2188,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 const SizedBox(height: 16),
                 
                 DropdownButtonFormField<String>(
-                  value: selectedMorphType,
+                  initialValue: selectedMorphType,
                   decoration: const InputDecoration(
                     labelText: '変更タイプ',
                     border: OutlineInputBorder(),
@@ -2211,7 +2209,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 const SizedBox(height: 16),
                 
                 DropdownButtonFormField<String>(
-                  value: targetFace,
+                  initialValue: targetFace,
                   decoration: const InputDecoration(
                     labelText: '対象の顔',
                     border: OutlineInputBorder(),
@@ -2247,7 +2245,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
+                      color: Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
@@ -2919,7 +2917,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: Colors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -3080,8 +3078,8 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: status == '予約済み' 
-                      ? Colors.blue.withOpacity(0.1)
-                      : Colors.green.withOpacity(0.1),
+                      ? Colors.blue.withValues(alpha: 0.1)
+                      : Colors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -3254,7 +3252,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: selectedDojo,
+                initialValue: selectedDojo,
                 decoration: const InputDecoration(
                   labelText: '所属道場',
                   border: OutlineInputBorder(),
@@ -3438,7 +3436,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                     pushNotifications = value;
                   });
                 },
-                activeColor: const Color(0xFF1B5E20),
+                activeThumbColor: const Color(0xFF1B5E20),
               ),
               SwitchListTile(
                 title: const Text('メール通知'),
@@ -3449,7 +3447,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                     emailNotifications = value;
                   });
                 },
-                activeColor: const Color(0xFF1B5E20),
+                activeThumbColor: const Color(0xFF1B5E20),
               ),
               SwitchListTile(
                 title: const Text('予約リマインダー'),
@@ -3460,7 +3458,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                     bookingReminders = value;
                   });
                 },
-                activeColor: const Color(0xFF1B5E20),
+                activeThumbColor: const Color(0xFF1B5E20),
               ),
             ],
           ),

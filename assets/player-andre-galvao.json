@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "name": "アンドレ・ガルバン スタイル",
+    "description": "テイクダウンからトップポジションを維持し、ダースチョークとバックテイクで仕留める。ADCC連覇4回・世界王者6回のトップゲーム特化型。",
+    "principles": [
+      "テイクダウンが全ての出発点。トップポジションから離れない",
+      "ガードパスは前に出続けるプレッシャーパス。相手のガードは必ず潰せる",
+      "ダースチョークはサイドコントロールからノースサウスへの移行で狙う",
+      "バックテイクは常に意識する。パス中の相手の動きに合わせて背後へ",
+      "ポジションを上げていく。サイド → マウント → バックの順番を守る",
+      "スクランブルでも焦らない。レスリングベースが全てを支える"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "*", "description": "テイクダウンが最優先。ダブルレッグ・シングルレッグ・ボディロックで倒す" },
+    { "id": "butterfly", "name": "バタフライガード", "type": "position", "_type": "", "description": "引き込んだ時の基本ガード。アームドラッグでバックを狙う" },
+    { "id": "top-half", "name": "ハーフガードトップ", "type": "position", "_type": "", "description": "バナナピールパス・ゴリラパスでサイドコントロールへ" },
+    { "id": "side-control", "name": "サイドコントロール", "type": "position", "_type": "", "description": "ダースチョークとノースサウスへの入口。体重で潰す" },
+    { "id": "north-south", "name": "ノースサウス", "type": "position", "_type": "", "description": "ダースチョークの主要ポジション。アームトライアングルとも連携" },
+    { "id": "mount", "name": "マウント", "type": "position", "_type": "*", "description": "アームトライアングルと腕十字を狙う" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "RNCで仕留める最終目標" },
+    { "id": "turtle", "name": "タートル（相手）", "type": "position", "_type": "!", "description": "バックテイクの大チャンス。即シートベルトを差し込む" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "side-control", "action": "テイクダウン → サイドコントロール", "description": "ダブルレッグかシングルレッグで倒してサイドコントロールへ直行" },
+    { "id": "t1", "from": "top-half", "to": "side-control", "action": "ゴリラパス / バナナピールパス", "description": "ニーシールドを潰しながら体重で押し込んでサイドコントロールへ" },
+    { "id": "t2", "from": "side-control", "to": "north-south", "action": "ノースサウスへ移行", "description": "ダースチョークのグリップを確立しながらノースサウスへ移動" },
+    { "id": "t3", "from": "side-control", "to": "mount", "action": "マウントへ移行", "description": "相手が横に逃げようとした瞬間に膝を通してマウントへ" },
+    { "id": "t4", "from": "side-control", "to": "back-control", "action": "バックテイク", "description": "相手が起き上がろうとした瞬間に背後へ回り込む" },
+    { "id": "t5", "from": "mount", "to": "back-control", "action": "バックテイク", "description": "相手が横を向いて逃げようとした瞬間にバックへ乗り換え" },
+    { "id": "t6", "from": "turtle", "to": "back-control", "action": "シートベルト → バックテイク", "description": "即シートベルトを確立して両フックを入れる" },
+    { "id": "t7", "from": "butterfly", "to": "back-control", "action": "アームドラッグ → バック", "description": "相手が前傾みになった瞬間に腕を引いて背後へ" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "ダースチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["side-control", "north-south"], "description": "サイドコントロールからノースサウスへの移行中に腕を頭の下に差し込んで締める。ガルバンの代名詞的サブミッション" },
+    { "id": "s1", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "シートベルト確立後に顎の下に腕を通してグリップ" },
+    { "id": "s2", "name": "ノースサウスチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["north-south"], "description": "ダースと連携。首の横に腕を差し込んで体重をかけながら引く" },
+    { "id": "s3", "name": "アームトライアングル", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["side-control", "mount"], "description": "相手の腕を首に沿わせながら腕で三角を作る" },
+    { "id": "s4", "name": "ギロチンチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["standing", "butterfly"], "description": "タックル切りや前傾みになった相手に首を絡める" }
+  ],
+  "defenseNotes": [
+    { "position": "side-control", "principle": "相手が起きようとした瞬間がバックテイクのチャンス。動きに乗る" },
+    { "position": "north-south", "principle": "ダースと首絞めのどちらかが入る。グリップが深まるまで体重をかけ続ける" },
+    { "position": "back-control", "principle": "相手がシートベルトを外そうとしたらRNCのグリップを優先して深める" }
+  ],
+  "notUsed": [
+    { "technique": "レッグロック", "reason": "ガルバンはトップゲームとチョーク系に集中。ADCC2022でゴードン・ライアンに敗れた際もレッグロックは使用しなかった" },
+    { "technique": "ベリンボロ・インバーテッドガード", "reason": "レスリングベースのトップ支配に特化。複雑なインバージョンは使わない" }
+  ]
+}

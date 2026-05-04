@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/auth/auth_bloc.dart';
@@ -82,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 16),
                           const Text(
-                            'JitsuFlow',
+                            'JiuFlow',
                             style: TextStyle(
                               fontSize: 32,
                               fontWeight: FontWeight.bold,
@@ -215,52 +216,54 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 12),
                           
-                          Row(
-                            children: [
-                              Expanded(
-                                child: OutlinedButton.icon(
-                                  onPressed: () {
-                                    _emailController.text = 'user@jitsuflow.app';
-                                    _passwordController.text = 'password123';
-                                    context.read<AuthBloc>().add(
-                                      const AuthLoginRequested(
-                                        email: 'user@jitsuflow.app',
-                                        password: 'password123',
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.person, size: 18),
-                                  label: const Text('一般ユーザー'),
-                                  style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(color: Color(0xFF1B5E20)),
-                                    foregroundColor: const Color(0xFF1B5E20),
+                          if (kDebugMode) ...[
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: () {
+                                      _emailController.text = 'user@jiuflow.app';
+                                      _passwordController.text = 'password123';
+                                      context.read<AuthBloc>().add(
+                                        const AuthLoginRequested(
+                                          email: 'user@jiuflow.app',
+                                          password: 'password123',
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.person, size: 18),
+                                    label: const Text('一般ユーザー'),
+                                    style: OutlinedButton.styleFrom(
+                                      side: const BorderSide(color: Color(0xFF1B5E20)),
+                                      foregroundColor: const Color(0xFF1B5E20),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: OutlinedButton.icon(
-                                  onPressed: () {
-                                    _emailController.text = 'admin@jitsuflow.app';
-                                    _passwordController.text = 'admin123';
-                                    context.read<AuthBloc>().add(
-                                      const AuthLoginRequested(
-                                        email: 'admin@jitsuflow.app',
-                                        password: 'admin123',
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.admin_panel_settings, size: 18),
-                                  label: const Text('管理者'),
-                                  style: OutlinedButton.styleFrom(
-                                    side: const BorderSide(color: Colors.amber),
-                                    foregroundColor: Colors.amber[700],
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: OutlinedButton.icon(
+                                    onPressed: () {
+                                      _emailController.text = 'admin@jiuflow.app';
+                                      _passwordController.text = 'admin123';
+                                      context.read<AuthBloc>().add(
+                                        const AuthLoginRequested(
+                                          email: 'admin@jiuflow.app',
+                                          password: 'admin123',
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.admin_panel_settings, size: 18),
+                                    label: const Text('管理者'),
+                                    style: OutlinedButton.styleFrom(
+                                      side: const BorderSide(color: Colors.amber),
+                                      foregroundColor: Colors.amber[700],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                          ],
                           
                           // Register Link
                           Row(

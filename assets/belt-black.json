@@ -1,0 +1,49 @@
+{
+  "meta": {
+    "name": "黒帯 マスターシステム",
+    "description": "黒帯レベルの完全なゲームプラン。ポジション主義の徹底、全てのポジションから複数の攻撃オプションを持ち、相手の防御に応じて瞬時に切り替える。村田良蔵・ゴードン・ライアン・マルセロ・ガルシアのエッセンスを統合した総合システム。",
+    "principles": [
+      "ポジション > テクニック。最良のポジションにいれば技術が活きる",
+      "全てのポジションでAとBの2択を作る。相手はどちらかを防ごうとする",
+      "エネルギー効率最優先。力ではなく角度とタイミングで技を決める",
+      "スクランブルは最高のチャンス。相手は自分の位置を見失っている",
+      "試合前にゲームプランを完成させる。相手のスタイルに合わせた5手先を読む",
+      "タップを恐れない。タップは学習。試合では全力で逃げる",
+      "師匠の技を完全に習得した上で、自分のシステムに昇華させる"
+    ]
+  },
+  "positions": [
+    { "id": "anywhere", "name": "どのポジションからでも", "type": "position", "_type": "*", "description": "黒帯は特定のポジションに依存しない。どこからでも攻撃できる" },
+    { "id": "closed-guard", "name": "クローズドガード（完全制圧）", "type": "position", "_type": "*", "description": "良蔵システム完全版。三角・腕十字・スイープを連携させる" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "最強ポジション。ゴードン・ライアンスタイルで確立したら離さない" },
+    { "id": "saddle", "name": "サドル（完全版）", "type": "position", "_type": "*", "description": "インサイド＋アウトサイドの二択でどちらにも対応" },
+    { "id": "butterfly-guard", "name": "バタフライガード（MG式）", "type": "position", "_type": "*", "description": "マルセロ・ガルシア式。アームドラッグとギロチンをリンクさせる" },
+    { "id": "turtle-top", "name": "タートル制圧", "type": "position", "_type": "*", "description": "タートルの相手から最速でバックを取る" },
+    { "id": "mount-advanced", "name": "アドバンストマウント", "type": "position", "_type": "*", "description": "S-mount・技術的マウントで複数のサブを狙う" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "closed-guard", "to": "back-control", "action": "アームドラッグ → バック", "description": "2択のうちバックを取る選択。三角を防いだら即アームドラッグ" },
+    { "id": "t2", "from": "butterfly-guard", "to": "back-control", "action": "アームドラッグ/ギロチン→バック", "description": "MGシステム。相手の腕か頭を取ってバックへ" },
+    { "id": "t3", "from": "saddle", "to": "back-control", "action": "ヒール防御→バック", "description": "インサイドヒールを防ごうとロールしたら背後を取る" },
+    { "id": "t4", "from": "anywhere", "to": "turtle-top", "action": "タートルへ追い込む", "description": "どのポジションからでもタートルが見えたら即シートベルト" },
+    { "id": "t5", "from": "mount-advanced", "to": "back-control", "action": "マウント → バック", "description": "相手が逃げようとした瞬間にバックへ乗り換え" }
+  ],
+  "submissions": [
+    { "id": "s1", "name": "三角絞め（完全版）", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["closed-guard", "butterfly-guard"], "description": "良蔵システムの核心。三角ロックから腕十字・オモプラッタへ連携" },
+    { "id": "s2", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "バック最強フィニッシュ。ボディトライアングル込みで確実に決める" },
+    { "id": "s3", "name": "インサイドヒールフック", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["saddle"], "description": "サドルからの必殺技。入れたらほぼ詰み" },
+    { "id": "s4", "name": "アームインギロチン", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["butterfly-guard", "anywhere"], "description": "ゴードン式。腕を巻き込んだまま首を締める。バック移行ツールでもある" },
+    { "id": "s5", "name": "腕十字（複数ルート）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["closed-guard", "mount-advanced", "anywhere"], "description": "三角から・マウントから・バックからと複数ルートで狙う" },
+    { "id": "s6", "name": "アウトサイドヒールフック", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["saddle", "anywhere"], "description": "インサイドを防がれたら瞬時にアウトサイドへ。反応速度が命" },
+    { "id": "s7", "name": "バタフライスイープ → フィニッシュ", "type": "sweep", "priority": "中", "priorityLevel": 3, "from": ["butterfly-guard"], "description": "MGシステムの柱。スイープ後は即バックかマウントへ" },
+    { "id": "s8", "name": "オモプラッタ（スイープ/サブ）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard", "butterfly-guard"], "description": "三角防御への切り返し。スイープとサブの両方として使う" }
+  ],
+  "defenseNotes": [
+    { "position": "general", "principle": "攻撃は最大の防御。積極的にポジションを取りに行く" },
+    { "position": "anywhere", "principle": "悪いポジションに入ったら即エスケープ。エネルギーを消耗する前に逃げる" },
+    { "position": "back-control", "principle": "絶対に離さない。シートベルトが命綱" }
+  ],
+  "notUsed": [
+    { "technique": "特定技術に依存", "reason": "黒帯はどの技術も状況に応じて使う。使わないものはない" }
+  ]
+}

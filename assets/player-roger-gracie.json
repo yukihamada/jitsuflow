@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "name": "ロジャー・グレイシー スタイル",
+    "description": "クローズドガードからマウント・バックへ上がり、十字絞めで仕留める。余計な技を使わない最も純粋で強力なBJJの体現。",
+    "principles": [
+      "クローズドガードはBJJの聖域。相手をその中で完全に制圧する",
+      "マウントを取ったら急がない。体重をかけて相手を消耗させてから仕留める",
+      "十字絞め（クルゼタ）一本で世界チャンピオンを10人倒した。シンプルな技の深さを信じる",
+      "ポジションを確実に上げていく。サイド → マウント → バックの順序を守る",
+      "相手を常に疲弊させる。体重と圧力が最高の武器",
+      "防御は腕十字。攻撃は十字絞め。この2つで全て解決する"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "素早く引き込んでクローズドガードを確立" },
+    { "id": "closed-guard", "name": "クローズドガード", "type": "position", "_type": "*", "description": "最強のポジション。マウント・バック・サブミッションの全てへの入口" },
+    { "id": "half-guard-top", "name": "ハーフガードトップ", "type": "position", "_type": "", "description": "スマッシュパスでサイドコントロールへ" },
+    { "id": "side-control", "name": "サイドコントロール", "type": "position", "_type": "", "description": "マウントへの中継地点。相手を潰して疲弊させる" },
+    { "id": "knee-on-belly", "name": "ニーオンベリー", "type": "position", "_type": "", "description": "サイドコントロールからマウントへの移行で使う。アームバー・クロスカラーも狙える" },
+    { "id": "mount", "name": "マウント", "type": "position", "_type": "*", "description": "最優先目標その1。ここで十字絞めを狙う" },
+    { "id": "high-mount", "name": "ハイマウント", "type": "position", "_type": "*", "description": "相手の腕がフリーになり腕十字・十字絞めが狙いやすい" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "最優先目標その2。弓矢絞めで仕留める" },
+    { "id": "turtle-top", "name": "タートルトップ", "type": "position", "_type": "!", "description": "クロックチョーク or バックテイク" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "closed-guard", "action": "引き込み", "description": "素早く相手の腕に飛びついてクローズドガードを確立" },
+    { "id": "t1", "from": "closed-guard", "to": "mount", "action": "スイープ → マウント", "description": "オモプラッタからの体重移動スイープ後にマウントを取る" },
+    { "id": "t2", "from": "closed-guard", "to": "back-control", "action": "バックテイク", "description": "相手がポジション改善のため前傾みになった瞬間にバックへ" },
+    { "id": "t3", "from": "half-guard-top", "to": "side-control", "action": "スマッシュパス", "description": "相手の上半身を体重で潰しながら膝を引き抜く" },
+    { "id": "t4a", "from": "side-control", "to": "knee-on-belly", "action": "ニーオンベリーへ", "description": "相手の腰に膝を乗せて圧をかけながらアームバーやクロスカラーを脅かす" },
+    { "id": "t4b", "from": "knee-on-belly", "to": "mount", "action": "マウントへ移行", "description": "相手がニーオンベリーを嫌がって動いた瞬間に膝を通してマウントを取る" },
+    { "id": "t4", "from": "side-control", "to": "mount", "action": "ダイレクトにマウントへ", "description": "ニーオンベリーを経由せず直接マウントへ。相手が固まっている場合" },
+    { "id": "t5", "from": "mount", "to": "high-mount", "action": "ハイマウントへ", "description": "相手が下の手で防御しようとしたら膝を上げてハイマウントへ" },
+    { "id": "t6", "from": "mount", "to": "back-control", "action": "バックテイク", "description": "相手が横を向いて逃げようとした瞬間にバックへ乗り換え" },
+    { "id": "t7", "from": "turtle-top", "to": "back-control", "action": "バックテイク", "description": "シートベルトを差し込んで一気にバックを取る" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "十字絞め（クルゼタ）", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["mount", "high-mount"], "description": "同側の手で奥の襟を深く持ち、もう一方の手で手前の襟を持って絞める。ロジャーの代名詞" },
+    { "id": "s1", "name": "弓矢絞め", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "下の手で奥の袖口を持ちながら上の手で向こう側の襟を持って絞る" },
+    { "id": "s2", "name": "腕十字（マウントから）", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["high-mount"], "description": "相手が十字絞め防御で腕を出した瞬間に素早く腕十字へ切り替える" },
+    { "id": "s3", "name": "三角絞め", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["closed-guard"], "description": "腕を引いて来たタイミングで足を首にかける" },
+    { "id": "s4", "name": "腕十字（クローズドから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["closed-guard"], "description": "三角を防いで腕が伸びた瞬間に腕十字へ" },
+    { "id": "s5", "name": "オモプラッタ", "type": "sweep", "priority": "中", "priorityLevel": 3, "from": ["closed-guard"], "description": "スイープやサブミッションへの移行ツールとして使う" },
+    { "id": "s6", "name": "クロックチョーク", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["turtle-top"], "description": "タートルの相手の首を固定して時計回りに圧をかける" },
+    { "id": "s7", "name": "リアネイキッドチョーク", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["back-control"], "description": "シートベルトからRNCへ。顎の下に腕を通してグリップ" },
+    { "id": "s8", "name": "アームバー（ニーオンベリーから）", "type": "submission", "priority": "中", "priorityLevel": 3, "from": ["knee-on-belly"], "description": "相手がニーオンベリーに反応して腕を出した瞬間に腕十字へ切り替える" }
+  ],
+  "defenseNotes": [
+    { "position": "mount", "principle": "相手がブリッジして逃げようとしたら十字絞めのグリップを深める。急がない" },
+    { "position": "closed-guard", "principle": "相手がスタック気味にパスしようとしたらヒップを切ってフルガードを維持" },
+    { "position": "high-mount", "principle": "相手が腕を引いて十字絞めを防いだ瞬間が腕十字のチャンス" }
+  ],
+  "notUsed": [
+    { "technique": "レッグロック全般", "reason": "ロジャーはポジショナルゲームに完全集中。足関節は使わない" },
+    { "technique": "ベリンボロ・インバーテッド", "reason": "古典的なクローズドガードシステムに集中。複雑な体位の入れ替えは使わない" }
+  ]
+}

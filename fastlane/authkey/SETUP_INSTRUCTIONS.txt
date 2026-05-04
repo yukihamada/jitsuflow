@@ -6,7 +6,7 @@ App Store Connect API Key設定手順:
 2. ユーザーとアクセス → キー → APIキーを生成
 
 3. 以下の情報でキーを作成:
-   - キー名: JitsuFlow Fastlane
+   - キー名: JiuFlow Fastlane
    - アクセス: App Manager
    
 4. 生成されたAuthKey_088414.p8ファイルをこのディレクトリに配置

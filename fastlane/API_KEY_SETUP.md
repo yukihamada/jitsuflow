@@ -8,7 +8,7 @@ App Store Connectに自動でアップロードするために、APIキーの設
 2. 「ユーザーとアクセス」→「キー」をクリック
 3. 「+」をクリックして新しいキーを作成
 4. 以下の設定を行う：
-   - 名前: `JitsuFlow Fastlane API Key`
+   - 名前: `JiuFlow Fastlane API Key`
    - アクセス: `Developer`
    - アプリへのアクセス: `すべてのアプリ`
 

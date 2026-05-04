@@ -1,19 +1,17 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/user.dart';
 import '../models/booking.dart';
 import '../models/video.dart';
-import '../models/dojo.dart';
 import '../models/member.dart';
 import '../models/rental.dart';
-import '../models/payment.dart';
 import '../models/revenue_summary.dart';
 import '../models/instructor_assignment.dart';
 import '../models/product.dart';
 
 class ApiService {
-  static const String _baseUrl = 'https://api.jitsuflow.app/api';
+  static const String _baseUrl = 'https://api.jiuflow.app/api';
   static const String _tokenKey = 'auth_token';
   
   // インスタンスメソッドとして追加
@@ -177,7 +175,7 @@ class ApiService {
       'message': 'Guest login successful',
       'user': {
         'id': 0,
-        'email': 'guest@jitsuflow.app',
+        'email': 'guest@jiuflow.app',
         'name': 'ゲストユーザー',
         'phone': null,
         'stripeCustomerId': null,
@@ -324,7 +322,7 @@ class ApiService {
             .toList();
       }
     } catch (e) {
-      print('API Error: $e, using fallback data');
+      debugPrint('API Error: $e, using fallback data');
     }
     
     // Fallback to demo data
@@ -1009,7 +1007,7 @@ class ApiService {
       return [
         Member(
           id: 1,
-          email: 'user@jitsuflow.app',
+          email: 'user@jiuflow.app',
           name: 'デモユーザー',
           phone: '090-1234-5678',
           role: 'user',
@@ -1027,7 +1025,7 @@ class ApiService {
         ),
         Member(
           id: 2,
-          email: 'instructor@jitsuflow.app',
+          email: 'instructor@jiuflow.app',
           name: 'インストラクター太郎',
           role: 'instructor',
           status: 'active',
@@ -1044,7 +1042,7 @@ class ApiService {
         ),
         Member(
           id: 3,
-          email: 'member1@jitsuflow.app',
+          email: 'member1@jiuflow.app',
           name: '山田花子',
           phone: '080-9876-5432',
           role: 'user',
@@ -1061,7 +1059,7 @@ class ApiService {
         ),
         Member(
           id: 4,
-          email: 'member2@jitsuflow.app',
+          email: 'member2@jiuflow.app',
           name: '鈴木次郎',
           role: 'user',
           status: 'inactive',
@@ -1078,7 +1076,7 @@ class ApiService {
         ),
         Member(
           id: 5,
-          email: 'tanaka@jitsuflow.app',
+          email: 'tanaka@jiuflow.app',
           name: '田中健一',
           phone: '090-3456-7890',
           role: 'user',
@@ -1095,7 +1093,7 @@ class ApiService {
         ),
         Member(
           id: 6,
-          email: 'sato@jitsuflow.app',
+          email: 'sato@jiuflow.app',
           name: '佐藤美咲',
           phone: '080-2468-1357',
           role: 'user',
@@ -1112,7 +1110,7 @@ class ApiService {
         ),
         Member(
           id: 7,
-          email: 'kato@jitsuflow.app',
+          email: 'kato@jiuflow.app',
           name: '加藤雄大',
           role: 'user',
           status: 'active',
@@ -1128,7 +1126,7 @@ class ApiService {
         ),
         Member(
           id: 8,
-          email: 'nakamura@jitsuflow.app',
+          email: 'nakamura@jiuflow.app',
           name: '中村聡子',
           phone: '090-8765-4321',
           role: 'user',
@@ -1145,7 +1143,7 @@ class ApiService {
         ),
         Member(
           id: 9,
-          email: 'ito@jitsuflow.app',
+          email: 'ito@jiuflow.app',
           name: '伊藤大輔',
           role: 'user',
           status: 'active',
@@ -1161,7 +1159,7 @@ class ApiService {
         ),
         Member(
           id: 10,
-          email: 'watanabe@jitsuflow.app',
+          email: 'watanabe@jiuflow.app',
           name: '渡辺真理',
           phone: '080-1357-2468',
           role: 'user',
@@ -1262,7 +1260,7 @@ class ApiService {
       // Return dummy updated member
       return Member(
         id: memberId,
-        email: 'updated@jitsuflow.app',
+        email: 'updated@jiuflow.app',
         name: name ?? 'Updated User',
         phone: phone,
         role: 'user',
@@ -1767,7 +1765,7 @@ class ApiService {
         ),
         Product(
           id: 4,
-          name: 'JitsuFlow Tシャツ',
+          name: 'JiuFlow Tシャツ',
           description: '吸湿速乾素材使用のトレーニングTシャツ。',
           price: 3500.0,
           category: 'apparel',
@@ -2054,7 +2052,7 @@ class ApiService {
               id: 3,
               orderId: 1002,
               productId: 4,
-              productName: 'JitsuFlow Tシャツ',
+              productName: 'JiuFlow Tシャツ',
               unitPrice: 3500.0,
               quantity: 2,
               totalPrice: 7000.0,

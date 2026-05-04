@@ -483,34 +483,34 @@ class _ShopScreenState extends State<ShopScreen> {
                 children: [
                   Chip(
                     label: Text(product.categoryLabel),
-                    backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                    backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
                   ),
                   if (product.trainer != null)
                     Chip(
                       label: Text('指導: ${product.trainer}'),
-                      backgroundColor: Colors.orange.withOpacity(0.1),
+                      backgroundColor: Colors.orange.withValues(alpha: 0.1),
                     ),
                   if (product.sessions != null)
                     Chip(
                       label: Text('${product.sessions}回セッション'),
-                      backgroundColor: Colors.green.withOpacity(0.1),
+                      backgroundColor: Colors.green.withValues(alpha: 0.1),
                     ),
                   if (product.duration != null)
                     Chip(
                       label: Text('${product.duration}分'),
-                      backgroundColor: Colors.blue.withOpacity(0.1),
+                      backgroundColor: Colors.blue.withValues(alpha: 0.1),
                     ),
                   if (product.validityDays != null)
                     Chip(
                       label: Text('有効期限${product.validityDays}日'),
-                      backgroundColor: Colors.purple.withOpacity(0.1),
+                      backgroundColor: Colors.purple.withValues(alpha: 0.1),
                     ),
                   if (product.customerType != null)
                     Chip(
                       label: Text(product.customerType == 'new' ? '新規限定' : '継続者向け'),
                       backgroundColor: product.customerType == 'new' 
-                        ? Colors.red.withOpacity(0.1)
-                        : Colors.teal.withOpacity(0.1),
+                        ? Colors.red.withValues(alpha: 0.1)
+                        : Colors.teal.withValues(alpha: 0.1),
                     ),
                   if (product.size != null) ...[
                     Chip(

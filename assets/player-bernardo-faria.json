@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "name": "ベルナルド・ファリア スタイル",
+    "description": "ディープハーフガードとオーバーアンダーパスのプレッシャー系スタイル。5度の世界王者。「相手は来るとわかっていても止められない」と言わしめたオーバーアンダーで制圧する。",
+    "principles": [
+      "スタンドアップで勝てる相手でも引き込む。ディープハーフが最も強い領域",
+      "オーバーアンダーパスは肩の重みで相手を潰す。技術より体重が武器",
+      "ディープハーフからのファリアスイープは相手がわかっていても止められない",
+      "上を取ったら急がない。重みと圧力で相手を消耗させてからフィニッシュ",
+      "エゼキールチョークはマウントとトップハーフの両方から狙う",
+      "ポジションを確実に上げてからサブミッション。焦らない"
+    ]
+  },
+  "positions": [
+    { "id": "standing", "name": "スタンディング", "type": "position", "_type": "", "description": "引き込んでディープハーフへ。スタンドアップの優劣に関係なく引き込みを選ぶ" },
+    { "id": "deep-half", "name": "ディープハーフガード", "type": "position", "_type": "*", "description": "最強ポジション。相手の股下に完全に潜り込んでラペルをつかみファリアスイープ" },
+    { "id": "half-guard", "name": "ハーフガード", "type": "position", "_type": "", "description": "ニーシールドからディープハーフへ潜る入口" },
+    { "id": "side-control", "name": "サイドコントロール", "type": "position", "_type": "", "description": "マウントとノースサウスへの中継地点。体重で潰す" },
+    { "id": "mount", "name": "マウント", "type": "position", "_type": "*", "description": "エゼキールチョークのメインポジション。急がず体重をかける" },
+    { "id": "top-half", "name": "ハーフガードトップ", "type": "position", "_type": "", "description": "オーバーアンダーパスとエゼキールチョークを狙う" },
+    { "id": "back-control", "name": "バックコントロール", "type": "position", "_type": "*", "description": "ディープハーフスイープ後の最終目標。RNCで仕留める" }
+  ],
+  "transitions": [
+    { "id": "t0", "from": "standing", "to": "deep-half", "action": "引き込み → ディープハーフ", "description": "素早く引き込んで相手の股下に潜り込む。スタンドアップを避けてここから始める" },
+    { "id": "t1", "from": "half-guard", "to": "deep-half", "action": "ディープハーフへ潜る", "description": "ニーシールドのスペースを使って相手の股下に頭を差し込む" },
+    { "id": "t2", "from": "deep-half", "to": "side-control", "action": "ファリアスイープ → サイドコントロール", "description": "ラペルをつかんでトルコ式スクワット様の動きで相手をひっくり返しサイドコントロールへ" },
+    { "id": "t3", "from": "deep-half", "to": "back-control", "action": "スイープ後バックテイク", "description": "スイープした際に相手の背後に回り込んでバックを取る" },
+    { "id": "t4", "from": "top-half", "to": "side-control", "action": "オーバーアンダーパス", "description": "片腕を足の上に、もう片腕を足の下に通して肩で圧をかけながら膝を引き抜く" },
+    { "id": "t5", "from": "side-control", "to": "mount", "action": "マウントへ移行", "description": "相手が横を向いて守るタイミングで膝を通してマウントへ" }
+  ],
+  "submissions": [
+    { "id": "s0", "name": "エゼキールチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["mount", "top-half"], "description": "同側の袖口を反対の手でつかみながら絞める。2015年世界選手権でレアンドロ・ロを2度仕留めた必殺技" },
+    { "id": "s1", "name": "リアネイキッドチョーク", "type": "submission", "priority": "最優先", "priorityLevel": 1, "from": ["back-control"], "description": "バックを取った後の最終フィニッシュ" },
+    { "id": "s2", "name": "ニーバー", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["top-half", "side-control"], "description": "ハーフガードトップからのサブミッション。相手の膝関節に圧をかける" },
+    { "id": "s3", "name": "ファリアスイープ", "type": "sweep", "priority": "最優先", "priorityLevel": 1, "from": ["deep-half"], "description": "相手のラペルを遠足の下に通してつかみ、トルコ式スクワット様の動きで上を取る。相手がわかっていても止められないディープハーフの代名詞" },
+    { "id": "s4", "name": "アームバー", "type": "submission", "priority": "高", "priorityLevel": 2, "from": ["mount"], "description": "マウントで相手が防御で腕を出した瞬間に腕十字へ" }
+  ],
+  "defenseNotes": [
+    { "position": "deep-half", "principle": "相手がディープハーフを外そうとプレッシャーをかけてきたらラペルのグリップを深める" },
+    { "position": "mount", "principle": "相手がブリッジで逃げようとしたらエゼキールのグリップを深める。急がない" },
+    { "position": "top-half", "principle": "相手がニーシールドでスペースを作ろうとしたらオーバーアンダーのグリップで潰す" }
+  ],
+  "notUsed": [
+    { "technique": "レッグロック全般", "reason": "ファリアはプレッシャーとポジショナルゲームに集中。足関節は使わない" },
+    { "technique": "デラヒーバ・スパイダー・ベリンボロ", "reason": "オープンガードシステムではなくディープハーフに特化" },
+    { "technique": "スタンドアップ", "reason": "エリートレスラー・柔道家相手でも引き込みを選ぶ。ディープハーフが最も確実な入口" }
+  ]
+}
